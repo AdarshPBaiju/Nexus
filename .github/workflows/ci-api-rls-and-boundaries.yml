@@ -1,0 +1,44 @@
+name: CI — Python API, RLS & Layer Boundaries
+
+on:
+  push:
+    branches: [development, 'feat/**', 'test/**']
+  pull_request:
+    branches: [development, main]
+
+jobs:
+  lint-and-audit:
+    name: Ruff, Import Linter & RLS Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv pip install --system ruff import-linter
+
+      - name: Format Check
+        run: ruff format --check .
+
+      - name: Ruff Linter
+        run: ruff check .
+
+      - name: Architectural Import Boundaries
+        run: |
+          cd services/nexus-api
+          lint-imports
+
+      - name: RLS Coverage Audit
+        run: python ops/audits/audit_rls_coverage.py
+
+      - name: Code Budget Ceilings Audit
+        run: python ops/audits/audit_code_budget.py

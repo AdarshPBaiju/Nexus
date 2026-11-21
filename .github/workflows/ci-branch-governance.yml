@@ -1,0 +1,20 @@
+name: CI — 4-Tier Branch Naming Governance
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  branch-check:
+    name: Verify 4-Tier Branch Naming Taxonomy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Audit Branch Name
+        run: python ops/ci/branch_check.py "${{ github.head_ref }}"

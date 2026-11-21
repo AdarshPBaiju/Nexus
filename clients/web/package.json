@@ -1,0 +1,16 @@
+{
+  "name": "@nexus/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo web built",
+    "lint": "echo web linted",
+    "typecheck": "tsc --noEmit",
+    "test": "echo web tested",
+    "dev": "echo web dev"
+  },
+  "dependencies": {
+    "@nexus/contracts": "workspace:*",
+    "@nexus/ui": "workspace:*"
+  }
+}

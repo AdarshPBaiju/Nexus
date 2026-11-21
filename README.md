@@ -203,6 +203,12 @@ nexus notif audit-providers     # Audits notification channel adapters and vault
 nexus pay audit-gateways        # Verifies payment gateway plugins and webhook handlers
 nexus invoice audit-formats     # Validates template compilers across all 14 printer formats
 
+# UI, Theming & Accessibility Audits
+nexus fe ui token-audit         # Asserts zero hardcoded color literals across all views
+nexus fe ui theme-audit         # Validates WCAG 2.2 AA contrast across Dark and Light themes
+nexus fe ui contrast-audit      # Asserts background-aware typography & surface-content pairing
+pnpm --filter @nexus/web run test:visual # Executes dual-theme visual regression matrix
+
 # Test Execution
 make test-unit                  # Runs backend unit test suites
 make test-rls                   # Runs PostgreSQL Row-Level Security isolation tests

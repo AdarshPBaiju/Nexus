@@ -1,0 +1,32 @@
+name: CI — Desktop Tauri & Rust Workspace
+
+on:
+  push:
+    branches: [development, 'feat/**', 'test/**']
+  pull_request:
+    branches: [development, main]
+
+jobs:
+  rust-check:
+    name: Rust Clippy & Tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Rustfmt Check
+        run: cargo fmt --all -- --check
+
+      - name: Cargo Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Cargo Tests
+        run: cargo test --all

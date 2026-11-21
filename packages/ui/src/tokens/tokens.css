@@ -1,0 +1,134 @@
+/* Project Nexus Semantic Design Tokens (Dark & Light Mode Parity) */
+
+:root,
+[data-theme="light"] {
+  --nx-surface-bg: #F8FAFC;
+  --nx-surface-card: #FFFFFF;
+  --nx-surface-elevated: #FFFFFF;
+  --nx-surface-subtle: #F1F5F9;
+  --nx-surface-tooltip: #0F172A;
+  --nx-surface-selected: #EFF6FF;
+
+  --nx-text-primary: #0F172A;
+  --nx-text-secondary: #475569;
+  --nx-text-muted: #64748B;
+  --nx-text-disabled: #94A3B8;
+  --nx-text-inverse: #F8FAFC;
+
+  --nx-border-default: #E2E8F0;
+  --nx-border-subtle: #F1F5F9;
+  --nx-border-focus: #3B82F6;
+  --nx-border-divider: #E2E8F0;
+
+  --nx-action-primary: #2563EB;
+  --nx-action-primary-hover: #1D4ED8;
+  --nx-action-secondary: #F1F5F9;
+  --nx-action-destructive: #DC2626;
+  --nx-action-text: #FFFFFF;
+
+  --nx-status-success: #16A34A;
+  --nx-status-success-subtle: #DCFCE7;
+  --nx-status-success-text: #15803D;
+
+  --nx-status-warning: #D97706;
+  --nx-status-warning-subtle: #FEF3C7;
+  --nx-status-warning-text: #B45309;
+
+  --nx-status-danger: #DC2626;
+  --nx-status-danger-subtle: #FEE2E2;
+  --nx-status-danger-text: #B91C1C;
+
+  --nx-status-info: #0284C7;
+  --nx-status-info-subtle: #E0F2FE;
+  --nx-status-info-text: #0369A1;
+
+  --nx-space-1: 4px;
+  --nx-space-2: 8px;
+  --nx-space-3: 12px;
+  --nx-space-4: 16px;
+  --nx-space-5: 20px;
+  --nx-space-6: 24px;
+  --nx-space-8: 32px;
+  --nx-space-10: 40px;
+  --nx-space-12: 48px;
+  --nx-space-16: 64px;
+
+  --nx-z-base: 0;
+  --nx-z-card: 1;
+  --nx-z-elevated: 10;
+  --nx-z-sticky: 100;
+  --nx-z-modal: 200;
+  --nx-z-popover: 300;
+  --nx-z-tooltip: 500;
+}
+
+[data-theme="dark"] {
+  --nx-surface-bg: #0B0F17;
+  --nx-surface-card: #141C2B;
+  --nx-surface-elevated: #1E293B;
+  --nx-surface-subtle: #1A2333;
+  --nx-surface-tooltip: #1E293B;
+  --nx-surface-selected: #1E293B;
+
+  --nx-text-primary: #F8FAFC;
+  --nx-text-secondary: #94A3B8;
+  --nx-text-muted: #64748B;
+  --nx-text-disabled: #475569;
+  --nx-text-inverse: #F8FAFC;
+
+  --nx-border-default: #26354A;
+  --nx-border-subtle: #1E293B;
+  --nx-border-focus: #60A5FA;
+  --nx-border-divider: #26354A;
+
+  --nx-action-primary: #3B82F6;
+  --nx-action-primary-hover: #2563EB;
+  --nx-action-secondary: #1E293B;
+  --nx-action-destructive: #EF4444;
+  --nx-action-text: #FFFFFF;
+
+  --nx-status-success: #22C55E;
+  --nx-status-success-subtle: #052E16;
+  --nx-status-success-text: #4ADE80;
+
+  --nx-status-warning: #F59E0B;
+  --nx-status-warning-subtle: #451A03;
+  --nx-status-warning-text: #FCD34D;
+
+  --nx-status-danger: #EF4444;
+  --nx-status-danger-subtle: #450A0A;
+  --nx-status-danger-text: #FCA5A5;
+
+  --nx-status-info: #38BDF8;
+  --nx-status-info-subtle: #082F49;
+  --nx-status-info-text: #7DD3FC;
+}
+
+[data-theme="high-contrast-pos"] {
+  --nx-surface-bg: #000000;
+  --nx-surface-card: #0F172A;
+  --nx-surface-elevated: #1E293B;
+  --nx-surface-subtle: #1E293B;
+  --nx-surface-tooltip: #000000;
+  --nx-surface-selected: #2563EB;
+
+  --nx-text-primary: #FFFFFF;
+  --nx-text-secondary: #E2E8F0;
+  --nx-text-muted: #94A3B8;
+  --nx-text-disabled: #64748B;
+  --nx-text-inverse: #FFFFFF;
+
+  --nx-border-default: #FFFFFF;
+  --nx-border-subtle: #94A3B8;
+  --nx-border-focus: #FACC15;
+
+  --nx-action-primary: #2563EB;
+  --nx-action-primary-hover: #1D4ED8;
+  --nx-action-destructive: #DC2626;
+  --nx-action-text: #FFFFFF;
+}
+
+.nx-numeric {
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: end;
+}
