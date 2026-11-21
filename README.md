@@ -206,6 +206,7 @@ nexus invoice audit-formats     # Validates template compilers across all 14 pri
 # UI, Theming & Accessibility Audits
 nexus fe ui token-audit         # Asserts zero hardcoded color literals across all views
 nexus fe ui theme-audit         # Validates WCAG 2.2 AA contrast across Dark and Light themes
+nexus fe ui contrast-audit      # Asserts background-aware typography & surface-content pairing
 pnpm --filter @nexus/web run test:visual # Executes dual-theme visual regression matrix
 
 # Test Execution
