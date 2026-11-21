@@ -81,6 +81,18 @@ switch ($Command.ToLower()) {
         pnpm turbo run test
         uv run pytest services/nexus-api/tests
     }
+    "audit-rls" {
+        Write-Host "==> Auditing Forced RLS policy coverage on all models..." -ForegroundColor Green
+        python ops/audits/audit_rls_coverage.py
+    }
+    "audit-budget" {
+        Write-Host "==> Auditing structural code ceilings..." -ForegroundColor Green
+        python ops/audits/audit_code_budget.py
+    }
+    "branch-check" {
+        Write-Host "==> Auditing Git branch naming taxonomy..." -ForegroundColor Green
+        python ops/ci/branch_check.py
+    }
     "db-up" {
         Write-Host "==> Starting local infrastructure containers..." -ForegroundColor Green
         docker compose -f infra/docker/docker-compose.dev.yml up -d

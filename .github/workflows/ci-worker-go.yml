@@ -1,0 +1,30 @@
+name: CI — Go Heavy Worker
+
+on:
+  push:
+    branches: [development, 'feat/**', 'test/**']
+  pull_request:
+    branches: [development, main]
+
+jobs:
+  go-lint-test:
+    name: Go 1.23 Lint & Race Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.60
+          working-directory: services/nexus-worker-go
+
+      - name: Go Test with Race Detector
+        run: |
+          cd services/nexus-worker-go
+          go test -race -v ./...

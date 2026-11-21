@@ -1,0 +1,23 @@
+[importlinter]
+root_package = nexus
+
+[importlinter:contract:1]
+name = Layered Architecture Contract
+type = layers
+layers =
+    nexus.network
+    nexus.extensions
+    nexus.engines
+    nexus.platform
+    nexus.control_plane
+    nexus.libs
+
+[importlinter:contract:2]
+name = Extension Independence Contract
+type = independence
+modules =
+    nexus.extensions.pos
+    nexus.extensions.game_core
+    nexus.extensions.kds
+    nexus.extensions.inventory
+    nexus.extensions.hr

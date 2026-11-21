@@ -63,6 +63,18 @@ test: ## Execute unit and contract test suites
 	@echo "==> Running Go unit tests..."
 	cd services/nexus-worker-go && go test -v ./...
 
+audit-rls: ## Audit Django models for PostgreSQL 16 Forced RLS coverage
+	@echo "==> Auditing Forced RLS policy coverage on all models..."
+	python ops/audits/audit_rls_coverage.py
+
+audit-budget: ## Audit codebase files against structural budget ceilings
+	@echo "==> Auditing structural code ceilings and cyclomatic complexity..."
+	python ops/audits/audit_code_budget.py
+
+branch-check: ## Audit active Git branch against 4-tier naming taxonomy
+	@echo "==> Auditing Git branch naming taxonomy..."
+	python ops/ci/branch_check.py
+
 db-up: ## Start local database, cache, and messaging infrastructure
 	@echo "==> Launching PostgreSQL 16, PgBouncer, Redis, MinIO, and Mailhog..."
 	docker compose -f infra/docker/docker-compose.dev.yml up -d
