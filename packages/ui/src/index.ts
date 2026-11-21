@@ -23,3 +23,4 @@ export * from './layouts/NexusAuthAndGuardShell';
 export * from './inputs';
 export * from './table';
 export * from './forms';
+export * from './navigation';
