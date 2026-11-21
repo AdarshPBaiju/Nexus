@@ -20,3 +20,4 @@ export * from './layouts/NexusDashboardPageShell';
 export * from './layouts/NexusSplitWorkspaceShell';
 export * from './layouts/NexusOperationalCanvasShell';
 export * from './layouts/NexusAuthAndGuardShell';
+export * from './inputs';
