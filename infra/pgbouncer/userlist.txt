@@ -1,0 +1,2 @@
+"nexus_app_rw" "nexus_dev_password"
+"postgres" "nexus_dev_postgres_password"

@@ -1,0 +1,88 @@
+services:
+  postgres:
+    image: postgres:16.6-alpine@sha256:9c10642faeb26eecead8779d71c778401311f97c4587a3e9b11e9f1ab21d4c2c
+    container_name: nexus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nexus_regional
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nexus_dev_postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../postgres/01_init_regional_cell.sql:/docker-entrypoint-initdb.d/01_init_regional_cell.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nexus_regional"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1@sha256:4b4ff1d3ff3cf8a67fcb3c8f85f381f2119933ce45d94bc6bf1b0eeae483cb25
+    container_name: nexus-pgbouncer
+    restart: unless-stopped
+    volumes:
+      - ../pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ../pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    ports:
+      - "6432:6432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nexus-network
+
+  redis:
+    image: redis:7.2.6-alpine@sha256:d55e1e69a03c393864b4c6e00049cf308b47ef45995cf58fb1737be0dc6a41cc
+    container_name: nexus-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - nexus-network
+
+  minio:
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z@sha256:8892f3ec0049d5cbeec158f7eefc464e8b08fafeea72c43e7ca540b6dc3e312f
+    container_name: nexus-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: nexus_minio_admin
+      MINIO_ROOT_PASSWORD: nexus_minio_secret_key
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: ["server", "/data", "--console-address", ":9001"]
+    networks:
+      - nexus-network
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1@sha256:8d76a3d45c630e217e0b04603310061e892c578051756598c17b5f5dd4a899cf
+    container_name: nexus-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - nexus-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  nexus-network:
+    driver: bridge
