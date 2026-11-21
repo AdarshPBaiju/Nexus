@@ -5,3 +5,4 @@ export * from './money/MoneyFormatter';
 export * from './time/DateTimeFormatter';
 export * from './filtering/ast.types';
 export * from './lookups/option.types';
+export * from './codec/EncryptedPathEnvelopeCodec';
