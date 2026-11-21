@@ -21,3 +21,4 @@ export * from './layouts/NexusSplitWorkspaceShell';
 export * from './layouts/NexusOperationalCanvasShell';
 export * from './layouts/NexusAuthAndGuardShell';
 export * from './inputs';
+export * from './table';
