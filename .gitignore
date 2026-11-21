@@ -1,0 +1,122 @@
+# ==============================================================================
+# PROJECT NEXUS — MONOREPO .GITIGNORE
+# Governs Python 3.12, Node 22 / TypeScript 5.6, Go 1.23, Rust 1.82 (Tauri 2.0)
+# ==============================================================================
+
+# --- Operating System & Desktop ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# --- Environment & Secret Keys (Zero PII / Secrets) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
+# --- Node.js & TypeScript ---
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+dist/
+build/
+out/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# --- Python & Django ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# --- Go ---
+/bin/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# --- Rust & Tauri ---
+target/
+**/*.rs.bk
+Cargo.lock.backup
+src-tauri/target/
+
+# --- Local Databases & Object Storage ---
+*.sqlite
+*.sqlite3
+*.db
+.minio.sys/
+minio_data/
+redis_data/
+pg_data/
+
+# --- Temporary & Export Artifacts ---
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+reports/
+*.prof
