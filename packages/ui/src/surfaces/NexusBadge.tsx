@@ -43,20 +43,26 @@ export function NexusBadge({
     alignItems: 'center',
     justifyContent: 'center',
     gap: '5px',
-    padding: '2px 8px',
-    borderRadius: '9999px',
+    padding: '2px 7px',
+    borderRadius: '5px',
     whiteSpace: 'nowrap',
+    textTransform: 'uppercase',
+    letterSpacing: '0.045em',
     backgroundColor:
       variant === 'neutral'
         ? 'var(--nx-surface-subtle)'
         : `var(--nx-status-${variant}-subtle)`,
-    border: `1px solid var(--nx-border-subtle)`,
+    border:
+      variant === 'neutral'
+        ? '1px solid var(--nx-border-default)'
+        : `1px solid color-mix(in srgb, var(--nx-status-${variant}) 34%, transparent)`,
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
     ...style,
   };
 
   return (
     <SurfaceProvider role={VARIANT_SURFACE[variant]}>
-      <span style={badgeStyle} className={className}>
+      <span style={badgeStyle} className={`nx-badge nx-badge--${variant} ${className}`.trim()}>
         {dot && (
           <span
             aria-hidden="true"
@@ -69,7 +75,7 @@ export function NexusBadge({
             }}
           />
         )}
-        <NexusText variant="caption" style={{ fontWeight: 600, letterSpacing: '0.01em' }}>
+        <NexusText variant="caption" style={{ fontWeight: 700, letterSpacing: '0.045em', fontSize: '9.5px', lineHeight: '13px' }}>
           {children ?? label}
         </NexusText>
       </span>

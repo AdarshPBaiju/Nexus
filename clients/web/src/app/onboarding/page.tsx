@@ -42,8 +42,15 @@ export default function OnboardingPage(): React.JSX.Element {
       {isActivated ? (
         <NexusCard elevation="card" style={{ padding: 'var(--nx-space-6)', textAlign: 'center' }}>
           <div className="flex flex-col items-center space-y-4">
-            <div className="w-16 h-16 rounded-3xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-              <NexusGlyph name="verified" size={36} />
+            <div
+              className="w-16 h-16 rounded-3xl flex items-center justify-center"
+              style={{
+                backgroundColor: 'var(--nx-status-success-subtle)',
+                color: 'var(--nx-status-success-text)',
+                border: '1px solid color-mix(in srgb, var(--nx-status-success) 30%, transparent)',
+              }}
+            >
+              <NexusGlyph name="verified" size={36} color="var(--nx-status-success-text)" />
             </div>
             <div>
               <NexusText variant="h2">Tenant Activated & Ready</NexusText>
@@ -51,28 +58,28 @@ export default function OnboardingPage(): React.JSX.Element {
                 PostgreSQL 16 Forced RLS Tenant UUID: 7e89a1b2-c3d4-4e5f-a6b7-c8d9e0f1a2b3
               </NexusText>
             </div>
-            <div className="w-full max-w-md p-4 rounded-xl bg-surface-container border border-surface-container-highest text-left font-mono text-xs space-y-2">
-              <div className="flex justify-between text-outline">
+            <div className="w-full max-w-md p-4 rounded-xl bg-[var(--nx-surface-subtle)] border border-[var(--nx-border-default)] text-left font-mono text-xs space-y-2">
+              <div className="flex justify-between text-[var(--nx-text-muted)]">
                 <span>Organization:</span>
-                <span className="text-on-surface font-bold">{businessName}</span>
+                <span className="text-[var(--nx-text-primary)] font-bold">{businessName}</span>
               </div>
-              <div className="flex justify-between text-outline">
+              <div className="flex justify-between text-[var(--nx-text-muted)]">
                 <span>Subdomain Slug:</span>
-                <span className="text-secondary font-bold">{slug}.nexus.app</span>
+                <span className="text-[var(--nx-status-info-text)] font-bold">{slug}.nexus.app</span>
               </div>
-              <div className="flex justify-between text-outline">
+              <div className="flex justify-between text-[var(--nx-text-muted)]">
                 <span>Assigned Branch:</span>
-                <span className="text-on-surface">{branchName}</span>
+                <span className="text-[var(--nx-text-primary)]">{branchName}</span>
               </div>
-              <div className="flex justify-between text-outline">
+              <div className="flex justify-between text-[var(--nx-text-muted)]">
                 <span>Pre-Seeded Catalog:</span>
-                <span className="text-emerald-400 font-bold">14 Items & BOM Recipes</span>
+                <span className="text-[var(--nx-status-success-text)] font-bold">14 Items & BOM Recipes</span>
               </div>
             </div>
             <div className="flex gap-3 pt-2">
               <Link href="/pos">
                 <NexusButton variant="primary" size="lg">
-                  Launch Counter POS &rarr;
+                  Launch Counter POS →
                 </NexusButton>
               </Link>
               <Link href="/">
@@ -144,12 +151,12 @@ export default function OnboardingPage(): React.JSX.Element {
                       onClick={() => setSelectedPlan(p.id)}
                       className={`p-3 rounded-xl border text-center transition-all ${
                         selectedPlan === p.id
-                          ? 'border-primary bg-primary/10 text-on-surface shadow-sm'
-                          : 'border-surface-container-highest bg-surface-container text-outline'
+                          ? 'border-[var(--nx-action-primary)] bg-[var(--nx-surface-selected)] text-[var(--nx-text-primary)] shadow-[var(--nx-shadow-sm)]'
+                          : 'border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] text-[var(--nx-text-secondary)]'
                       }`}
                     >
                       <span className="text-xs font-bold block">{p.name}</span>
-                      <span className="text-sm font-mono font-bold text-primary mt-1 block">{p.price}</span>
+                      <span className="text-sm font-mono font-bold text-[var(--nx-action-primary)] mt-1 block">{p.price}</span>
                     </button>
                   ))}
                 </div>
@@ -159,19 +166,19 @@ export default function OnboardingPage(): React.JSX.Element {
             {step === 4 && (
               <NexusStack gap="var(--nx-space-4)">
                 <NexusText variant="h3">Step 4: Pre-Seed Specialty Café Template</NexusText>
-                <div className="p-4 rounded-xl bg-surface-container border border-surface-container-highest space-y-2 text-xs">
-                  <div className="flex items-center gap-2 font-semibold text-on-surface">
+                <div className="p-4 rounded-xl bg-[var(--nx-surface-subtle)] border border-[var(--nx-border-default)] space-y-2 text-xs">
+                  <div className="flex items-center gap-2 font-semibold text-[var(--nx-text-primary)]">
                     <NexusGlyph name="local_cafe" size={20} color="var(--nx-action-primary)" />
                     <span>Artisan Roastery & Café Template</span>
                   </div>
-                  <p className="text-outline">
+                  <p className="text-[var(--nx-text-secondary)]">
                     Installs 14 curated specialty coffee items, milk modifiers (Oat, Almond), cup sizes, recipe BOM auto-depletions, and cashier PINs.
                   </p>
                 </div>
               </NexusStack>
             )}
 
-            <div className="flex justify-between items-center pt-4 border-t border-surface-container-highest">
+            <div className="flex justify-between items-center pt-4 border-t border-[var(--nx-border-default)]">
               <NexusButton
                 variant="ghost"
                 size="sm"
@@ -181,7 +188,7 @@ export default function OnboardingPage(): React.JSX.Element {
                 &larr; Back
               </NexusButton>
               <NexusButton variant="primary" size="md" onClick={handleNext}>
-                {step === 4 ? 'Activate Tenant & Launch &rarr;' : 'Continue &rarr;'}
+                {step === 4 ? 'Activate Tenant & Launch →' : 'Continue →'}
               </NexusButton>
             </div>
           </NexusStack>

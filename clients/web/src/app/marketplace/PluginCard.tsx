@@ -29,21 +29,20 @@ export function PluginCard({
 
   return (
     <NexusBox
+      className="nx-panel nx-panel--interactive"
       style={{
         padding: '16px',
-        backgroundColor: 'var(--nx-surface-card)',
-        borderRadius: '10px',
+        borderRadius: '12px',
         border: `1px solid ${isInstalled ? 'var(--nx-border-default)' : 'var(--nx-border-subtle)'}`,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         gap: '14px',
-        transition: 'transform 0.12s ease, border-color 0.12s ease',
       }}
     >
       <NexusStack gap="10px">
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
             <div
               style={{
                 width: '38px',
@@ -62,11 +61,20 @@ export function PluginCard({
                 color={isInstalled ? 'var(--nx-action-text)' : 'var(--nx-text-muted)'}
               />
             </div>
-            <div>
-              <NexusText variant="label" style={{ fontWeight: 700 }}>
+            <div style={{ minWidth: 0 }}>
+              <NexusText
+                variant="label"
+                style={{
+                  display: 'block',
+                  fontWeight: 700,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {plugin.name}
               </NexusText>
-              <NexusText variant="code" role="muted" style={{ fontSize: '11px' }}>
+              <NexusText variant="code" role="muted" style={{ display: 'block', fontSize: '11px', whiteSpace: 'nowrap' }}>
                 {plugin.code} v{plugin.version}
               </NexusText>
             </div>
@@ -75,6 +83,7 @@ export function PluginCard({
           <NexusBadge
             variant={isInstalled ? 'success' : isDraining ? 'warning' : 'neutral'}
             label={plugin.status}
+            style={{ flexShrink: 0 }}
           />
         </div>
 

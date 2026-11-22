@@ -108,14 +108,13 @@ export default function GatewaysPage(): React.JSX.Element {
   };
 
   return (
-    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 20px 48px' }}>
+    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto' }}>
       <NexusStack gap="20px">
         {/* Header */}
         <NexusBox
+          className="nx-panel"
           style={{
-            padding: '16px 20px',
-            backgroundColor: 'var(--nx-surface-card)',
-            borderRadius: '10px',
+            padding: '18px 22px',
             border: '1px solid var(--nx-border-default)',
             display: 'flex',
             alignItems: 'center',

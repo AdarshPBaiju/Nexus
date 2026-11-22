@@ -101,35 +101,71 @@ export default function HomePage(): React.JSX.Element {
 
       {/* Operational KPIs */}
       <NexusStack direction="row" gap="var(--nx-space-4)" style={{ flexWrap: 'wrap' }}>
-        <NexusCard elevation="card" style={{ flex: '1 1 220px', padding: 'var(--nx-space-4)' }}>
-          <NexusStack gap="var(--nx-space-1)">
-            <NexusText variant="caption" role="secondary">Today Gross Volume</NexusText>
-            <NexusText variant="h2" tabular>$1,842.50</NexusText>
-            <NexusBadge variant="success" label="+14.2% vs Yesterday" />
+        <NexusCard
+          elevation="card"
+          className="nx-kpi-card"
+          style={{ flex: '1 1 220px', padding: 'var(--nx-space-4) var(--nx-space-5)' }}
+        >
+          <NexusStack gap="var(--nx-space-2)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="caption" role="muted" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '10px', fontWeight: 700 }}>
+                Today Gross Volume
+              </NexusText>
+              <NexusGlyph name="payments" size={15} color="var(--nx-action-primary)" />
+            </NexusStack>
+            <NexusText variant="kpi">$1,842.50</NexusText>
+            <NexusBadge variant="success" label="+14.2% vs Yesterday" style={{ alignSelf: 'flex-start' }} />
           </NexusStack>
         </NexusCard>
 
-        <NexusCard elevation="card" style={{ flex: 1, padding: 'var(--nx-space-4)' }}>
-          <NexusStack gap="var(--nx-space-1)">
-            <NexusText variant="caption" role="secondary">Active Orders (KDS)</NexusText>
-            <NexusText variant="h2" tabular>3 Orders</NexusText>
-            <NexusBadge variant="warning" label="Avg SLA: 2.8m" />
+        <NexusCard
+          elevation="card"
+          className="nx-kpi-card nx-kpi-card--warning"
+          style={{ flex: 1, padding: 'var(--nx-space-4) var(--nx-space-5)' }}
+        >
+          <NexusStack gap="var(--nx-space-2)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="caption" role="muted" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '10px', fontWeight: 700 }}>
+                Active Orders (KDS)
+              </NexusText>
+              <NexusGlyph name="skillet" size={15} color="var(--nx-status-warning)" />
+            </NexusStack>
+            <NexusText variant="kpi">3</NexusText>
+            <NexusBadge variant="warning" label="Avg SLA: 2.8m" style={{ alignSelf: 'flex-start' }} />
           </NexusStack>
         </NexusCard>
 
-        <NexusCard elevation="card" style={{ flex: 1, padding: 'var(--nx-space-4)' }}>
-          <NexusStack gap="var(--nx-space-1)">
-            <NexusText variant="caption" role="secondary">Drawer Balance</NexusText>
-            <NexusText variant="h2" tabular>$742.50</NexusText>
-            <NexusBadge variant="neutral" label="Float: $200.00" />
+        <NexusCard
+          elevation="card"
+          className="nx-kpi-card nx-kpi-card--success"
+          style={{ flex: 1, padding: 'var(--nx-space-4) var(--nx-space-5)' }}
+        >
+          <NexusStack gap="var(--nx-space-2)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="caption" role="muted" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '10px', fontWeight: 700 }}>
+                Drawer Balance
+              </NexusText>
+              <NexusGlyph name="receipt_long" size={15} color="var(--nx-status-success)" />
+            </NexusStack>
+            <NexusText variant="kpi">$742.50</NexusText>
+            <NexusBadge variant="neutral" label="Float: $200.00" style={{ alignSelf: 'flex-start' }} />
           </NexusStack>
         </NexusCard>
 
-        <NexusCard elevation="card" style={{ flex: 1, padding: 'var(--nx-space-4)' }}>
-          <NexusStack gap="var(--nx-space-1)">
-            <NexusText variant="caption" role="secondary">Staff On Duty</NexusText>
-            <NexusText variant="h2" tabular>3 / 4</NexusText>
-            <NexusBadge variant="info" label="SoHo Branch" />
+        <NexusCard
+          elevation="card"
+          className="nx-kpi-card nx-kpi-card--violet"
+          style={{ flex: 1, padding: 'var(--nx-space-4) var(--nx-space-5)' }}
+        >
+          <NexusStack gap="var(--nx-space-2)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="caption" role="muted" style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '10px', fontWeight: 700 }}>
+                Staff On Duty
+              </NexusText>
+              <NexusGlyph name="badge" size={15} color="var(--nx-accent-violet)" />
+            </NexusStack>
+            <NexusText variant="kpi">3 / 4</NexusText>
+            <NexusBadge variant="info" label="SoHo Branch" style={{ alignSelf: 'flex-start' }} />
           </NexusStack>
         </NexusCard>
       </NexusStack>

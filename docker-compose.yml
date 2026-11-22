@@ -1,0 +1,205 @@
+# ==============================================================================
+# Project Nexus — Full-Stack Cloud Multi-Tenant SaaS Mesh (PNX-REPO-ARCH-004 §5)
+# Runtimes: Python 3.12 (uv) | Go 1.23 | Next.js 15 (Node 20) | PostgreSQL 16
+# Complete Cloud SaaS Orchestration: DB, PgBouncer RLS, Redis, MinIO S3, API, Worker, Web
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Sovereign Regional Cell PostgreSQL 16 (Forced RLS Tenant Data Isolation)
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16.6-alpine@sha256:9c10642faeb26eecead8779d71c778401311f97c4587a3e9b11e9f1ab21d4c2c
+    container_name: nexus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nexus_regional}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nexus_dev_postgres_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/01_init_regional_cell.sql:/docker-entrypoint-initdb.d/01_init_regional_cell.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nexus_regional"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 2. PgBouncer Connection Pooler (Transaction Mode with Forced RLS Passthrough)
+  # ----------------------------------------------------------------------------
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.23.1@sha256:4b4ff1d3ff3cf8a67fcb3c8f85f381f2119933ce45d94bc6bf1b0eeae483cb25
+    container_name: nexus-pgbouncer
+    restart: unless-stopped
+    volumes:
+      - ./infra/pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./infra/pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    ports:
+      - "6432:6432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 3. Redis 7.2 Cache, Pub/Sub & Celery Message Broker
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7.2.6-alpine@sha256:d55e1e69a03c393864b4c6e00049cf308b47ef45995cf58fb1737be0dc6a41cc
+    container_name: nexus-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 4. MinIO S3 Object Storage (8-Year WORM Fiscal Receipts & Audit Vault)
+  # ----------------------------------------------------------------------------
+  minio:
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z@sha256:8892f3ec0049d5cbeec158f7eefc464e8b08fafeea72c43e7ca540b6dc3e312f
+    container_name: nexus-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-nexus_minio_admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-nexus_minio_secret_key}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: ["server", "/data", "--console-address", ":9001"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 5. Core API Server (Python 3.12 / Django 5.1 / DRF / Celery)
+  # ----------------------------------------------------------------------------
+  api:
+    container_name: nexus-api
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    restart: unless-stopped
+    environment:
+      DJANGO_SETTINGS_MODULE: nexus_settings
+      NEXUS_DATABASE_URL: postgresql://nexus_app_rw:nexus_dev_password@pgbouncer:6432/nexus_regional
+      NEXUS_REDIS_URL: redis://redis:6379/0
+      NEXUS_MINIO_ENDPOINT: http://minio:9000
+      NEXUS_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-nexus_minio_admin}
+      NEXUS_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-nexus_minio_secret_key}
+      NEXUS_REGIONAL_CELL: ap-south-1
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 6. High-Concurrency Heavy Worker (Go 1.23+ Outbox & Stream Dispatcher)
+  # ----------------------------------------------------------------------------
+  worker:
+    container_name: nexus-worker
+    build:
+      context: .
+      dockerfile: infra/docker/worker-go.Dockerfile
+    restart: unless-stopped
+    environment:
+      NEXUS_REDIS_URL: redis://redis:6379/0
+      NEXUS_DATABASE_URL: postgresql://nexus_app_rw:nexus_dev_password@pgbouncer:6432/nexus_regional
+      PORT: 9090
+    ports:
+      - "9090:9090"
+    depends_on:
+      redis:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 7. Next.js 15 Web Client (SaaS Dashboard, Counter POS, KDS, Marketplace)
+  # ----------------------------------------------------------------------------
+  web:
+    container_name: nexus-web
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - nexus-network
+
+  # ----------------------------------------------------------------------------
+  # 8. MailHog SMTP & Transactional Email Mock Server
+  # ----------------------------------------------------------------------------
+  mailhog:
+    image: mailhog/mailhog:v1.0.1@sha256:8d76a3d45c630e217e0b04603310061e892c578051756598c17b5f5dd4a899cf
+    container_name: nexus-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - nexus-network
+
+volumes:
+  postgres_data:
+    name: nexus_postgres_data
+  redis_data:
+    name: nexus_redis_data
+  minio_data:
+    name: nexus_minio_data
+
+networks:
+  nexus-network:
+    name: nexus_mesh_network
+    driver: bridge

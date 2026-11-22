@@ -123,7 +123,7 @@ export default function InputsStudioPage(): React.JSX.Element {
             <NexusBadge variant="info" label="19 Custom Controls" />
           </NexusStack>
           <NexusText variant="body" role="secondary">
-            100% in-house `@nexus/ui/inputs/*` primitives with universal Dark/Light parity and zero raw HTML inputs.
+            100% in-house @nexus/ui input primitives with universal Dark/Light parity and zero raw HTML inputs.
           </NexusText>
         </NexusStack>
 

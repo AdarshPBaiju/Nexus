@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { NexusBox, NexusSelect, NexusStack, NexusText, NexusTextInput } from '@nexus/ui';
+import { NexusBadge, NexusBox, NexusSelect, NexusStack, NexusText, NexusTextInput } from '@nexus/ui';
 
 export interface RegisterOrgData {
   legal_name: string;
@@ -24,6 +24,8 @@ export function RegisterOrgStep({ data, onChange }: RegisterOrgStepProps): React
     onChange({ legal_name: name, slug });
   };
 
+  const cloudSubdomain = `${data.slug || 'your-cafe'}.nexus-qsr.io`;
+
   return (
     <NexusBox
       style={{
@@ -35,13 +37,40 @@ export function RegisterOrgStep({ data, onChange }: RegisterOrgStepProps): React
     >
       <NexusStack gap="18px">
         <div>
-          <NexusText variant="h3" style={{ margin: 0, fontWeight: 700 }}>
-            Organization & Regional Residency
-          </NexusText>
+          <NexusStack direction="row" align="center" justify="space-between">
+            <NexusText variant="h3" style={{ margin: 0, fontWeight: 700 }}>
+              Cloud Organization & Regional Cell
+            </NexusText>
+            <NexusBadge variant="success" label="CLOUD SAAS MESH" />
+          </NexusStack>
           <NexusText variant="body" role="secondary" style={{ marginTop: '4px' }}>
-            Set your registered business entity and sovereign cloud data residency region.
+            Configure your enterprise tenant partition on the multi-region cloud mesh with Forced RLS isolation.
           </NexusText>
         </div>
+
+        {/* Live Cloud Subdomain Preview Banner */}
+        <NexusBox
+          style={{
+            padding: '12px 14px',
+            borderRadius: '8px',
+            backgroundColor: 'var(--nx-surface-subtle)',
+            border: '1px solid var(--nx-border-subtle)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+          }}
+        >
+          <div>
+            <NexusText variant="caption" role="muted" style={{ display: 'block' }}>
+              PROVISIONED CLOUD SAAS URL
+            </NexusText>
+            <NexusText variant="label" style={{ fontFamily: 'var(--font-mono, monospace)', fontWeight: 600, color: 'var(--nx-action-primary)' }}>
+              https://{cloudSubdomain}
+            </NexusText>
+          </div>
+          <NexusBadge variant="neutral" label="FORCED RLS CELL" />
+        </NexusBox>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
           <NexusTextInput

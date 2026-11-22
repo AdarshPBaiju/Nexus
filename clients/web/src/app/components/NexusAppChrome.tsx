@@ -112,11 +112,13 @@ export function NexusAppChrome({ children }: NexusAppChromeProps): React.JSX.Ele
   }
 
   const isFlush = FLUSH_ROUTES.includes(pathname);
-  const contentClass = isFlush
-    ? 'nx-shell-content nx-shell-content--flush'
-    : NARROW_ROUTES.includes(pathname)
-    ? 'nx-shell-content nx-shell-content--narrow'
-    : 'nx-shell-content';
+  const contentClass = `${
+    isFlush
+      ? 'nx-shell-content nx-shell-content--flush'
+      : NARROW_ROUTES.includes(pathname)
+      ? 'nx-shell-content nx-shell-content--narrow'
+      : 'nx-shell-content'
+  } nx-route`.trim();
 
   return (
     <div className="nx-shell">
@@ -144,7 +146,9 @@ export function NexusAppChrome({ children }: NexusAppChromeProps): React.JSX.Ele
       />
 
       <main className={`nx-shell-main ${isSidebarOpen ? '' : 'nx-shell-main--collapsed'}`.trim()}>
-        <div className={contentClass}>{children}</div>
+        <div key={pathname} className={contentClass}>
+          {children}
+        </div>
       </main>
     </div>
   );

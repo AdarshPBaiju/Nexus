@@ -49,7 +49,7 @@ const NAV_GROUPS: readonly NavGroup[] = [
     title: 'Finance & Treasury',
     items: [
       { href: '/finance', label: 'Shift Cashier Console', icon: 'payments', hint: 'S' },
-      { href: '/gateways', label: 'Payment Gateways & Hardware', icon: 'credit_card', hint: 'G', badge: '5', badgeVariant: 'success' },
+      { href: '/gateways', label: 'Gateways & Hardware', icon: 'credit_card', hint: 'G', badge: '5', badgeVariant: 'success' },
     ],
   },
   {
@@ -113,26 +113,27 @@ export function NexusEnterpriseSidebar({
                     href={item.href}
                     onClick={onNavigate}
                     aria-current={isActive ? 'page' : undefined}
+                    className={`nx-nav-link ${isActive ? 'nx-nav-link--active' : ''}`.trim()}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '8px',
-                      minHeight: '34px',
-                      padding: '6px 10px',
-                      borderRadius: '6px',
+                      minHeight: '36px',
+                      padding: '4px 8px',
+                      borderRadius: '8px',
                       textDecoration: 'none',
-                      backgroundColor: isActive ? 'var(--nx-surface-selected)' : 'transparent',
-                      border: `1px solid ${isActive ? 'var(--nx-border-default)' : 'transparent'}`,
                       transition: 'background-color 0.12s ease, border-color 0.12s ease',
                     }}
                   >
                     <span style={{ display: 'flex', alignItems: 'center', gap: '9px', minWidth: 0 }}>
-                      <NexusGlyph
-                        name={item.icon}
-                        size={18}
-                        color={isActive ? 'var(--nx-action-primary)' : 'var(--nx-text-muted)'}
-                      />
+                      <span className="nx-nav-icon">
+                        <NexusGlyph
+                          name={item.icon}
+                          size={17}
+                          color={isActive ? 'var(--nx-action-primary)' : 'var(--nx-text-muted)'}
+                        />
+                      </span>
                       <NexusText
                         variant="label"
                         role={isActive ? 'primary' : 'secondary'}

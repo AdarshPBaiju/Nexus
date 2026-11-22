@@ -24,12 +24,15 @@ export function NexusDetailPageShell({
 }: NexusDetailPageShellProps): React.JSX.Element {
   const resolvedActions = actions ?? headerActions;
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '100dvh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
       <header
         style={{
-          padding: 'var(--nx-space-4) var(--nx-space-6)',
-          borderBottom: '1px solid var(--nx-border-default)',
+          padding: '18px 22px',
+          border: '1px solid var(--nx-border-default)',
+          borderRadius: '12px',
           backgroundColor: 'var(--nx-surface-card)',
+          backgroundImage: 'linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 40%, transparent), transparent 60%)',
+          boxShadow: 'var(--nx-shadow-sm)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 'var(--nx-space-4)' }}>
@@ -49,7 +52,7 @@ export function NexusDetailPageShell({
         {metadataStrip && <div style={{ marginTop: 'var(--nx-space-2)' }}>{metadataStrip}</div>}
         {tabs && <div style={{ marginTop: 'var(--nx-space-3)' }}>{tabs}</div>}
       </header>
-      <main style={{ flex: 1, padding: 'var(--nx-space-6)', overflow: 'auto' }}>
+      <main style={{ flex: 1, padding: 'var(--nx-space-5) 0 0', overflow: 'visible' }}>
         {children}
       </main>
     </div>
