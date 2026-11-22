@@ -121,8 +121,6 @@ mod tests {
         let mut encoder = EscPosEncoder::new();
         encoder.cut();
         let bytes = encoder.build();
-        assert!(bytes
-            .windows(4)
-            .any(|w| w == EscPosEncoder::GS_CUT_PARTIAL));
+        assert!(bytes.windows(4).any(|w| w == EscPosEncoder::GS_CUT_PARTIAL));
     }
 }
