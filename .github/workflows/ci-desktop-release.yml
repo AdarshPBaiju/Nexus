@@ -26,7 +26,8 @@ jobs:
         run: |
           cargo fmt --all
           if [ -n "$(git status --porcelain)" ]; then
-            echo "::error::rustfmt failed! Diff: $(git diff | head -n 30)"
+            echo "::error::rustfmt failed! Changes required:"
+            git diff
             exit 1
           fi
 

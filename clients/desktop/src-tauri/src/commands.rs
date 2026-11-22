@@ -24,10 +24,7 @@ impl DesktopCommandBridge {
         &self,
         workstation_id: &str,
     ) -> Result<WorkstationTelemetry, String> {
-        Ok(DeviceBindingService::collect_telemetry(
-            workstation_id,
-            false,
-        ))
+        Ok(DeviceBindingService::collect_telemetry(workstation_id, false))
     }
 
     pub fn trigger_local_print(&self, job: &PrintJob) -> Result<String, String> {
@@ -48,10 +45,7 @@ impl DesktopCommandBridge {
         if amount_cents == 0 {
             return Err("Charge amount must be positive".to_string());
         }
-        Ok(format!(
-            "Terminal {} initiated charge for {} cents",
-            terminal_ip, amount_cents
-        ))
+        Ok(format!("Terminal {} initiated charge for {} cents", terminal_ip, amount_cents))
     }
 }
 
