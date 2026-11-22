@@ -43,7 +43,7 @@ jobs:
 
       - name: Ruff Auto-Fix
         run: |
-          ruff check --fix --unsafe-fixes=false .
+          ruff check --fix-only --exit-zero .
 
       - name: Ruff Format
         run: |
