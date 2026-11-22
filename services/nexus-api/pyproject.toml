@@ -45,6 +45,7 @@ ignore = [
     "E501",   # Line length handled by formatter
     "RUF012", # Mutable class attributes in Django model Meta
     "TC001",  # Move app imports into type-checking block
+    "TC002",  # Move third-party imports into type-checking block
     "TC003",  # Move stdlib imports into type-checking block
 ]
 
