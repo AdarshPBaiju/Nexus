@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Navbar } from '../components/Navbar';
+import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
+import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
 import { KdsTouchCanvas } from '../../engines/kitchen/KdsTouchCanvas';
 import { NexusBox } from '@nexus/ui';
 import type { KdsStationType, KdsTicketDto } from '../../engines/kitchen/kds.types';
@@ -75,6 +76,7 @@ const INITIAL_TICKETS: KdsTicketDto[] = [
 ];
 
 export default function KitchenPage(): React.JSX.Element {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [tickets, setTickets] = useState<KdsTicketDto[]>(INITIAL_TICKETS);
   const [activeStation, setActiveStation] = useState<KdsStationType>('BARISTA');
 
@@ -89,9 +91,23 @@ export default function KitchenPage(): React.JSX.Element {
   };
 
   return (
-    <NexusBox style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-      <Navbar />
-      <NexusBox style={{ flex: 1, overflow: 'hidden' }}>
+    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
+      <NexusMainTopNavbar
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+
+      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
+
+      <NexusBox
+        style={{
+          marginLeft: isSidebarOpen ? '280px' : 0,
+          marginTop: '56px',
+          height: 'calc(100vh - 56px)',
+          overflow: 'hidden',
+          transition: 'margin-left 0.2s ease',
+        }}
+      >
         <KdsTouchCanvas
           tickets={tickets}
           activeStation={activeStation}

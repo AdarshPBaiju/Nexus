@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Navbar } from '../components/Navbar';
+import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
+import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
 import { StaffDirectoryView } from '../../engines/hr/StaffDirectoryView';
 import { EssPunchClockWidget } from '../../engines/hr/EssPunchClockWidget';
 import {
@@ -71,6 +72,7 @@ const INITIAL_STAFF: EmployeeDto[] = [
 
 export default function HrPage(): React.JSX.Element {
   const { session } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [employees] = useState<EmployeeDto[]>(INITIAL_STAFF);
   const [punches, setPunches] = useState<PunchRecordDto[]>([
     {
@@ -97,37 +99,49 @@ export default function HrPage(): React.JSX.Element {
   };
 
   return (
-    <NexusBox>
-      <Navbar />
-      <NexusBox
-        padding="var(--nx-space-6)"
-        style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}
-      >
-        <NexusStack direction="row" gap="var(--nx-space-6)" align="start">
-          <NexusBox style={{ flex: 2 }}>
-            <StaffDirectoryView
-              employees={employees}
-              onSelectEmployee={setSelectedEmpId}
-              onRegisterEmployee={() => {}}
-            />
-            {selectedEmpId && (
-              <NexusCard elevation="subtle" style={{ marginTop: 'var(--nx-space-4)', padding: 'var(--nx-space-3)' }}>
-                <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-                  <NexusBadge variant="info" label="Roster Profile" />
-                  <NexusText variant="label">Employee ID: {selectedEmpId}</NexusText>
-                </NexusStack>
-              </NexusCard>
-            )}
-          </NexusBox>
+    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
+      <NexusMainTopNavbar
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
 
-          <NexusBox style={{ flex: 1 }}>
-            <EssPunchClockWidget
-              employeeName={`${session.name} (${session.id})`}
-              department="BARISTA"
-              recentPunches={punches}
-              onRecordPunch={handlePunch}
-            />
-          </NexusBox>
+      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
+
+      <NexusBox
+        style={{
+          marginLeft: isSidebarOpen ? '280px' : 0,
+          marginTop: '56px',
+          padding: 'var(--nx-space-8) var(--nx-space-6)',
+          transition: 'margin-left 0.2s ease',
+        }}
+      >
+        <NexusStack gap="var(--nx-space-6)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <NexusStack direction="row" gap="var(--nx-space-6)" align="start">
+            <NexusBox style={{ flex: 2 }}>
+              <StaffDirectoryView
+                employees={employees}
+                onSelectEmployee={setSelectedEmpId}
+                onRegisterEmployee={() => {}}
+              />
+              {selectedEmpId && (
+                <NexusCard elevation="subtle" style={{ marginTop: 'var(--nx-space-4)', padding: 'var(--nx-space-3)' }}>
+                  <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+                    <NexusBadge variant="info" label="Roster Profile" />
+                    <NexusText variant="label">Employee ID: {selectedEmpId}</NexusText>
+                  </NexusStack>
+                </NexusCard>
+              )}
+            </NexusBox>
+
+            <NexusBox style={{ flex: 1 }}>
+              <EssPunchClockWidget
+                employeeName={`${session.name} (${session.id})`}
+                department="BARISTA"
+                recentPunches={punches}
+                onRecordPunch={handlePunch}
+              />
+            </NexusBox>
+          </NexusStack>
         </NexusStack>
       </NexusBox>
     </NexusBox>
