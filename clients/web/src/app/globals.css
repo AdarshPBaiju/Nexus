@@ -413,19 +413,28 @@ body {
   min-height: 132px;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid var(--nx-border-subtle);
-  background-color: var(--nx-surface-subtle);
+  border: 1px solid var(--nx-border-default);
+  background-color: var(--nx-surface-card);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 34%, transparent), transparent 52%);
+  box-shadow: var(--nx-shadow-xs);
   text-align: start;
   cursor: pointer;
-  transition: border-color 0.12s ease, transform 0.12s ease;
+  transition: border-color 0.14s ease, transform 0.14s ease, box-shadow 0.14s ease;
 }
 
 .nx-pos-product:hover {
-  border-color: var(--nx-border-focus);
+  border-color: color-mix(in srgb, var(--nx-border-focus) 70%, var(--nx-border-default));
+  box-shadow: var(--nx-shadow-md);
+  transform: translateY(-2px);
 }
 
 .nx-pos-product:active {
   transform: scale(0.995);
+}
+
+.nx-pos-panel {
+  box-shadow: var(--nx-shadow-sm);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 26%, transparent), transparent 40%);
 }
 
 .nx-chip {
@@ -460,4 +469,334 @@ body {
 .nx-chip--active:hover {
   background-color: var(--nx-action-primary-hover);
   color: var(--nx-action-text);
+}
+
+/* ------------------------------------------------------------------
+   Nexus v6 Enterprise Visual System
+   Shared depth, chrome, motion and density for every route. All color
+   decisions resolve through semantic tokens so Dark/Light stay in parity.
+------------------------------------------------------------------ */
+::selection {
+  background-color: color-mix(in srgb, var(--nx-action-primary) 32%, transparent);
+  color: var(--nx-text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  background-image:
+    radial-gradient(1100px 540px at 12% -12%, color-mix(in srgb, var(--nx-action-primary) 13%, transparent), transparent 62%),
+    radial-gradient(900px 460px at 92% 0%, color-mix(in srgb, var(--nx-accent-violet) 9%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--nx-surface-bg) 0%, var(--nx-surface-bg) 100%);
+  background-attachment: fixed;
+}
+
+html[data-theme="light"] body {
+  background-image:
+    radial-gradient(1100px 540px at 12% -12%, color-mix(in srgb, var(--nx-action-primary) 9%, transparent), transparent 62%),
+    radial-gradient(900px 460px at 92% 0%, color-mix(in srgb, var(--nx-accent-violet) 6%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--nx-surface-bg) 0%, var(--nx-surface-bg) 100%);
+}
+
+.nx-shell {
+  background-color: transparent;
+}
+
+.nx-route {
+  animation: nx-route-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes nx-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cards ------------------------------------------------------------------ */
+.nx-card {
+  isolation: isolate;
+}
+
+.nx-card::after {
+  content: '';
+  position: absolute;
+  inset-inline: 14%;
+  inset-block-start: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--nx-action-primary) 55%, transparent), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.nx-card--subtle::after,
+.nx-card--flat::after {
+  opacity: 0.2;
+}
+
+.nx-card--interactive:hover {
+  border-color: color-mix(in srgb, var(--nx-border-focus) 55%, var(--nx-border-default));
+  box-shadow: var(--nx-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Buttons ---------------------------------------------------------------- */
+.nx-btn:hover:not(:disabled) {
+  filter: brightness(1.07) saturate(1.03);
+  transform: translateY(-1px);
+}
+
+.nx-btn--primary:hover:not(:disabled) {
+  box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--nx-action-primary) 80%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+.nx-btn--outline:hover:not(:disabled),
+.nx-btn--secondary:hover:not(:disabled) {
+  border-color: var(--nx-border-strong);
+  background-color: var(--nx-surface-elevated) !important;
+}
+
+.nx-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  filter: brightness(0.98);
+}
+
+.nx-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--nx-shadow-focus) !important;
+}
+
+/* Badges ---------------------------------------------------------------- */
+.nx-badge {
+  backdrop-filter: blur(4px);
+}
+
+.nx-badge--success > span:first-child,
+.nx-badge--warning > span:first-child,
+.nx-badge--info > span:first-child {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* Application chrome ---------------------------------------------------- */
+.nx-topnav {
+  background-color: color-mix(in srgb, var(--nx-surface-card) 82%, transparent) !important;
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 42%, transparent), transparent) !important;
+  backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow: 0 1px 0 var(--nx-border-subtle), 0 12px 28px -26px rgba(0, 0, 0, 0.9);
+}
+
+.nx-brand-mark {
+  background-image: linear-gradient(145deg, var(--nx-action-primary), var(--nx-accent-violet)) !important;
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--nx-action-primary) 80%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.nx-sidebar {
+  background-color: var(--nx-surface-card);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 34%, transparent), transparent 42%);
+  box-shadow: 1px 0 0 var(--nx-border-subtle), 18px 0 44px -40px rgba(0, 0, 0, 0.8);
+}
+
+.nx-nav-link {
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.nx-nav-link:hover {
+  background-color: var(--nx-surface-subtle);
+  border-color: var(--nx-border-subtle);
+}
+
+.nx-nav-link--active {
+  background-color: var(--nx-surface-selected) !important;
+  border-color: var(--nx-border-default) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.nx-nav-link--active::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -1px;
+  inset-block: 7px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--nx-accent-cyan), var(--nx-action-primary));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--nx-action-primary) 70%, transparent);
+}
+
+.nx-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background-color: color-mix(in srgb, var(--nx-surface-subtle) 70%, transparent);
+  border: 1px solid transparent;
+  flex-shrink: 0;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.nx-nav-link:hover .nx-nav-icon {
+  background-color: var(--nx-surface-elevated);
+  border-color: var(--nx-border-subtle);
+}
+
+.nx-nav-link--active .nx-nav-icon {
+  background-color: color-mix(in srgb, var(--nx-action-primary) 16%, transparent);
+  border-color: color-mix(in srgb, var(--nx-action-primary) 28%, transparent);
+}
+
+/* Dense data grid ------------------------------------------------------- */
+.nx-data-table-wrapper {
+  box-shadow: var(--nx-shadow-sm);
+}
+
+.nx-data-table {
+  font-size: 12.5px;
+}
+
+.nx-data-table thead th {
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 58%, transparent), transparent);
+  border-bottom-color: var(--nx-border-strong, var(--nx-border-default));
+}
+
+.nx-data-table tbody tr {
+  position: relative;
+}
+
+.nx-data-table tbody tr:hover {
+  box-shadow: inset 2px 0 0 var(--nx-action-primary);
+}
+
+.nx-data-table tbody td {
+  transition: color 0.12s ease;
+}
+
+/* Form controls inherit the same enterprise shell ----------------------- */
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--nx-border-focus) !important;
+  box-shadow: var(--nx-shadow-focus);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--nx-text-muted);
+}
+
+/* Utility accents ------------------------------------------------------- */
+.nx-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-text-muted);
+}
+
+.nx-kpi-card {
+  overflow: hidden;
+}
+
+.nx-kpi-card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--nx-action-primary), transparent 78%);
+  opacity: 0.8;
+}
+
+.nx-kpi-card--violet::before {
+  background: linear-gradient(180deg, var(--nx-accent-violet), transparent 78%);
+}
+
+.nx-kpi-card--success::before {
+  background: linear-gradient(180deg, var(--nx-status-success), transparent 78%);
+}
+
+.nx-kpi-card--warning::before {
+  background: linear-gradient(180deg, var(--nx-status-warning), transparent 78%);
+}
+
+/* Scrollbar refinement -------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--nx-text-muted) 34%, transparent);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--nx-text-muted) 58%, transparent);
+}
+
+/* Route-level panels ----------------------------------------------------- */
+.nx-panel {
+  position: relative;
+  background-color: var(--nx-surface-card);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--nx-surface-elevated) 42%, transparent), transparent 46%);
+  border: 1px solid var(--nx-border-default);
+  border-radius: 12px;
+  box-shadow: var(--nx-shadow-sm);
+}
+
+.nx-panel--interactive {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.nx-panel--interactive:hover {
+  border-color: color-mix(in srgb, var(--nx-border-focus) 50%, var(--nx-border-default));
+  box-shadow: var(--nx-shadow-md);
+  transform: translateY(-2px);
+}
+
+.nx-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--nx-space-2);
+  padding: 8px 10px;
+  border: 1px solid var(--nx-border-default);
+  border-radius: 10px;
+  background-color: color-mix(in srgb, var(--nx-surface-card) 82%, transparent);
+  box-shadow: var(--nx-shadow-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

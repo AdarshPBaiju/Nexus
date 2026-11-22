@@ -34,7 +34,10 @@ export type GlyphName =
   | 'hub'
   | 'sync'
   | 'security'
-  | 'swap_horiz';
+  | 'swap_horiz'
+  | 'expand_more'
+  | 'expand_less'
+  | 'check';
 
 export const GLYPH_SHAPES: Record<GlyphName, React.JSX.Element> = {
   apps: (
@@ -228,4 +231,7 @@ export const GLYPH_SHAPES: Record<GlyphName, React.JSX.Element> = {
   sync: <path d="M21.5 2v6h-6M21.34 15.57a9 9 0 1 1-.57-8.38l.67-.79" />,
   security: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
   swap_horiz: <path d="M8 7l-4 4 4 4M4 11h16M16 17l4-4-4-4" />,
+  expand_more: <path d="m6 9 6 6 6-6" />,
+  expand_less: <path d="m18 15-6-6-6 6" />,
+  check: <path d="M20 6 9 17l-5-5" />,
 };

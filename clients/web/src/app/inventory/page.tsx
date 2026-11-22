@@ -119,8 +119,10 @@ export default function InventoryPage(): React.JSX.Element {
                   key={r}
                   type="button"
                   onClick={() => setSelectedBOM(r)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
-                    selectedBOM === r ? 'bg-primary text-on-primary' : 'bg-surface-container text-outline'
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                    selectedBOM === r
+                      ? 'bg-[var(--nx-action-primary)] border-[var(--nx-action-primary)] text-[var(--nx-action-text)]'
+                      : 'bg-[var(--nx-surface-subtle)] border-[var(--nx-border-default)] text-[var(--nx-text-secondary)]'
                   }`}
                 >
                   {bomRecipes[r].title.split(' (')[0]}
@@ -129,20 +131,20 @@ export default function InventoryPage(): React.JSX.Element {
             </div>
           </NexusStack>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl bg-surface-container border border-surface-container-highest">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl bg-[var(--nx-surface-subtle)] border border-[var(--nx-border-default)]">
             <div>
-              <span className="text-xs text-outline block">Menu Product</span>
-              <span className="text-sm font-bold text-on-surface">{currentRecipe.title}</span>
-              <span className="text-xs font-mono text-outline block">{currentRecipe.sku}</span>
+              <span className="text-xs text-[var(--nx-text-muted)] block">Menu Product</span>
+              <span className="text-sm font-bold text-[var(--nx-text-primary)]">{currentRecipe.title}</span>
+              <span className="text-xs font-mono text-[var(--nx-text-muted)] block">{currentRecipe.sku}</span>
             </div>
             <div className="font-mono">
-              <span className="text-xs text-outline block">Cost vs Retail</span>
-              <span className="text-sm font-bold text-emerald-400">{currentRecipe.totalCost}</span>
-              <span className="text-xs text-outline"> of {currentRecipe.retailPrice}</span>
+              <span className="text-xs text-[var(--nx-text-muted)] block">Cost vs Retail</span>
+              <span className="text-sm font-bold text-[var(--nx-status-success-text)]">{currentRecipe.totalCost}</span>
+              <span className="text-xs text-[var(--nx-text-muted)]"> of {currentRecipe.retailPrice}</span>
             </div>
             <div>
-              <span className="text-xs text-outline block">Gross Margin</span>
-              <span className="text-base font-bold text-primary font-mono">{currentRecipe.margin}</span>
+              <span className="text-xs text-[var(--nx-text-muted)] block">Gross Margin</span>
+              <span className="text-base font-bold text-[var(--nx-action-primary)] font-mono">{currentRecipe.margin}</span>
               <NexusBadge variant="success" label="Healthy Margin" />
             </div>
           </div>
@@ -151,7 +153,7 @@ export default function InventoryPage(): React.JSX.Element {
           <div className="overflow-x-auto">
             <table className="nx-data-table">
               <thead>
-                <tr className="border-b border-surface-container-highest text-outline">
+                <tr>
                   <th className="py-2 px-3">Ingredient</th>
                   <th className="py-2 px-3">Dose / Consumption</th>
                   <th className="py-2 px-3">Ingredient Unit Cost</th>
@@ -159,9 +161,9 @@ export default function InventoryPage(): React.JSX.Element {
               </thead>
               <tbody>
                 {currentRecipe.lines.map((l) => (
-                  <tr key={l.ingredient} className="border-b border-surface-container-highest/60 text-on-surface">
+                  <tr key={l.ingredient}>
                     <td className="py-2.5 px-3 font-sans font-medium">{l.ingredient}</td>
-                    <td className="py-2.5 px-3 font-bold text-primary">{l.qty}</td>
+                    <td className="py-2.5 px-3 font-bold text-[var(--nx-action-primary)]">{l.qty}</td>
                     <td className="py-2.5 px-3">{l.cost}</td>
                   </tr>
                 ))}
@@ -182,7 +184,7 @@ export default function InventoryPage(): React.JSX.Element {
           <div className="overflow-x-auto">
             <table className="nx-data-table">
               <thead>
-                <tr className="border-b border-surface-container-highest text-outline font-mono">
+                <tr>
                   <th className="py-2 px-3">SKU</th>
                   <th className="py-2 px-3">Ingredient Name</th>
                   <th className="py-2 px-3">Available On-Hand</th>
@@ -192,10 +194,10 @@ export default function InventoryPage(): React.JSX.Element {
               </thead>
               <tbody>
                 {ingredients.map((ing) => (
-                  <tr key={ing.id} className="border-b border-surface-container-highest/60 text-on-surface font-mono">
-                    <td className="py-3 px-3 text-outline">{ing.id}</td>
+                  <tr key={ing.id} className="font-mono">
+                    <td className="py-3 px-3 text-[var(--nx-text-muted)]">{ing.id}</td>
                     <td className="py-3 px-3 font-sans font-semibold">{ing.name}</td>
-                    <td className="py-3 px-3 font-bold text-primary">
+                    <td className="py-3 px-3 font-bold text-[var(--nx-action-primary)]">
                       {ing.currentStock.toLocaleString()} {ing.unit}
                     </td>
                     <td className="py-3 px-3">{ing.costPerUnit}</td>

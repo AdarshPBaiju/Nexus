@@ -8,3 +8,4 @@ export * from './filtering/ast.types';
 export * from './lookups/option.types';
 export * from './codec/EncryptedPathEnvelopeCodec';
 export * from './desktop/DesktopSurfaceBridge';
+export * from './auth/WorkspaceCacheRegistry';

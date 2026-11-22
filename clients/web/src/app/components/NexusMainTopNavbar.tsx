@@ -8,6 +8,7 @@ import { useAuth } from '../../runtime/auth/AuthContext';
 import { TopNavSearch } from './navbar/TopNavSearch';
 import { TopNavTelemetry } from './navbar/TopNavTelemetry';
 import { TopNavOperator } from './navbar/TopNavOperator';
+import { TopNavScopePicker } from './navbar/TopNavScopePicker';
 
 export interface NexusMainTopNavbarProps {
   readonly onToggleSidebar?: () => void;
@@ -55,9 +56,9 @@ export function NexusMainTopNavbar({
 
   return (
     <header
+      className="nx-topnav"
       style={{
         height: '56px',
-        backgroundColor: 'var(--nx-surface-card)',
         borderBottom: '1px solid var(--nx-border-default)',
         position: 'fixed',
         top: 0,
@@ -85,10 +86,11 @@ export function NexusMainTopNavbar({
         <Link href="/" style={{ textDecoration: 'none' }}>
           <NexusStack direction="row" align="center" gap="8px">
             <NexusBox
+              className="nx-brand-mark"
               style={{
-                width: '26px',
-                height: '26px',
-                borderRadius: '7px',
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -104,28 +106,7 @@ export function NexusMainTopNavbar({
           </NexusStack>
         </Link>
 
-        <NexusBox
-          className="nx-topnav-scope"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '7px',
-            height: '28px',
-            padding: '0 9px',
-            borderRadius: '6px',
-            border: '1px solid var(--nx-border-subtle)',
-            backgroundColor: 'var(--nx-surface-subtle)',
-            minWidth: 0,
-          }}
-        >
-          <NexusGlyph name="storefront" size={15} color="var(--nx-text-muted)" />
-          <NexusText variant="caption" style={{ whiteSpace: 'nowrap' }}>
-            {session.tenantName}
-          </NexusText>
-          <NexusText variant="caption" role="muted" style={{ whiteSpace: 'nowrap' }}>
-            · {session.branchName}
-          </NexusText>
-        </NexusBox>
+        <TopNavScopePicker />
       </NexusStack>
 
       <TopNavSearch />

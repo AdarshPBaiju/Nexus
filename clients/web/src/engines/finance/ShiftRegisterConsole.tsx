@@ -57,21 +57,21 @@ export const ShiftRegisterConsole: React.FC<ShiftRegisterConsoleProps> = ({
     >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Metric Cards */}
-        <div className="rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-5">
+        <div className="nx-panel p-5">
           <div className="text-xs font-semibold text-[var(--nx-text-secondary)]">OPENING FLOAT</div>
           <div className="mt-2 font-mono text-2xl font-bold text-[var(--nx-text-primary)]">
             $ {session.openingFloat}
           </div>
         </div>
 
-        <div className="rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-5">
+        <div className="nx-panel p-5">
           <div className="text-xs font-semibold text-[var(--nx-text-secondary)]">NET CASH INTAKE</div>
           <div className="mt-2 font-mono text-2xl font-bold text-[var(--nx-text-primary)]">
             $ {session.systemCashTotal}
           </div>
         </div>
 
-        <div className="rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-5">
+        <div className="nx-panel p-5">
           <div className="text-xs font-semibold text-[var(--nx-text-secondary)]">SESSION STATUS</div>
           <div className="mt-2">
             <NexusBadge variant={isOpen ? 'success' : 'neutral'}>
@@ -83,7 +83,7 @@ export const ShiftRegisterConsole: React.FC<ShiftRegisterConsoleProps> = ({
 
       {/* Petty Cash Expense Section */}
       {isOpen && (
-        <div className="mt-8 rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-6">
+        <div className="nx-panel mt-8 p-6">
           <NexusText variant="h3">Quick Petty Cash Disbursement</NexusText>
           <NexusText variant="caption" role="muted">Record emergency register withdrawal with immediate cash decrement</NexusText>
           <form onSubmit={handleExpenseSubmit} className="mt-4 flex flex-wrap items-center gap-4">

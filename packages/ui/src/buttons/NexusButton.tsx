@@ -27,15 +27,15 @@ export interface NexusButtonProps {
 }
 
 const PADDING: Record<ButtonSize, string> = {
-  sm: '4px 10px',
-  md: '7px 14px',
-  lg: '10px 20px',
+  sm: '4px 11px',
+  md: '8px 16px',
+  lg: '11px 22px',
 };
 
 const HEIGHT: Record<ButtonSize, string> = {
-  sm: '28px',
-  md: '34px',
-  lg: '40px',
+  sm: '30px',
+  md: '36px',
+  lg: '42px',
 };
 
 export function NexusButton({
@@ -68,13 +68,19 @@ export function NexusButton({
     gap: 'var(--nx-space-2)',
     height: HEIGHT[size],
     padding: PADDING[size],
-    borderRadius: '6px',
+    borderRadius: '8px',
     border:
       variant === 'outline'
         ? '1px solid var(--nx-border-default)'
         : isDestructive
-        ? '1px solid var(--nx-status-danger)'
+        ? '1px solid transparent'
         : '1px solid transparent',
+    backgroundImage:
+      variant === 'primary'
+        ? 'linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%)'
+        : isDestructive
+        ? 'linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 58%)'
+        : 'none',
     backgroundColor:
       variant === 'primary'
         ? 'var(--nx-action-primary)'
@@ -84,9 +90,17 @@ export function NexusButton({
         ? 'var(--nx-surface-subtle)'
         : 'transparent',
     color: isActionSurface ? 'var(--nx-action-text)' : 'var(--nx-text-primary)',
+    boxShadow:
+      variant === 'primary'
+        ? 'var(--nx-glow-primary), inset 0 1px 0 rgba(255,255,255,0.16)'
+        : isDestructive
+        ? '0 8px 20px -12px rgba(240, 68, 56, 0.7)'
+        : variant === 'outline' || variant === 'secondary'
+        ? 'var(--nx-shadow-xs)'
+        : 'none',
     cursor: isDisabled ? 'not-allowed' : 'pointer',
     opacity: isDisabled ? 0.55 : 1,
-    transition: 'background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease',
+    transition: 'background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease, opacity 0.16s ease',
     whiteSpace: 'nowrap',
     ...style,
   };
@@ -101,7 +115,7 @@ export function NexusButton({
         style={buttonStyle}
         disabled={isDisabled}
         onClick={onClick}
-        className={`nx-focusable ${className}`.trim()}
+        className={`nx-focusable nx-btn nx-btn--${variant} nx-btn--${size} ${className}`.trim()}
       >
         {typeof children === 'string' ? (
           <NexusText variant="label">{children}</NexusText>

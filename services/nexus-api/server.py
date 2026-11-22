@@ -98,6 +98,10 @@ class NexusApiHandler(BaseHTTPRequestHandler):
             self._send_json(200, MarketplaceEndpointHandler.list_plugins())
         elif path == "/api/v1/tenants/lifecycle":
             self._send_json(200, TenancyEndpointHandler.get_lifecycle())
+        elif path == "/api/v1/tenants/list":
+            self._send_json(200, TenancyEndpointHandler.list_tenants())
+        elif path == "/api/v1/tenants/subscription":
+            self._send_json(200, TenancyEndpointHandler.get_subscription())
         else:
             self._send_json(404, {"error": "Not Found", "path": self.path})
 

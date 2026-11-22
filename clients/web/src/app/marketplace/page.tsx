@@ -83,7 +83,7 @@ export default function MarketplacePage(): React.JSX.Element {
   const installedCount = useMemo(() => plugins.filter((p) => p.status === 'ACTIVE').length, [plugins]);
 
   return (
-    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 20px 48px' }}>
+    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto' }}>
       <NexusStack gap="20px">
         <MarketplaceHeader
           searchTerm={searchTerm}
@@ -127,11 +127,11 @@ export default function MarketplacePage(): React.JSX.Element {
 
         {filtered.length === 0 ? (
           <NexusBox
+            className="nx-panel"
             style={{
               padding: '48px 24px',
               textAlign: 'center',
-              backgroundColor: 'var(--nx-surface-card)',
-              borderRadius: '10px',
+              borderRadius: '12px',
               border: '1px solid var(--nx-border-default)',
             }}
           >

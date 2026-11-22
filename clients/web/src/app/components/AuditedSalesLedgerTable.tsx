@@ -53,9 +53,9 @@ export function AuditedSalesLedgerTable(): React.JSX.Element {
 
   return (
     <NexusBox
+      className="nx-panel"
       style={{
-        backgroundColor: 'var(--nx-surface-card)',
-        borderRadius: '10px',
+        borderRadius: '12px',
         border: '1px solid var(--nx-border-default)',
         padding: '20px',
       }}

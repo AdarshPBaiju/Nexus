@@ -9,29 +9,40 @@
   --input-height-compact: 32px;
   --input-contrast: 7.1:1 AAA;
 
-  --nx-surface-bg: #F8FAFC;
+  --nx-surface-bg: #F2F5FA;
   --nx-surface-card: #FFFFFF;
   --nx-surface-elevated: #FFFFFF;
-  --nx-surface-subtle: #F1F5F9;
+  --nx-surface-subtle: #F7F9FC;
   --nx-surface-tooltip: #0F172A;
-  --nx-surface-selected: #EFF6FF;
+  --nx-surface-selected: #EAF1FF;
+  --nx-surface-inset: #EDF2F9;
 
-  --nx-text-primary: #0F172A;
-  --nx-text-secondary: #475569;
-  --nx-text-muted: #64748B;
-  --nx-text-disabled: #94A3B8;
+  --nx-text-primary: #0B1526;
+  --nx-text-secondary: #46566F;
+  --nx-text-muted: #6B7A90;
+  --nx-text-disabled: #9AA7B8;
   --nx-text-inverse: #F8FAFC;
 
-  --nx-border-default: #E2E8F0;
-  --nx-border-subtle: #F1F5F9;
-  --nx-border-focus: #3B82F6;
-  --nx-border-divider: #E2E8F0;
+  --nx-border-default: #DCE4EF;
+  --nx-border-subtle: #EAF0F7;
+  --nx-border-focus: #2563EB;
+  --nx-border-divider: #E3EAF3;
+  --nx-border-strong: #C3CFDF;
 
-  --nx-action-primary: #2563EB;
-  --nx-action-primary-hover: #1D4ED8;
-  --nx-action-secondary: #F1F5F9;
-  --nx-action-destructive: #DC2626;
+  --nx-action-primary: #1F63E8;
+  --nx-action-primary-hover: #1952C4;
+  --nx-action-secondary: #EDF2F9;
+  --nx-action-destructive: #D92D20;
   --nx-action-text: #FFFFFF;
+  --nx-accent-violet: #6E4BF2;
+  --nx-accent-cyan: #0784B8;
+
+  --nx-shadow-xs: 0 1px 2px rgba(15, 33, 61, 0.06);
+  --nx-shadow-sm: 0 1px 2px rgba(15, 33, 61, 0.05), 0 4px 12px -6px rgba(15, 33, 61, 0.14);
+  --nx-shadow-md: 0 2px 4px rgba(15, 33, 61, 0.04), 0 12px 28px -14px rgba(15, 33, 61, 0.22);
+  --nx-shadow-lg: 0 24px 60px -28px rgba(15, 33, 61, 0.32);
+  --nx-shadow-focus: 0 0 0 3px rgba(31, 99, 232, 0.18);
+  --nx-glow-primary: 0 8px 24px -10px rgba(31, 99, 232, 0.55);
 
   --nx-status-success: #16A34A;
   --nx-status-success-subtle: #DCFCE7;
@@ -77,29 +88,40 @@
   --input-height-compact: 32px;
   --input-contrast: 7.1:1 AAA;
 
-  --nx-surface-bg: #0B0F17;
-  --nx-surface-card: #141C2B;
-  --nx-surface-elevated: #1E293B;
-  --nx-surface-subtle: #1A2333;
-  --nx-surface-tooltip: #1E293B;
-  --nx-surface-selected: #1E293B;
+  --nx-surface-bg: #060A12;
+  --nx-surface-card: #0C1421;
+  --nx-surface-elevated: #121C2D;
+  --nx-surface-subtle: #101A29;
+  --nx-surface-tooltip: #1B2739;
+  --nx-surface-selected: #12233C;
+  --nx-surface-inset: #080E18;
 
-  --nx-text-primary: #F8FAFC;
-  --nx-text-secondary: #94A3B8;
-  --nx-text-muted: #64748B;
-  --nx-text-disabled: #475569;
+  --nx-text-primary: #F2F6FC;
+  --nx-text-secondary: #9FB0C6;
+  --nx-text-muted: #6F819A;
+  --nx-text-disabled: #4C5B70;
   --nx-text-inverse: #F8FAFC;
 
-  --nx-border-default: #26354A;
-  --nx-border-subtle: #1E293B;
-  --nx-border-focus: #60A5FA;
-  --nx-border-divider: #26354A;
+  --nx-border-default: #1D2B40;
+  --nx-border-subtle: #162234;
+  --nx-border-focus: #4D8DFF;
+  --nx-border-divider: #1A2739;
+  --nx-border-strong: #2E4361;
 
-  --nx-action-primary: #3B82F6;
-  --nx-action-primary-hover: #2563EB;
-  --nx-action-secondary: #1E293B;
-  --nx-action-destructive: #EF4444;
+  --nx-action-primary: #2F7BFF;
+  --nx-action-primary-hover: #4D8DFF;
+  --nx-action-secondary: #162234;
+  --nx-action-destructive: #F04438;
   --nx-action-text: #FFFFFF;
+  --nx-accent-violet: #8B6CFF;
+  --nx-accent-cyan: #22D3EE;
+
+  --nx-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --nx-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 6px 16px -8px rgba(0, 0, 0, 0.7);
+  --nx-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 18px 40px -22px rgba(0, 0, 0, 0.9);
+  --nx-shadow-lg: 0 32px 80px -32px rgba(0, 0, 0, 0.95);
+  --nx-shadow-focus: 0 0 0 3px rgba(77, 141, 255, 0.22);
+  --nx-glow-primary: 0 10px 28px -12px rgba(47, 123, 255, 0.65);
 
   --nx-status-success: #22C55E;
   --nx-status-success-subtle: #052E16;
@@ -166,17 +188,18 @@
 }
 
 .nx-text--h1 {
-  font-size: 26px;
-  line-height: 34px;
+  font-size: 30px;
+  line-height: 38px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .nx-text--h2 {
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
 }
 
 .nx-text--h3 {
@@ -223,10 +246,10 @@
 
 .nx-text--kpi {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 26px;
+  line-height: 32px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums lining-nums;
 }
 

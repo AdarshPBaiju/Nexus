@@ -70,7 +70,7 @@ export const StaffDirectoryView: React.FC<StaffDirectoryViewProps> = ({
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)]">
+      <div className="nx-data-table-wrapper">
         <table className="nx-data-table">
           <thead className="border-b border-[var(--nx-border-subtle)] bg-[var(--nx-surface-subtle)] text-xs text-[var(--nx-text-secondary)]">
             <tr>
@@ -89,10 +89,10 @@ export const StaffDirectoryView: React.FC<StaffDirectoryViewProps> = ({
                 onClick={() => onSelectEmployee(emp.id)}
                 className="cursor-pointer hover:bg-[var(--nx-surface-subtle)] transition-colors"
               >
-                <td className="px-4 py-3 font-mono font-medium text-[var(--nx-text-primary)]">
+                <td className="px-4 py-3 font-mono font-medium whitespace-nowrap text-[var(--nx-text-primary)]">
                   {emp.employeeCode}
                 </td>
-                <td className="px-4 py-3 font-medium text-[var(--nx-text-primary)]">
+                <td className="px-4 py-3 font-medium whitespace-nowrap text-[var(--nx-text-primary)]">
                   {emp.firstName} {emp.lastName}
                 </td>
                 <td className="px-4 py-3 text-[var(--nx-text-secondary)]">{emp.department}</td>
@@ -109,7 +109,7 @@ export const StaffDirectoryView: React.FC<StaffDirectoryViewProps> = ({
                       e.stopPropagation();
                       onSelectEmployee(emp.id);
                     }}
-                    className="text-xs font-semibold text-[var(--nx-action-primary)] hover:underline"
+                    className="whitespace-nowrap text-xs font-semibold text-[var(--nx-action-primary)] hover:underline"
                   >
                     View Record →
                   </button>

@@ -77,14 +77,14 @@ export default function TenantLifecyclePage(): React.JSX.Element {
 
   if (!lifecycle) {
     return (
-      <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 20px' }}>
+      <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto' }}>
         <NexusText variant="body" role="muted">Loading workspace lifecycle telemetry...</NexusText>
       </div>
     );
   }
 
   return (
-    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 20px 48px' }}>
+    <div className="nx-page-shell" style={{ maxWidth: '1280px', margin: '0 auto' }}>
       <NexusStack gap="20px">
         <LifecycleStatusBanner lifecycle={lifecycle} />
 
