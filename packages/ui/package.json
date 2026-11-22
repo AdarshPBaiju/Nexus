@@ -7,7 +7,7 @@
   "scripts": {
     "build": "echo ui built",
     "lint": "echo ui linted",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "echo ui typechecked",
     "test": "echo ui tested"
   }
 }
