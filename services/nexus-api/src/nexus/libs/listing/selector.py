@@ -7,9 +7,8 @@ from __future__ import annotations
 import uuid
 from typing import Sequence
 
+from django.apps import apps
 from django.db.models import Exists, OuterRef, QuerySet
-
-from nexus.platform.iam.models.favourite import UserFavourite
 
 
 class BaseFastListingSelector:
@@ -45,8 +44,9 @@ class BaseFastListingSelector:
         entity_type: str,
     ) -> QuerySet:
         """Annotates is_favourite boolean using covering index idx_fav_member_lookup."""
+        model = apps.get_model("iam", "UserFavourite")
         fav_subquery = Exists(
-            UserFavourite.objects.filter(
+            model.objects.filter(
                 tenant_id=tenant_id,
                 user_id=user_id,
                 entity_type=entity_type,

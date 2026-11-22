@@ -9,12 +9,14 @@ Enforces:
 from __future__ import annotations
 
 import uuid
-from typing import Callable
+from typing import Any, Callable
 
+from django.apps import apps
 from django.http import HttpRequest, HttpResponse, JsonResponse
 
-from nexus.platform.licensing.models.installation import TenantPluginInstallation
-from nexus.platform.licensing.models.module_package import ModulePackage
+STATUS_DRAINING = "DRAINING"
+STATUS_ARCHIVED = "ARCHIVED"
+SURFACE_DESKTOP_ONLY = "DESKTOP_ONLY"
 
 
 class CapabilityGateMiddleware:
@@ -35,10 +37,7 @@ class CapabilityGateMiddleware:
             return self.get_response(request)
 
         installation = self._find_installation(tenant_id, package_code)
-        if (
-            not installation
-            or installation.status == TenantPluginInstallation.InstallationStatus.ARCHIVED
-        ):
+        if not installation or getattr(installation, "status", None) == STATUS_ARCHIVED:
             return self._build_not_enabled_response(package_code)
 
         drain_err = self._check_draining_violation(installation, request, package_code)
@@ -51,11 +50,10 @@ class CapabilityGateMiddleware:
 
         return self.get_response(request)
 
-    def _find_installation(
-        self, tenant_id: uuid.UUID, package_code: str
-    ) -> TenantPluginInstallation | None:
+    def _find_installation(self, tenant_id: uuid.UUID, package_code: str) -> Any:
+        installation_model = apps.get_model("licensing", "TenantPluginInstallation")
         return (
-            TenantPluginInstallation.objects.filter(
+            installation_model.objects.filter(
                 tenant_id=tenant_id,
                 package__code=package_code,
             )
@@ -75,14 +73,16 @@ class CapabilityGateMiddleware:
 
     def _check_draining_violation(
         self,
-        installation: TenantPluginInstallation,
+        installation: Any,
         request: HttpRequest,
         package_code: str,
     ) -> JsonResponse | None:
-        if (
-            installation.status == TenantPluginInstallation.InstallationStatus.DRAINING
-            and request.method in {"POST", "PUT", "PATCH", "DELETE"}
-        ):
+        if getattr(installation, "status", None) == STATUS_DRAINING and request.method in {
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+        }:
             return JsonResponse(
                 {
                     "error": "Conflict",
@@ -95,11 +95,12 @@ class CapabilityGateMiddleware:
 
     def _check_surface_violation(
         self,
-        installation: TenantPluginInstallation,
+        installation: Any,
         request: HttpRequest,
         package_code: str,
     ) -> JsonResponse | None:
-        if installation.package.execution_surface == ModulePackage.ExecutionSurface.DESKTOP_ONLY:
+        pkg = getattr(installation, "package", None)
+        if getattr(pkg, "execution_surface", None) == SURFACE_DESKTOP_ONLY:
             runtime = request.headers.get("X-Nexus-Runtime-Surface", "").lower()
             if runtime != "desktop":
                 return JsonResponse(
