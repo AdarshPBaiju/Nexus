@@ -26,3 +26,17 @@ class DataMappingProfile(TenantScopedModel):
         indexes = [
             models.Index(fields=["tenant_id", "target_entity"]),
         ]
+
+
+from nexus.engines.data_exchange.importing.models import (  # noqa: E402
+    ImportBatchRollbackLog,
+    ImportBatchRowStaging,
+    ImportBatchSession,
+)
+
+__all__ = [
+    "DataMappingProfile",
+    "ImportBatchRollbackLog",
+    "ImportBatchRowStaging",
+    "ImportBatchSession",
+]
