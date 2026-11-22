@@ -12,6 +12,7 @@ import {
 } from '@nexus/ui';
 import { useAuth } from '../runtime/auth/AuthContext';
 import { httpClient } from '../runtime/http/NexusHttpClient';
+import { AuditedSalesLedgerTable } from './components/AuditedSalesLedgerTable';
 import { NexusGlyph } from './components/NexusGlyph';
 
 interface ApiInfo {
@@ -61,33 +62,41 @@ export default function HomePage(): React.JSX.Element {
     { name: 'MinIO S3 (Fiscal WORM)', port: '9000', status: 'ONLINE', latency: '3.4ms', variant: 'success' as const },
   ];
 
-  const recentTransactions = [
-    { id: 'TXN-9021', time: '12:04:18', cashier: 'Sarah J.', tender: 'CASH', total: '$12.50', status: 'SETTLED' },
-    { id: 'TXN-9022', time: '12:05:42', cashier: 'Sarah J.', tender: 'STRIPE_EDC', total: '$24.80', status: 'SETTLED' },
-    { id: 'TXN-9023', time: '12:06:11', cashier: 'Sarah J.', tender: 'UPI_QR', total: '$8.20', status: 'SETTLED' },
-    { id: 'TXN-9024', time: '12:07:05', cashier: 'Sarah J.', tender: 'SPLIT_TENDER', total: '$45.00', status: 'SETTLED' },
-  ];
-
   return (
     <NexusStack gap="var(--nx-space-6)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header & Monotonic Clock */}
+      {/* Header & Quick Action Launchers */}
       <NexusStack direction="row" align="center" justify="space-between" style={{ flexWrap: 'wrap', gap: 'var(--nx-space-3)' }}>
         <NexusStack gap="var(--nx-space-1)">
-          <NexusText variant="h1">Nexus Mission Control</NexusText>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <NexusText variant="h1">Nexus Mission Control</NexusText>
+            <NexusBadge variant="success" label="All Systems Armed" />
+          </div>
           <NexusText variant="body" role="secondary">
             Real-time operational overview, high-concurrency ledger telemetry, and capability gating.
           </NexusText>
         </NexusStack>
 
-        <NexusCard elevation="card" style={{ padding: '8px 16px' }}>
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <NexusGlyph name="schedule" size={18} color="var(--nx-action-primary)" />
-            <NexusText variant="caption" role="muted">UTC EPOCH:</NexusText>
-            <NexusText variant="code" tabular style={{ fontWeight: 700, color: 'var(--nx-action-primary)' }}>
-              {epochTime}
-            </NexusText>
-          </NexusStack>
-        </NexusCard>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <Link href="/gateways">
+            <NexusButton variant="secondary" size="md">
+              Configure Gateways & Hardware &rarr;
+            </NexusButton>
+          </Link>
+          <Link href="/pos">
+            <NexusButton variant="primary" size="md">
+              Open Counter POS &rarr;
+            </NexusButton>
+          </Link>
+          <NexusCard elevation="card" style={{ padding: '6px 12px' }}>
+            <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+              <NexusGlyph name="schedule" size={16} color="var(--nx-action-primary)" />
+              <NexusText variant="caption" role="muted">UTC:</NexusText>
+              <NexusText variant="code" tabular style={{ fontWeight: 700, color: 'var(--nx-action-primary)' }}>
+                {epochTime}
+              </NexusText>
+            </NexusStack>
+          </NexusCard>
+        </div>
       </NexusStack>
 
       {/* Operational KPIs */}
@@ -155,50 +164,8 @@ export default function HomePage(): React.JSX.Element {
         </NexusStack>
       </NexusCard>
 
-      {/* Recent Audited Transactions Stream */}
-      <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-        <NexusStack gap="var(--nx-space-4)">
-          <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="h3">Audited Sales & Ledger Stream</NexusText>
-            <Link href="/pos">
-              <NexusButton variant="primary" size="sm">
-                <NexusText variant="label">Open Counter POS &rarr;</NexusText>
-              </NexusButton>
-            </Link>
-          </NexusStack>
-
-          <NexusBox style={{ overflowX: 'auto' }}>
-            <table className="nx-data-table" style={{ fontSize: '13px' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--nx-border-default)', textAlign: 'left', color: 'var(--nx-text-secondary)' }}>
-                  <th style={{ padding: '8px 12px' }}>TXN ID</th>
-                  <th style={{ padding: '8px 12px' }}>Timestamp</th>
-                  <th style={{ padding: '8px 12px' }}>Cashier</th>
-                  <th style={{ padding: '8px 12px' }}>Tender Rail</th>
-                  <th style={{ padding: '8px 12px' }}>Amount</th>
-                  <th style={{ padding: '8px 12px' }}>Fiscal Integrity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentTransactions.map((tx) => (
-                  <tr key={tx.id} style={{ borderBottom: '1px solid var(--nx-border-subtle)' }}>
-                    <td style={{ padding: '10px 12px', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{tx.id}</td>
-                    <td style={{ padding: '10px 12px', fontFamily: 'var(--font-mono)', color: 'var(--nx-text-secondary)' }}>{tx.time}</td>
-                    <td style={{ padding: '10px 12px' }}>{tx.cashier}</td>
-                    <td style={{ padding: '10px 12px' }}>
-                      <NexusBadge variant="neutral" label={tx.tender} />
-                    </td>
-                    <td style={{ padding: '10px 12px', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{tx.total}</td>
-                    <td style={{ padding: '10px 12px' }}>
-                      <NexusBadge variant="success" label="SHA256:VERIFIED" />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </NexusBox>
-        </NexusStack>
-      </NexusCard>
+      {/* Audited Sales & Ledger Stream (Next-Gen 2D Keyset Virtualized Grid) */}
+      <AuditedSalesLedgerTable />
     </NexusStack>
   );
 }

@@ -49,7 +49,7 @@ const NAV_GROUPS: readonly NavGroup[] = [
     title: 'Finance & Treasury',
     items: [
       { href: '/finance', label: 'Shift Cashier Console', icon: 'payments', hint: 'S' },
-      { href: '/gateways', label: 'Payment Rails', icon: 'credit_card', hint: 'G', badge: '5', badgeVariant: 'success' },
+      { href: '/gateways', label: 'Payment Gateways & Hardware', icon: 'credit_card', hint: 'G', badge: '5', badgeVariant: 'success' },
     ],
   },
   {

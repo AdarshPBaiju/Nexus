@@ -239,42 +239,87 @@ body {
   }
 }
 
-/* Modern data tables */
+/* Advanced enterprise data grid (SAP-style dense ledger) */
 .nx-data-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 12px;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .nx-data-table thead th {
-  background-color: var(--nx-surface-subtle);
-  color: var(--nx-text-muted);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--nx-surface-subtle, #101622);
+  color: var(--nx-text-muted, #94a3b8);
   text-transform: uppercase;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 10px;
-  letter-spacing: 0.05em;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--nx-border-default);
-  font-weight: 600;
+  letter-spacing: 0.07em;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--nx-border-strong, #364869);
+  font-weight: 700;
   white-space: nowrap;
+  text-align: start;
 }
 
 .nx-data-table tbody td {
   padding: 8px 12px;
-  border-bottom: 1px solid var(--nx-border-subtle);
-  color: var(--nx-text-primary);
+  border-bottom: 1px solid var(--nx-border-subtle, #26334d);
+  color: var(--nx-text-primary, #f1f5f9);
   vertical-align: middle;
+  line-height: 1.45;
+}
+
+.nx-data-table tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--nx-surface-subtle, #101622) 45%, transparent);
 }
 
 .nx-data-table tbody tr {
-  transition: background-color 0.12s ease;
+  transition: background-color 0.1s ease, box-shadow 0.1s ease;
 }
 
 .nx-data-table tbody tr:hover {
-  background-color: var(--nx-surface-selected);
+  background-color: var(--nx-surface-selected, rgba(0, 242, 254, 0.08));
+  box-shadow: inset 2px 0 0 var(--nx-accent-primary, #00f2fe);
 }
 
 .nx-data-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.nx-data-table tbody td:first-child,
+.nx-data-table thead th:first-child {
+  padding-inline-start: 16px;
+}
+
+.nx-data-table tbody td:last-child,
+.nx-data-table thead th:last-child {
+  padding-inline-end: 16px;
+}
+
+.nx-data-table tbody td .nx-numeric,
+.nx-data-table tbody td[data-align='end'] {
+  text-align: end;
+}
+
+.nx-data-table-wrapper {
+  overflow: auto;
+  border: 1px solid var(--nx-border-subtle, #26334d);
+  border-radius: 10px;
+  background-color: var(--nx-surface-card, #101622);
+}
+
+.nx-boot-progress > span {
+  animation: nx-boot-slide 1.15s ease-in-out infinite;
+}
+
+@keyframes nx-boot-slide {
+  0% { transform: translateX(-120%); }
+  50% { transform: translateX(120%); }
+  100% { transform: translateX(240%); }
 }
 
 /* Enterprise Input Controls Studio */

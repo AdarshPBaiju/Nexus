@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { NexusText } from '@nexus/ui';
 import { useAuth } from '../../runtime/auth/AuthContext';
 import { CashierPinLoginScreen } from './CashierPinLoginScreen';
 import { NexusEnterpriseSidebar } from './NexusEnterpriseSidebar';
@@ -24,7 +23,9 @@ function BootScreen(): React.JSX.Element {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--nx-surface-bg)',
+        backgroundColor: 'var(--nx-surface-bg, #0a0e17)',
+        color: 'var(--nx-text-primary, #f1f5f9)',
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       }}
     >
       <div
@@ -32,27 +33,58 @@ function BootScreen(): React.JSX.Element {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 'var(--nx-space-3)',
-          padding: 'var(--nx-space-6)',
+          gap: '14px',
+          padding: '32px',
         }}
       >
         <span
           aria-hidden="true"
           style={{
-            width: '34px',
-            height: '34px',
-            borderRadius: '10px',
-            backgroundColor: 'var(--nx-action-primary)',
+            width: '42px',
+            height: '42px',
+            borderRadius: '12px',
+            backgroundColor: 'var(--nx-action-primary, #2563eb)',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
           }}
         >
-          <NexusGlyph name="apps" size={21} color="var(--nx-action-text)" />
+          <NexusGlyph name="apps" size={24} color="var(--nx-action-text, #ffffff)" />
         </span>
-        <NexusText variant="label" role="secondary">
+        <span
+          className="nx-numeric"
+          style={{
+            fontSize: '11px',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--nx-text-muted, #94a3b8)',
+          }}
+        >
           Restoring workstation session…
-        </NexusText>
+        </span>
+        <span
+          aria-hidden="true"
+          className="nx-boot-progress"
+          style={{
+            width: '160px',
+            height: '2px',
+            borderRadius: '999px',
+            overflow: 'hidden',
+            backgroundColor: 'var(--nx-border-subtle, #26334d)',
+          }}
+        >
+          <span
+            style={{
+              display: 'block',
+              width: '45%',
+              height: '100%',
+              borderRadius: '999px',
+              backgroundColor: 'var(--nx-accent-primary, #00f2fe)',
+            }}
+          />
+        </span>
       </div>
     </div>
   );
