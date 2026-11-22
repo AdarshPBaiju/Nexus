@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Navbar } from '../components/Navbar';
+import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
+import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
 import { ShiftRegisterConsole } from '../../engines/finance/ShiftRegisterConsole';
 import {
   NexusBadge,
@@ -14,6 +15,7 @@ import type { ShiftRegisterSessionDto } from '../../engines/finance/types';
 
 export default function FinancePage(): React.JSX.Element {
   const { session: authSession } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const [session, setSession] = useState<ShiftRegisterSessionDto>({
     sessionId: 'SES-2026-0089',
@@ -59,34 +61,46 @@ export default function FinancePage(): React.JSX.Element {
   };
 
   return (
-    <NexusBox>
-      <Navbar />
+    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
+      <NexusMainTopNavbar
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
 
-      {statusMsg && (
-        <NexusBox
-          padding="var(--nx-space-2) var(--nx-space-6)"
-          style={{
-            backgroundColor: 'var(--nx-surface-card)',
-            borderBottom: '1px solid var(--nx-border-default)',
-          }}
-        >
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <NexusBadge variant="info" label="Audit Event" />
-            <NexusText variant="label">{statusMsg}</NexusText>
-          </NexusStack>
-        </NexusBox>
-      )}
+      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
 
       <NexusBox
-        padding="var(--nx-space-6)"
-        style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}
+        style={{
+          marginLeft: isSidebarOpen ? '280px' : 0,
+          marginTop: '56px',
+          padding: 'var(--nx-space-8) var(--nx-space-6)',
+          transition: 'margin-left 0.2s ease',
+        }}
       >
-        <ShiftRegisterConsole
-          initialSession={session}
-          onOpenShift={handleOpen}
-          onCloseShift={handleClose}
-          onAddExpense={handleExpense}
-        />
+        <NexusStack gap="var(--nx-space-4)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {statusMsg && (
+            <NexusBox
+              padding="var(--nx-space-2) var(--nx-space-4)"
+              style={{
+                backgroundColor: 'var(--nx-surface-card)',
+                borderRadius: '6px',
+                border: '1px solid var(--nx-border-default)',
+              }}
+            >
+              <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+                <NexusBadge variant="info" label="Audit Event" />
+                <NexusText variant="label">{statusMsg}</NexusText>
+              </NexusStack>
+            </NexusBox>
+          )}
+
+          <ShiftRegisterConsole
+            initialSession={session}
+            onOpenShift={handleOpen}
+            onCloseShift={handleClose}
+            onAddExpense={handleExpense}
+          />
+        </NexusStack>
       </NexusBox>
     </NexusBox>
   );
