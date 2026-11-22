@@ -24,7 +24,8 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: uv pip install --system ruff import-linter -e services/nexus-api
+        run: |
+          uv pip install --system ruff import-linter django djangorestframework psycopg orjson pydantic cryptography
 
       - name: Format Check
         run: ruff format --check .
@@ -35,6 +36,8 @@ jobs:
       - name: Architectural Import Boundaries
         run: |
           cd services/nexus-api
+          export PYTHONPATH="$PWD/src:$PYTHONPATH"
+          export DJANGO_SETTINGS_MODULE="nexus_settings"
           lint-imports
 
       - name: RLS Coverage Audit
