@@ -75,17 +75,19 @@ export function CashierPinLoginScreen(): React.JSX.Element {
         justifyContent: 'center',
         padding: '20px',
         backgroundColor: 'var(--nx-surface-bg)',
+        backgroundImage:
+          'radial-gradient(620px 420px at 50% -10%, color-mix(in srgb, var(--nx-action-primary) 18%, transparent), transparent 68%), radial-gradient(420px 300px at 85% 100%, color-mix(in srgb, var(--nx-accent-violet) 10%, transparent), transparent 70%)',
       }}
     >
       <div
+        className="nx-panel"
         style={{
           width: '100%',
           maxWidth: '420px',
-          borderRadius: '12px',
+          borderRadius: '14px',
           border: '1px solid var(--nx-border-default)',
-          backgroundColor: 'var(--nx-surface-card)',
-          boxShadow: '0 24px 70px -30px rgba(0, 0, 0, 0.55)',
-          padding: '22px',
+          boxShadow: 'var(--nx-shadow-lg)',
+          padding: '24px',
           display: 'flex',
           flexDirection: 'column',
           gap: '16px',
@@ -94,10 +96,11 @@ export function CashierPinLoginScreen(): React.JSX.Element {
         <NexusStack align="center" gap="6px">
           <span
             aria-hidden="true"
+            className="nx-brand-mark"
             style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
+              width: '40px',
+              height: '40px',
+              borderRadius: '11px',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',

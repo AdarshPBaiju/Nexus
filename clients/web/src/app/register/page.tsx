@@ -177,7 +177,7 @@ export default function TenantRegistrationPage(): React.JSX.Element {
   }
 
   return (
-    <div className="nx-page-shell" style={{ maxWidth: '860px', margin: '0 auto', padding: '24px 20px 48px' }}>
+    <div className="nx-page-shell" style={{ maxWidth: '860px', margin: '0 auto' }}>
       <NexusStack gap="20px">
         <RegisterStepProgress currentStep={currentStep} totalSteps={4} />
 
