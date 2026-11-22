@@ -34,7 +34,11 @@ def _inspect_class(node: ast.ClassDef) -> tuple[bool, bool]:
                             has_rls_declaration = True
 
     base_names = [b.id for b in node.bases if isinstance(b, ast.Name)]
-    if "TenantScopedModel" in base_names or "TenantScopedEntity" in base_names:
+    if (
+        node.name in {"TenantScopedModel", "TenantScopedEntity"}
+        or "TenantScopedModel" in base_names
+        or "TenantScopedEntity" in base_names
+    ):
         return True, True
 
     return has_tenant_field, has_rls_declaration

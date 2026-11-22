@@ -43,7 +43,9 @@ def _verify_python_roundtrip() -> None:
 
 
 def _verify_polyglot_parity(repo_root: Path) -> None:
-    ts_file = repo_root / "packages" / "contracts" / "src" / "codec" / "EncryptedPathEnvelopeCodec.ts"
+    ts_file = (
+        repo_root / "packages" / "contracts" / "src" / "codec" / "EncryptedPathEnvelopeCodec.ts"
+    )
     go_file = repo_root / "services" / "nexus-worker-go" / "pkg" / "codec" / "envelope_codec.go"
     rust_file = repo_root / "packages" / "rust-crypto" / "src" / "codec.rs"
 

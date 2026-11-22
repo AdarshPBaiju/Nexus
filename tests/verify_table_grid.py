@@ -29,7 +29,7 @@ def _verify_components(table_dir: Path) -> None:
     assert table_comp.exists() and pag_comp.exists()
     table_content = table_comp.read_text(encoding="utf-8")
     assert "function NexusAdvancedDataTable" in table_content
-    assert "role=\"grid\"" in table_content
+    assert 'role="grid"' in table_content
     print("  [PASS] NexusAdvancedDataTable and NexusPaginationBar components verified")
 
 
@@ -43,7 +43,9 @@ def main() -> int:
 
     index_file = table_dir / "index.ts"
     assert index_file.exists(), "index.ts must exist"
-    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, "Barrel must be <= 30 lines"
+    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, (
+        "Barrel must be <= 30 lines"
+    )
 
     print("\n==> Subphase 00.08 Verification Suite PASSED (100% assertions satisfied).")
     return 0

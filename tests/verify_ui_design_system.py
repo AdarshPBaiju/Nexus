@@ -20,8 +20,8 @@ def _verify_tokens(ui_dir: Path) -> None:
         "--nx-action-text",
         "--nx-status-success-subtle",
         "--nx-status-success-text",
-        "[data-theme=\"dark\"]",
-        "[data-theme=\"high-contrast-pos\"]",
+        '[data-theme="dark"]',
+        '[data-theme="high-contrast-pos"]',
         ".nx-numeric",
     ]:
         assert token in content, f"Token {token} missing in tokens.css"
@@ -55,7 +55,13 @@ def _verify_primitives(ui_dir: Path) -> None:
 
 
 def _verify_states_and_shells(ui_dir: Path) -> None:
-    states = ["NexusLoadingSkeleton", "NexusEmptyState", "NexusFilteredEmptyState", "NexusErrorState", "NexusPermissionDeniedState"]
+    states = [
+        "NexusLoadingSkeleton",
+        "NexusEmptyState",
+        "NexusFilteredEmptyState",
+        "NexusErrorState",
+        "NexusPermissionDeniedState",
+    ]
     for s in states:
         f = ui_dir / "src" / "feedback" / "states" / f"{s}.tsx"
         assert f.exists(), f"State component {s} must exist"
@@ -87,7 +93,9 @@ def main() -> int:
 
     index_file = ui_dir / "src" / "index.ts"
     assert index_file.exists(), "index.ts must exist"
-    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, "Barrel must be <= 30 lines"
+    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, (
+        "Barrel must be <= 30 lines"
+    )
 
     print("\n==> Subphase 00.05 Verification Suite PASSED (100% assertions satisfied).")
     return 0
