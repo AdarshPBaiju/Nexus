@@ -9,6 +9,7 @@ Validates:
 5. Blind Index Hasher (HMAC-SHA256 + NFKC normalization).
 6. Go Worker RLS context parity.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -148,11 +149,18 @@ def _verify_archivable_and_effective() -> None:
 def _verify_base_models() -> None:
     _verify_tenant_and_versioned()
     _verify_archivable_and_effective()
-    print("  [PASS] Base domain models (TenantScoped, Versioned, Archivable, EffectiveDated) verified")
+    print(
+        "  [PASS] Base domain models (TenantScoped, Versioned, Archivable, EffectiveDated) verified"
+    )
 
 
-def _verify_tenancy_hierarchy() -> None:
-    t = Tenant(slug="acme-corp", legal_name="Acme Global Inc", status=Tenant.Status.ACTIVE, home_region="ap-south-1")
+def _verify_tenant_and_brand() -> tuple[Tenant, uuid.UUID]:
+    t = Tenant(
+        slug="acme-corp",
+        legal_name="Acme Global Inc",
+        status=Tenant.Status.ACTIVE,
+        home_region="ap-south-1",
+    )
     t.clean()
     assert t.is_operational
 
@@ -164,29 +172,60 @@ def _verify_tenancy_hierarchy() -> None:
         pass
 
     t_id = new_uuid7()
-    le = LegalEntity(tenant_id=t_id, legal_name="Acme Ltd", tax_id="GST-1234", jurisdiction_code="IN-KA", functional_currency="INR")
+    le = LegalEntity(
+        tenant_id=t_id,
+        legal_name="Acme Ltd",
+        tax_id="GST-1234",
+        jurisdiction_code="IN-KA",
+        functional_currency="INR",
+    )
     le.clean()
 
     brand = Brand(tenant_id=t_id, name="Nexus Café", slug="nexus-cafe")
     brand.clean()
+    return t, t_id
+
+
+def _verify_branches_and_zones(t_id: uuid.UUID) -> None:
+    le = LegalEntity(
+        tenant_id=t_id,
+        legal_name="Acme Ltd",
+        tax_id="GST-1234",
+        jurisdiction_code="IN-KA",
+        functional_currency="INR",
+    )
+    brand = Brand(tenant_id=t_id, name="Nexus Café", slug="nexus-cafe")
 
     other_t_id = new_uuid7()
     other_le = LegalEntity(tenant_id=other_t_id, legal_name="Other Corp", tax_id="TAX-99")
-    branch_cross = Branch(tenant_id=t_id, legal_entity=other_le, brand=brand, name="Indiranagar Branch", code="BLR-01")
+    branch_cross = Branch(
+        tenant_id=t_id, legal_entity=other_le, brand=brand, name="Indiranagar Branch", code="BLR-01"
+    )
     try:
         branch_cross.clean()
         assert False, "Should reject branch with mismatched legal_entity tenant"
     except ValidationError:
         pass
 
-    branch_valid = Branch(tenant_id=t_id, legal_entity=le, brand=brand, name="Indiranagar Branch", code="BLR-01")
-    zone_cross = PhysicalZone(tenant_id=other_t_id, branch=branch_valid, name="Counter 1", zone_type=PhysicalZone.ZoneType.COUNTER)
+    branch_valid = Branch(
+        tenant_id=t_id, legal_entity=le, brand=brand, name="Indiranagar Branch", code="BLR-01"
+    )
+    zone_cross = PhysicalZone(
+        tenant_id=other_t_id,
+        branch=branch_valid,
+        name="Counter 1",
+        zone_type=PhysicalZone.ZoneType.COUNTER,
+    )
     try:
         zone_cross.clean()
         assert False, "Should reject zone with mismatched branch tenant"
     except ValidationError:
         pass
 
+
+def _verify_tenancy_hierarchy() -> None:
+    _, t_id = _verify_tenant_and_brand()
+    _verify_branches_and_zones(t_id)
     print("  [PASS] Tenancy hierarchy models and cross-tenant guardrails verified")
 
 

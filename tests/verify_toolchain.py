@@ -26,12 +26,14 @@ REQUIRED_FILES = [
     "nexus.ps1",
 ]
 
+
 def test_required_files_exist():
     print("==> Checking required configuration files...")
     for rel_path in REQUIRED_FILES:
         full_path = os.path.join(REPO_ROOT, rel_path)
         assert os.path.exists(full_path), f"Missing required file: {rel_path}"
         print(f"  [OK] {rel_path}")
+
 
 def test_json_configs():
     print("==> Validating JSON configuration schemas...")
@@ -42,6 +44,7 @@ def test_json_configs():
         assert isinstance(data, dict), f"{json_file} must parse into a JSON object"
         print(f"  [OK] {json_file} syntax valid")
 
+
 def test_toml_configs():
     print("==> Validating TOML workspace configs...")
     for toml_file in ["pyproject.toml", "Cargo.toml"]:
@@ -50,6 +53,7 @@ def test_toml_configs():
             data = tomllib.load(f)
         assert isinstance(data, dict), f"{toml_file} must parse into a TOML dictionary"
         print(f"  [OK] {toml_file} syntax valid")
+
 
 def test_workspace_members():
     print("==> Validating workspace members...")
@@ -67,6 +71,7 @@ def test_workspace_members():
         assert os.path.exists(full_path), f"Workspace member missing: {m}"
         print(f"  [OK] Member exists: {m}")
 
+
 def test_nexus_ps1_orchestrator():
     print("==> Validating nexus.ps1 orchestrator execution...")
     ps1_path = os.path.join(REPO_ROOT, "nexus.ps1")
@@ -79,6 +84,7 @@ def test_nexus_ps1_orchestrator():
     assert "Project Nexus Windows Orchestrator" in res.stdout
     print("  [OK] nexus.ps1 help command exits 0 and renders help text")
 
+
 def run_all():
     print("\n--- Running Subphase 00.01 Verification Suite ---")
     test_required_files_exist()
@@ -87,6 +93,7 @@ def run_all():
     test_workspace_members()
     test_nexus_ps1_orchestrator()
     print("--- Subphase 00.01 Verification Suite PASSED (100% assertions) ---\n")
+
 
 if __name__ == "__main__":
     try:

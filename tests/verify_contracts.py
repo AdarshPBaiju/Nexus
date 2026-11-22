@@ -84,7 +84,9 @@ def main() -> int:
 
     index_file = contracts_dir / "src" / "index.ts"
     assert index_file.exists(), "index.ts must exist"
-    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, "Barrel must be <= 30 lines"
+    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, (
+        "Barrel must be <= 30 lines"
+    )
 
     print("\n==> Subphase 00.04 Verification Suite PASSED (100% assertions satisfied).")
     return 0

@@ -20,7 +20,9 @@ def _verify_controllers(forms_dir: Path) -> None:
     assert "isDirty" in content
     assert "validationController" in content
     assert "lookupCoordinator" in content
-    print("  [PASS] BaseFormController, BatchLookupCoordinator, and FormValidationController verified")
+    print(
+        "  [PASS] BaseFormController, BatchLookupCoordinator, and FormValidationController verified"
+    )
 
 
 def _verify_components(forms_dir: Path) -> None:
@@ -42,7 +44,9 @@ def main() -> int:
 
     index_file = forms_dir / "index.ts"
     assert index_file.exists(), "index.ts must exist"
-    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, "Barrel must be <= 30 lines"
+    assert len(index_file.read_text(encoding="utf-8").splitlines()) <= 30, (
+        "Barrel must be <= 30 lines"
+    )
 
     print("\n==> Subphase 00.09 Verification Suite PASSED (100% assertions satisfied).")
     return 0

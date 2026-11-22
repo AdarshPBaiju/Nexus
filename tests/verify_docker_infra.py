@@ -20,12 +20,14 @@ REQUIRED_INFRA_FILES = [
     "infra/pgbouncer/userlist.txt",
 ]
 
+
 def test_infra_files_exist():
     print("==> Checking required infrastructure files...")
     for rel_path in REQUIRED_INFRA_FILES:
         full_path = os.path.join(REPO_ROOT, rel_path)
         assert os.path.exists(full_path), f"Missing infrastructure file: {rel_path}"
         print(f"  [OK] {rel_path}")
+
 
 def test_immutable_digest_pins():
     print("==> Validating immutable sha256 base image pins...")
@@ -38,15 +40,27 @@ def test_immutable_digest_pins():
 
     for pin in pins:
         key, val = pin.split("=", 1)
-        assert "@sha256:" in val, f"Floating tag detected in {key}: {val}. Mandatory @sha256: pin missing!"
+        assert "@sha256:" in val, (
+            f"Floating tag detected in {key}: {val}. Mandatory @sha256: pin missing!"
+        )
         print(f"  [OK] {key} securely pinned with digest")
+
 
 def test_dockerfile_security_invariants():
     print("==> Validating Dockerfile security invariants (non-root, multi-stage)...")
     dockerfiles = {
-        "infra/docker/api.Dockerfile": {"expected_user": "USER 10001:10001", "stages": ["builder", "runner"]},
-        "infra/docker/worker-go.Dockerfile": {"expected_user": "USER 65532:65532", "stages": ["builder", "runner"]},
-        "infra/docker/web.Dockerfile": {"expected_user": "USER 10001:10001", "stages": ["builder", "runner"]},
+        "infra/docker/api.Dockerfile": {
+            "expected_user": "USER 10001:10001",
+            "stages": ["builder", "runner"],
+        },
+        "infra/docker/worker-go.Dockerfile": {
+            "expected_user": "USER 65532:65532",
+            "stages": ["builder", "runner"],
+        },
+        "infra/docker/web.Dockerfile": {
+            "expected_user": "USER 10001:10001",
+            "stages": ["builder", "runner"],
+        },
     }
 
     for df_path, rules in dockerfiles.items():
@@ -57,11 +71,16 @@ def test_dockerfile_security_invariants():
         # Check multi-stage
         for stage in rules["stages"]:
             pattern = rf"FROM\s+.*?\s+AS\s+{stage}"
-            assert re.search(pattern, content, re.IGNORECASE), f"{df_path} missing multi-stage '{stage}'"
+            assert re.search(pattern, content, re.IGNORECASE), (
+                f"{df_path} missing multi-stage '{stage}'"
+            )
 
         # Check non-root
-        assert rules["expected_user"] in content, f"{df_path} missing non-root directive {rules['expected_user']}"
+        assert rules["expected_user"] in content, (
+            f"{df_path} missing non-root directive {rules['expected_user']}"
+        )
         print(f"  [OK] {df_path} passes non-root & multi-stage assertions")
+
 
 def test_pgbouncer_configuration():
     print("==> Validating PgBouncer transaction pooling & parameter passthrough...")
@@ -70,9 +89,14 @@ def test_pgbouncer_configuration():
         content = f.read()
 
     assert "pool_mode = transaction" in content, "PgBouncer MUST use pool_mode = transaction"
-    assert "server_reset_query = DISCARD ALL" in content, "PgBouncer MUST reset queries with DISCARD ALL"
-    assert "app.current_tenant_id" in content, "PgBouncer MUST pass track_extra_parameters for app.current_tenant_id"
+    assert "server_reset_query = DISCARD ALL" in content, (
+        "PgBouncer MUST reset queries with DISCARD ALL"
+    )
+    assert "app.current_tenant_id" in content, (
+        "PgBouncer MUST pass track_extra_parameters for app.current_tenant_id"
+    )
     print("  [OK] PgBouncer transaction pooling & RLS parameters verified")
+
 
 def test_postgres_init_sql():
     print("==> Validating PostgreSQL 16 regional init scripts...")
@@ -87,6 +111,7 @@ def test_postgres_init_sql():
     assert "NOBYPASSRLS" in sql, "nexus_app_rw role MUST strictly enforce NOBYPASSRLS"
     print("  [OK] PostgreSQL 16 extensions and NOBYPASSRLS role verified")
 
+
 def run_all():
     print("\n--- Running Subphase 00.02 Verification Suite ---")
     test_infra_files_exist()
@@ -95,6 +120,7 @@ def run_all():
     test_pgbouncer_configuration()
     test_postgres_init_sql()
     print("--- Subphase 00.02 Verification Suite PASSED (100% assertions) ---\n")
+
 
 if __name__ == "__main__":
     try:
