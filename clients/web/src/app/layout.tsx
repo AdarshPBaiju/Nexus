@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import { AuthProvider } from '../runtime/auth/AuthContext';
+import { NexusShellRoot } from './components/NexusShellRoot';
 import { NexusBox } from '@nexus/ui';
 
 export const metadata: Metadata = {
@@ -18,9 +19,11 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <body>
         <AuthProvider>
-          <NexusBox style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            {children}
-          </NexusBox>
+          <NexusShellRoot>
+            <NexusBox style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+              {children}
+            </NexusBox>
+          </NexusShellRoot>
         </AuthProvider>
       </body>
     </html>

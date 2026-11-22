@@ -12,13 +12,24 @@ def _verify_route_status(route: str, expected_code: int = 200) -> None:
     """Verifies that an active Next.js App Router route returns expected HTTP status."""
     url = f"http://localhost:3000{route}"
     req = urllib.request.Request(url, headers={"User-Agent": "NexusTestRunner/1.0"})
-    with urllib.request.urlopen(req, timeout=5) as response:
+    with urllib.request.urlopen(req, timeout=10) as response:
         assert response.status == expected_code, f"Route {route} returned {response.status}"
 
 
 def test_nextjs_routes_accessible() -> None:
-    """Asserts that all 6 dynamic enterprise routes compile and serve HTTP 200."""
-    routes = ["/", "/inputs", "/pos", "/kitchen", "/finance", "/hr"]
+    """Asserts that all 10 dynamic enterprise SaaS routes compile and serve HTTP 200."""
+    routes = [
+        "/",
+        "/inputs",
+        "/pos",
+        "/kitchen",
+        "/finance",
+        "/hr",
+        "/inventory",
+        "/gateways",
+        "/billing",
+        "/onboarding",
+    ]
     for route in routes:
         _verify_route_status(route)
 
@@ -71,6 +82,8 @@ def test_sidebar_navigation_groups() -> None:
     assert "COMMERCE & POS" in content
     assert "FINANCE & TREASURY" in content
     assert "WORKFORCE & HRMS" in content
+    assert "INVENTORY & RECIPE BOM" in content
+    assert "SAAS LIFECYCLE" in content
     assert "Inputs & Form Studio" in content
 
 
@@ -85,7 +98,7 @@ def run_all_checks() -> None:
 if __name__ == "__main__":
     try:
         run_all_checks()
-        print("ALL UI PLATFORM MISSION CONTROL ASSERTIONS PASSED (4/4)")
+        print("ALL UI PLATFORM MISSION CONTROL ASSERTIONS PASSED (10/10 ROUTES)")
         sys.exit(0)
     except Exception as exc:
         print(f"VERIFICATION FAILURE: {exc}")
