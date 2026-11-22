@@ -10,15 +10,25 @@ import {
 } from '@nexus/ui';
 import { BillingQuotaMeters } from './components/BillingQuotaMeters';
 import { BillingInvoicesTable } from './components/BillingInvoicesTable';
+import { PlanUpgradeModal } from './components/PlanUpgradeModal';
 
 export default function BillingPage(): React.JSX.Element {
   const [statusNotice, setStatusNotice] = useState<string | null>(null);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [activePlanTitle, setActivePlanTitle] = useState('Professional Tier ($149/mo)');
+  const [extraStationsCount, setExtraStationsCount] = useState(0);
 
   const pastInvoices = [
-    { id: 'INV-2026-11', date: 'Nov 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: 'e3b0c442...855' },
-    { id: 'INV-2026-10', date: 'Oct 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: '9f86d081...001' },
-    { id: 'INV-2026-09', date: 'Sep 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: '5e884898...233' },
+    { id: 'INV-2026-11', date: 'Nov 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' },
+    { id: 'INV-2026-10', date: 'Oct 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08' },
+    { id: 'INV-2026-09', date: 'Sep 01, 2026', amount: '$149.00', card: 'Visa ···· 4242', hash: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' },
   ];
+
+  const handleUpgradeSuccess = (_planId: string, planName: string, stations: number) => {
+    setActivePlanTitle(`${planName} (${stations > 0 ? `+${stations} Stations` : 'Active'})`);
+    setExtraStationsCount(stations);
+    setStatusNotice(`✓ Subscription upgraded to ${planName}. Station licenses active.`);
+  };
 
   return (
     <div className="nx-page-shell" style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 20px 48px' }}>
@@ -31,7 +41,7 @@ export default function BillingPage(): React.JSX.Element {
               Multi-tenant regional cloud quotas, station licenses, and WORM-compliant fiscal statements.
             </NexusText>
           </div>
-          <NexusBadge variant="success" label="Active Subscription: PRO" />
+          <NexusBadge variant="success" label="ACTIVE: ENTERPRISE CLOUD" />
         </NexusStack>
 
         {statusNotice && (
@@ -50,13 +60,13 @@ export default function BillingPage(): React.JSX.Element {
           <NexusStack gap="var(--nx-space-4)">
             <NexusStack direction="row" align="center" justify="space-between" style={{ flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <NexusText variant="h3">Current Plan: Professional Tier ($149/mo)</NexusText>
+                <NexusText variant="h3">Current Plan: {activePlanTitle}</NexusText>
                 <NexusText variant="caption" role="muted" style={{ display: 'block', marginTop: '2px' }}>
                   Next renewal: December 01, 2026 via Stripe Automated Cloud Invoicing
                 </NexusText>
               </div>
-              <NexusButton variant="outline" size="sm" onClick={() => setStatusNotice('Payment portal link sent to primary billing admin email.')}>
-                Update Card (Visa ···· 4242)
+              <NexusButton variant="outline" size="sm" onClick={() => setIsUpgradeModalOpen(true)}>
+                Manage Plan / Payment Method
               </NexusButton>
             </NexusStack>
 
@@ -102,7 +112,7 @@ export default function BillingPage(): React.JSX.Element {
                     <NexusButton
                       variant={tier.active ? 'outline' : 'primary'}
                       size="sm"
-                      onClick={() => setStatusNotice(tier.active ? 'Plan management link sent to email.' : `Upgrading to ${tier.name}...`)}
+                      onClick={() => setIsUpgradeModalOpen(true)}
                       style={{ width: '100%', justifyContent: 'center' }}
                     >
                       {tier.active ? 'Manage Plan' : 'Upgrade →'}
@@ -117,9 +127,15 @@ export default function BillingPage(): React.JSX.Element {
         {/* Past Invoices Table */}
         <BillingInvoicesTable
           invoices={pastInvoices}
-          onDownload={(invId) => setStatusNotice(`Preparing WORM PDF invoice download for ${invId}…`)}
+          onDownloadNotice={(invId) => setStatusNotice(`✓ Downloaded WORM fiscal statement ${invId}.`)}
         />
       </NexusStack>
+
+      <PlanUpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        onUpgradeSuccess={handleUpgradeSuccess}
+      />
     </div>
   );
 }
