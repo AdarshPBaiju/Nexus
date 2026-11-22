@@ -137,7 +137,7 @@ export default function BillingPage(): React.JSX.Element {
         <NexusStack gap="var(--nx-space-3)">
           <NexusText variant="h3">Audited Invoices & WORM Statements</NexusText>
           <div className="overflow-x-auto">
-            <table className="w-full text-xs font-mono text-left">
+            <table className="nx-data-table">
               <thead>
                 <tr className="border-b border-surface-container-highest text-outline">
                   <th className="py-2 px-3">Invoice Number</th>

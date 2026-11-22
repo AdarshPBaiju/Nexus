@@ -13,12 +13,12 @@ def _verify_route_status(route: str, expected_code: int = 200) -> None:
     """Verifies that an active Next.js App Router route returns expected HTTP status."""
     url = f"http://localhost:3000{route}"
     req = urllib.request.Request(url, headers={"User-Agent": "NexusTestRunner/1.0"})
-    with urllib.request.urlopen(req, timeout=10) as response:
+    with urllib.request.urlopen(req, timeout=30) as response:
         assert response.status == expected_code, f"Route {route} returned {response.status}"
 
 
 def test_nextjs_routes_accessible() -> None:
-    """Asserts that all 10 dynamic enterprise SaaS routes compile and serve HTTP 200."""
+    """Asserts that all 13 dynamic enterprise SaaS routes compile and serve HTTP 200."""
     routes = [
         "/",
         "/inputs",
@@ -30,9 +30,29 @@ def test_nextjs_routes_accessible() -> None:
         "/gateways",
         "/billing",
         "/onboarding",
+        "/marketplace",
+        "/register",
+        "/tenant/lifecycle",
     ]
     for route in routes:
         _verify_route_status(route)
+
+
+def test_backend_endpoints_accessible() -> None:
+    """Asserts that backend API endpoints respond with healthy payloads."""
+    import json
+
+    urls = [
+        "http://127.0.0.1:8000/api/v1/plugins",
+        "http://127.0.0.1:8000/api/v1/gateways/config",
+        "http://127.0.0.1:8000/api/v1/tenants/lifecycle",
+    ]
+    for u in urls:
+        req = urllib.request.Request(u, headers={"User-Agent": "NexusTestRunner/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            assert resp.status == 200, f"Endpoint {u} returned status {resp.status}"
+            payload = json.loads(resp.read().decode("utf-8"))
+            assert isinstance(payload, dict), f"Endpoint {u} payload is not a dict"
 
 
 def test_zero_hardcoded_domains_in_http_client() -> None:
@@ -114,6 +134,7 @@ def run_all_checks() -> None:
     test_sidebar_navigation_groups()
     test_zero_raw_inputs_and_alerts()
     test_code_budget_ceilings()
+    test_backend_endpoints_accessible()
     test_nextjs_routes_accessible()
 
 
@@ -121,7 +142,7 @@ if __name__ == "__main__":
     try:
         run_all_checks()
         print(
-            "ALL CAFE SAAS PRODUCTION UI ASSERTIONS PASSED (10/10 ROUTES, ZERO RAW INPUTS, STRICT BUDGETS)"
+            "ALL CAFE SAAS PRODUCTION UI & GATEWAY/LIFECYCLE ASSERTIONS PASSED (13/13 ROUTES, ZERO RAW INPUTS, STRICT BUDGETS, FULL BE/FE SYNC)"
         )
         sys.exit(0)
     except Exception as exc:

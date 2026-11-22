@@ -168,7 +168,7 @@ export default function HomePage(): React.JSX.Element {
           </NexusStack>
 
           <NexusBox style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <table className="nx-data-table" style={{ fontSize: '13px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--nx-border-default)', textAlign: 'left', color: 'var(--nx-text-secondary)' }}>
                   <th style={{ padding: '8px 12px' }}>TXN ID</th>

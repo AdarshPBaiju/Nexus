@@ -239,6 +239,44 @@ body {
   }
 }
 
+/* Modern data tables */
+.nx-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.nx-data-table thead th {
+  background-color: var(--nx-surface-subtle);
+  color: var(--nx-text-muted);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--nx-border-default);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nx-data-table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--nx-border-subtle);
+  color: var(--nx-text-primary);
+  vertical-align: middle;
+}
+
+.nx-data-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+.nx-data-table tbody tr:hover {
+  background-color: var(--nx-surface-selected);
+}
+
+.nx-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 /* Enterprise Input Controls Studio */
 .nx-studio-layout {
   display: grid;

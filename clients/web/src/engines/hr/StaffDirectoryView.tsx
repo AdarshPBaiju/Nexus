@@ -71,7 +71,7 @@ export const StaffDirectoryView: React.FC<StaffDirectoryViewProps> = ({
       </div>
 
       <div className="overflow-hidden rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)]">
-        <table className="w-full text-left text-sm">
+        <table className="nx-data-table">
           <thead className="border-b border-[var(--nx-border-subtle)] bg-[var(--nx-surface-subtle)] text-xs text-[var(--nx-text-secondary)]">
             <tr>
               <th className="px-4 py-3">CODE</th>

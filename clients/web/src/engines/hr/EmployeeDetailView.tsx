@@ -86,7 +86,7 @@ export const EmployeeDetailView: React.FC<EmployeeDetailViewProps> = ({
       <div className="mt-8 rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-5">
         <h3 className="text-sm font-bold text-[var(--nx-text-primary)] mb-4">Recent Attendance Punches</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="nx-data-table">
             <thead className="border-b border-[var(--nx-border-subtle)] bg-[var(--nx-surface-subtle)] text-[var(--nx-text-secondary)]">
               <tr>
                 <th className="px-3 py-2">BUSINESS DATE</th>

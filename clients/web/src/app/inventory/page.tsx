@@ -149,7 +149,7 @@ export default function InventoryPage(): React.JSX.Element {
 
           {/* BOM Lines */}
           <div className="overflow-x-auto">
-            <table className="w-full text-xs font-mono text-left">
+            <table className="nx-data-table">
               <thead>
                 <tr className="border-b border-surface-container-highest text-outline">
                   <th className="py-2 px-3">Ingredient</th>
@@ -180,7 +180,7 @@ export default function InventoryPage(): React.JSX.Element {
           </NexusStack>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
+            <table className="nx-data-table">
               <thead>
                 <tr className="border-b border-surface-container-highest text-outline font-mono">
                   <th className="py-2 px-3">SKU</th>

@@ -60,10 +60,18 @@ const NAV_GROUPS: readonly NavGroup[] = [
     ],
   },
   {
+    title: 'Ecosystem & Plugins',
+    items: [
+      { href: '/marketplace', label: 'Feature Marketplace', icon: 'extension', hint: 'M', badge: 'NEW', badgeVariant: 'info' },
+    ],
+  },
+  {
     title: 'SaaS Lifecycle',
     items: [
+      { href: '/tenant/lifecycle', label: 'Workspace Governance', icon: 'security', hint: 'W', badge: 'ACTIVE', badgeVariant: 'success' },
+      { href: '/register', label: 'Tenant Registration', icon: 'domain_add', hint: 'R' },
+      { href: '/onboarding', label: 'Onboarding Wizard', icon: 'storefront', hint: 'O' },
       { href: '/billing', label: 'Subscription & Quotas', icon: 'receipt_long', hint: 'B', badge: 'PRO', badgeVariant: 'neutral' },
-      { href: '/onboarding', label: 'Tenant Onboarding', icon: 'domain_add', hint: 'T' },
     ],
   },
 ];

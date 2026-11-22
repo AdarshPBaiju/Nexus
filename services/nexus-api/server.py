@@ -37,6 +37,11 @@ from nexus.engines.discounts.service import (  # noqa: E402
 )
 from nexus.engines.taxation.service import TaxCalculationEngine  # noqa: E402
 from nexus.libs.money.money import Money  # noqa: E402
+from nexus.server_endpoints import (  # noqa: E402
+    GatewayEndpointHandler,
+    MarketplaceEndpointHandler,
+    TenancyEndpointHandler,
+)
 
 
 class NexusApiHandler(BaseHTTPRequestHandler):
@@ -87,6 +92,12 @@ class NexusApiHandler(BaseHTTPRequestHandler):
                     "ci_status": "100% SUCCESS",
                 },
             )
+        elif path == "/api/v1/gateways/config":
+            self._send_json(200, GatewayEndpointHandler.get_config())
+        elif path == "/api/v1/plugins":
+            self._send_json(200, MarketplaceEndpointHandler.list_plugins())
+        elif path == "/api/v1/tenants/lifecycle":
+            self._send_json(200, TenancyEndpointHandler.get_lifecycle())
         else:
             self._send_json(404, {"error": "Not Found", "path": self.path})
 
@@ -102,6 +113,20 @@ class NexusApiHandler(BaseHTTPRequestHandler):
             self._handle_tax_calculate(data)
         elif path == "/api/v1/discounts/evaluate":
             self._handle_discount_evaluate(data)
+        elif path == "/api/v1/gateways/config":
+            self._send_json(200, GatewayEndpointHandler.update_config(data))
+        elif path == "/api/v1/gateways/test":
+            self._send_json(200, GatewayEndpointHandler.test_gateway(data))
+        elif path == "/api/v1/plugins/toggle":
+            self._send_json(200, MarketplaceEndpointHandler.toggle_plugin(data))
+        elif path == "/api/v1/tenants/register":
+            res = TenancyEndpointHandler.register_tenant(data)
+            status = 201 if res.get("success") else 400
+            self._send_json(status, res)
+        elif path == "/api/v1/tenants/lifecycle":
+            self._send_json(200, TenancyEndpointHandler.transition_status(data))
+        elif path == "/api/v1/tenants/kms-rotate":
+            self._send_json(200, TenancyEndpointHandler.rotate_kms_key(data))
         else:
             self._send_json(404, {"error": "Endpoint Not Found", "path": self.path})
 
