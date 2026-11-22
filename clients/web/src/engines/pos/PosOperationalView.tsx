@@ -28,10 +28,11 @@ export const PosOperationalView: React.FC<PosOperationalViewProps> = ({
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [pendingVoidId, setPendingVoidId] = useState<string | null>(null);
 
-  // Subscribe to controller changes via useSyncExternalStore
+  // Subscribe to controller changes via useSyncExternalStore with SSR fallback
   useSyncExternalStore(
     (cb) => controller.subscribe(cb),
-    () => controller.currentItems
+    () => controller.currentItems,
+    () => []
   );
 
   const summary = controller.summary;

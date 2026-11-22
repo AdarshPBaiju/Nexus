@@ -1,0 +1,36 @@
+/* Project Nexus Semantic Design Tokens & Next.js App Global CSS */
+@import '../../../../packages/ui/src/tokens/tokens.css';
+
+:root {
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  background-color: var(--nx-surface-bg);
+  color: var(--nx-text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.nx-tabular {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
