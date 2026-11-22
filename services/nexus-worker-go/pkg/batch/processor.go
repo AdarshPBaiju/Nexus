@@ -1,3 +1,4 @@
+// Package batch provides background batch settlement processing.
 package batch
 
 import (

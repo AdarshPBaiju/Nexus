@@ -1,3 +1,4 @@
+// Package bulkimport handles streaming staging and bulk records ingestion.
 package bulkimport
 
 import (

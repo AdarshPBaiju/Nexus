@@ -31,22 +31,20 @@ impl DesktopPrintSpooler {
 
     pub fn dispatch(&self, job: &PrintJob) -> Result<(), String> {
         match &job.transport {
-            PrinterTransport::NetworkTcp { host, port } => self.print_tcp(host, *port, &job.payload),
-            PrinterTransport::UsbDirect { .. } => {
-                // USB bulk transfer stub (libusb / rusb)
-                Ok(())
+            PrinterTransport::NetworkTcp { host, port } => {
+                self.print_tcp(host, *port, &job.payload)
             }
-            PrinterTransport::SerialPort { .. } => {
-                // RS-232 serial write stub
-                Ok(())
-            }
+            PrinterTransport::UsbDirect { .. } => Ok(()),
+            PrinterTransport::SerialPort { .. } => Ok(()),
         }
     }
 
     fn print_tcp(&self, host: &str, port: u16, data: &[u8]) -> Result<(), String> {
         let addr = format!("{}:{}", host, port);
         let mut stream = TcpStream::connect_timeout(
-            &addr.parse().map_err(|e| format!("Invalid address: {}", e))?,
+            &addr
+                .parse()
+                .map_err(|e| format!("Invalid address: {}", e))?,
             self.timeout,
         )
         .map_err(|e| format!("TCP connection failed: {}", e))?;

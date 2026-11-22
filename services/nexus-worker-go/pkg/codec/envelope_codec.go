@@ -1,3 +1,4 @@
+// Package codec provides authenticated AES envelope encryption and token decoding.
 package codec
 
 import (

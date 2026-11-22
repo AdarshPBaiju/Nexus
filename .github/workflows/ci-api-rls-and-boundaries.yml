@@ -35,6 +35,7 @@ jobs:
       - name: Architectural Import Boundaries
         run: |
           cd services/nexus-api
+          export PYTHONPATH="src"
           lint-imports
 
       - name: RLS Coverage Audit

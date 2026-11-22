@@ -1,3 +1,4 @@
+// Package settlement processes ledger reconciliations.
 package settlement
 
 import (

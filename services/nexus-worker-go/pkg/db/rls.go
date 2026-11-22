@@ -1,3 +1,4 @@
+// Package db provides tenant-scoped database isolation and row-level security.
 package db
 
 import (

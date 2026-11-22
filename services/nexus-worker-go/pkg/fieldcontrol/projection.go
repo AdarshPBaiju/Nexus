@@ -1,3 +1,4 @@
+// Package fieldcontrol handles strict attribute-level masking.
 package fieldcontrol
 
 import (

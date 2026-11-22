@@ -1,3 +1,4 @@
+// Package exporter streams high-throughput query projections.
 package exporter
 
 import (

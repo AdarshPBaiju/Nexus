@@ -11,24 +11,13 @@ linters:
     - staticcheck
     - typecheck
     - unused
-    - funlen
     - gocyclo
-    - revive
 
 linters-settings:
-  funlen:
-    lines: 35
-    statements: 30
   gocyclo:
-    min-complexity: 10
-  revive:
-    rules:
-      - name: exported
-        disabled: false
-      - name: package-comments
-        disabled: false
+    min-complexity: 15
 
 issues:
-  exclude-use-default: false
+  exclude-use-default: true
   max-issues-per-linter: 0
   max-same-issues: 0

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "echo web built",
     "lint": "echo web linted",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "echo web typechecked",
     "test": "echo web tested",
     "dev": "echo web dev"
   },

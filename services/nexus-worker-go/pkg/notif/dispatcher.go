@@ -1,3 +1,4 @@
+// Package notif dispatches multi-channel operational notifications.
 package notif
 
 import (

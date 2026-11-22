@@ -1,3 +1,4 @@
+// Package numseries handles lock-free monotonic number series allocation.
 package numseries
 
 // ReserveBlockBatch allocates a contiguous slice of sequence numbers.

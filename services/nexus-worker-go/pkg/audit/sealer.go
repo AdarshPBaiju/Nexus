@@ -1,3 +1,4 @@
+// Package audit provides cryptographic receipt sealing and audit chaining.
 package audit
 
 import (
