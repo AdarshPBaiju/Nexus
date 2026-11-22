@@ -4,6 +4,14 @@
 
 import type { PosCartItem, PosCartSummary, PosHeldTab } from '../types';
 
+async function hashPin(pin: string): Promise<string> {
+  const bytes = new TextEncoder().encode(pin);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 export class PosCounterController {
   private items: PosCartItem[] = [];
   private cachedItems: readonly PosCartItem[] = Object.freeze([]);
@@ -11,7 +19,7 @@ export class PosCounterController {
   private discountPercent: number = 0;
   private readonly taxRate: number = 0.10;
   private readonly listeners: Set<() => void> = new Set();
-  private readonly supervisorPin: string = '9999';
+  private readonly supervisorPinHash: string = '888df25ae35772424a560c7152a1de794440e0ea5cfee62828333a456a506e05';
 
   public static create(): PosCounterController {
     return new PosCounterController();
@@ -77,8 +85,8 @@ export class PosCounterController {
     this.notify();
   }
 
-  public voidItem(itemId: string, managerPin: string): boolean {
-    if (!this.verifySupervisorPin(managerPin)) return false;
+  public async voidItem(itemId: string, managerPin: string): Promise<boolean> {
+    if (!(await this.verifySupervisorPin(managerPin))) return false;
     const target = this.items.find((i) => i.id === itemId);
     if (!target) return false;
     target.quantity = 0;
@@ -125,8 +133,9 @@ export class PosCounterController {
     this.notify();
   }
 
-  public verifySupervisorPin(pin: string): boolean {
-    return pin.trim() === this.supervisorPin;
+  public async verifySupervisorPin(pin: string): Promise<boolean> {
+    const hash = await hashPin(pin.trim());
+    return hash === this.supervisorPinHash;
   }
 
   private notify(): void {

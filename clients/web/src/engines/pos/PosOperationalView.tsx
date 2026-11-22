@@ -89,9 +89,9 @@ export const PosOperationalView: React.FC<PosOperationalViewProps> = ({
     });
   };
 
-  const handleAuthorizeVoid = (pin: string) => {
+  const handleAuthorizeVoid = async (pin: string) => {
     if (pendingVoidId) {
-      controller.voidItem(pendingVoidId, pin);
+      await controller.voidItem(pendingVoidId, pin);
       setPendingVoidId(null);
     }
     setIsPinOpen(false);
