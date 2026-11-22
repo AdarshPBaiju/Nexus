@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { NexusButton } from '@nexus/ui';
-import type { DenominationItem } from './types';
+import { NexusButton, NexusNumberInput, NexusText } from '@nexus/ui';
 
 export interface DenominationCounterModalProps {
   readonly isOpen: boolean;
@@ -42,11 +41,10 @@ export const DenominationCounterModal: React.FC<DenominationCounterModalProps> =
 
   if (!isOpen) return null;
 
-  const handleCountChange = (val: number, countStr: string) => {
-    const parsed = parseInt(countStr, 10);
+  const handleCountChange = (val: number, newCount: number) => {
     setCounts((prev) => ({
       ...prev,
-      [val]: isNaN(parsed) || parsed < 0 ? 0 : parsed,
+      [val]: isNaN(newCount) || newCount < 0 ? 0 : newCount,
     }));
   };
 
@@ -55,8 +53,8 @@ export const DenominationCounterModal: React.FC<DenominationCounterModalProps> =
       <div className="w-full max-w-lg rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--nx-border-subtle)] pb-4">
           <div>
-            <h2 className="text-lg font-bold text-[var(--nx-text-primary)]">Blind Close Denomination Counter</h2>
-            <p className="text-xs text-[var(--nx-text-secondary)]">Count physical notes and coins in cash drawer</p>
+            <NexusText variant="h3">Blind Close Denomination Counter</NexusText>
+            <NexusText variant="caption" role="muted">Count physical notes and coins in cash drawer</NexusText>
           </div>
           <button
             onClick={onClose}
@@ -74,17 +72,17 @@ export const DenominationCounterModal: React.FC<DenominationCounterModalProps> =
             return (
               <div
                 key={d.value}
-                className="flex items-center justify-between rounded-lg bg-[var(--nx-surface-subtle)] px-3 py-2"
+                className="flex items-center justify-between rounded-lg bg-[var(--nx-surface-subtle)] px-3 py-2 gap-2"
               >
                 <span className="w-32 text-sm font-medium text-[var(--nx-text-primary)]">{d.label}</span>
-                <input
-                  type="number"
-                  min="0"
-                  value={count === 0 ? '' : count}
-                  placeholder="0"
-                  onChange={(e) => handleCountChange(d.value, e.target.value)}
-                  className="w-20 rounded border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] px-2 py-1 text-center font-mono text-sm text-[var(--nx-text-primary)]"
-                />
+                <div style={{ width: '90px' }}>
+                  <NexusNumberInput
+                    min={0}
+                    step={1}
+                    value={count}
+                    onChange={(v) => handleCountChange(d.value, v)}
+                  />
+                </div>
                 <span className="w-24 text-right font-mono text-sm font-semibold text-[var(--nx-text-primary)]">
                   {currency} {subtotal}
                 </span>
@@ -94,10 +92,10 @@ export const DenominationCounterModal: React.FC<DenominationCounterModalProps> =
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] p-4">
-          <span className="text-sm font-medium text-[var(--nx-text-secondary)]">Total Counted:</span>
-          <span className="font-mono text-xl font-bold text-[var(--nx-text-primary)]">
+          <NexusText variant="label" role="secondary">Total Counted:</NexusText>
+          <NexusText variant="h2" tabular style={{ fontWeight: 700 }}>
             {currency} {totalCalculated}
-          </span>
+          </NexusText>
         </div>
 
         <div className="mt-6 flex justify-end gap-3">

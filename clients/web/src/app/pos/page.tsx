@@ -1,23 +1,14 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
-import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
 import { PosOperationalView } from '../../engines/pos/PosOperationalView';
 import { PosCounterController } from '../../engines/pos/controllers/PosCounterController';
 import { useAuth } from '../../runtime/auth/AuthContext';
-import {
-  NexusBadge,
-  NexusBox,
-  NexusButton,
-  NexusStack,
-  NexusText,
-} from '@nexus/ui';
+import { NexusBadge, NexusBox, NexusButton, NexusStack, NexusText } from '@nexus/ui';
 import type { SplitTenderEntry } from '../../engines/pos/types';
 
 export default function PosPage(): React.JSX.Element {
   const { session } = useAuth();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const controller = useMemo(() => {
     const c = PosCounterController.create();
@@ -30,10 +21,10 @@ export default function PosPage(): React.JSX.Element {
     });
     c.addItem({
       skuCode: 'FW-02',
-      name: 'Flat White (Oat Milk)',
-      unitPrice: '4.80',
+      name: 'Flat White',
+      unitPrice: '4.20',
       quantity: 2,
-      selectedModifiers: [{ groupName: 'Milk', optionName: 'Oat Milk', priceDelta: '0.60' }],
+      selectedModifiers: [{ id: 'MOD-OAT', name: 'Oat Milk', priceDelta: '0.60' }],
     });
     c.addItem({
       skuCode: 'CRS-03',
@@ -48,56 +39,50 @@ export default function PosPage(): React.JSX.Element {
   const [lastPayment, setLastPayment] = useState<string | null>(null);
 
   const handleCheckout = async (tenders: readonly SplitTenderEntry[]) => {
-    const summary = tenders.map((t) => `${t.tenderType}: $${t.amount}`).join(', ');
-    setLastPayment(`Settled $${controller.summary.total} via [${summary}]`);
+    const summary = tenders.map((t) => `${t.tenderType} $${t.amount}`).join(' · ');
+    setLastPayment(`Order settled for $${controller.summary.total} (${summary})`);
     controller.clearCart();
   };
 
   return (
-    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
-      <NexusMainTopNavbar
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
-
-      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
-
-      <NexusBox
-        style={{
-          marginLeft: isSidebarOpen ? '280px' : 0,
-          marginTop: '56px',
-          height: 'calc(100vh - 56px)',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'margin-left 0.2s ease',
-        }}
-      >
-        {lastPayment && (
-          <NexusBox
-            padding="var(--nx-space-2) var(--nx-space-6)"
-            style={{
-              backgroundColor: 'var(--nx-status-success-subtle)',
-              borderBottom: '1px solid var(--nx-border-default)',
-            }}
-          >
-            <NexusStack direction="row" align="center" justify="space-between">
-              <NexusText variant="label">✓ {lastPayment}</NexusText>
-              <NexusButton variant="ghost" size="sm" onClick={() => setLastPayment(null)}>
-                <NexusText variant="caption">✕ Dismiss</NexusText>
-              </NexusButton>
+    <NexusBox
+      style={{
+        flex: 1,
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}
+    >
+      {lastPayment && (
+        <NexusBox
+          padding="8px 16px"
+          style={{
+            flexShrink: 0,
+            backgroundColor: 'var(--nx-status-success-subtle)',
+            borderBottom: '1px solid var(--nx-border-default)',
+          }}
+        >
+          <NexusStack direction="row" align="center" justify="space-between">
+            <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+              <NexusBadge variant="success" dot label="Settled" />
+              <NexusText variant="label">{lastPayment}</NexusText>
             </NexusStack>
-          </NexusBox>
-        )}
-
-        <NexusBox style={{ flex: 1, overflow: 'hidden' }}>
-          <PosOperationalView
-            controller={controller}
-            branchName={session.branchName}
-            cashierName={session.name}
-            workstationId={session.workstationId}
-            onCheckoutTenders={handleCheckout}
-          />
+            <NexusButton variant="ghost" size="sm" onClick={() => setLastPayment(null)}>
+              <NexusText variant="caption">Dismiss</NexusText>
+            </NexusButton>
+          </NexusStack>
         </NexusBox>
+      )}
+
+      <NexusBox style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+        <PosOperationalView
+          controller={controller}
+          branchName={session.branchName}
+          cashierName={session.name}
+          workstationId={session.workstationId}
+          onCheckoutTenders={handleCheckout}
+        />
       </NexusBox>
     </NexusBox>
   );

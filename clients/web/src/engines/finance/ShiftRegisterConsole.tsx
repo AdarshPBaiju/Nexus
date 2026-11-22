@@ -3,6 +3,9 @@ import {
   NexusBadge,
   NexusButton,
   NexusDetailPageShell,
+  NexusNumberInput,
+  NexusSelect,
+  NexusText,
 } from '@nexus/ui';
 import { DenominationCounterModal } from './DenominationCounterModal';
 import type { ShiftRegisterSessionDto } from './types';
@@ -81,27 +84,29 @@ export const ShiftRegisterConsole: React.FC<ShiftRegisterConsoleProps> = ({
       {/* Petty Cash Expense Section */}
       {isOpen && (
         <div className="mt-8 rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-6">
-          <h3 className="text-base font-bold text-[var(--nx-text-primary)]">Quick Petty Cash Disbursement</h3>
-          <p className="text-xs text-[var(--nx-text-secondary)]">Record emergency register withdrawal with immediate cash decrement</p>
+          <NexusText variant="h3">Quick Petty Cash Disbursement</NexusText>
+          <NexusText variant="caption" role="muted">Record emergency register withdrawal with immediate cash decrement</NexusText>
           <form onSubmit={handleExpenseSubmit} className="mt-4 flex flex-wrap items-center gap-4">
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Amount ($)"
-              value={expenseAmount}
-              onChange={(e) => setExpenseAmount(e.target.value)}
-              className="w-36 rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] px-3 py-2 font-mono text-sm text-[var(--nx-text-primary)]"
-            />
-            <select
-              value={expenseReason}
-              onChange={(e) => setExpenseReason(e.target.value)}
-              className="rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] px-3 py-2 text-sm text-[var(--nx-text-primary)]"
-            >
-              <option value="PETTY_CASH_SUPPLIES">Emergency Store Supplies</option>
-              <option value="STAFF_MEAL">Staff Duty Meal</option>
-              <option value="DELIVERY_FEE">Delivery Tip / Fee</option>
-              <option value="EMERGENCY_REPAIR">Immediate Repair</option>
-            </select>
+            <div style={{ width: '140px' }}>
+              <NexusNumberInput
+                step={0.5}
+                min={0}
+                value={parseFloat(expenseAmount) || 0}
+                onChange={(v) => setExpenseAmount(v.toString())}
+              />
+            </div>
+            <div style={{ width: '220px' }}>
+              <NexusSelect
+                value={expenseReason}
+                onChange={setExpenseReason}
+                options={[
+                  { value: 'PETTY_CASH_SUPPLIES', label: 'Emergency Store Supplies' },
+                  { value: 'STAFF_MEAL', label: 'Staff Duty Meal' },
+                  { value: 'DELIVERY_FEE', label: 'Delivery Tip / Fee' },
+                  { value: 'EMERGENCY_REPAIR', label: 'Immediate Repair' },
+                ]}
+              />
+            </div>
             <NexusButton variant="secondary" type="submit">
               Disburse from Drawer
             </NexusButton>

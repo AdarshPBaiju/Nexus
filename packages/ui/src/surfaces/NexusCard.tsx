@@ -8,6 +8,7 @@ export interface NexusCardProps {
   readonly elevation?: CardElevation;
   readonly interactive?: boolean;
   readonly className?: string;
+  readonly style?: React.CSSProperties;
   readonly children: React.ReactNode;
 }
 
@@ -15,6 +16,7 @@ export function NexusCard({
   elevation = 'card',
   interactive = false,
   className = '',
+  style = {},
   children,
 }: NexusCardProps): React.JSX.Element {
   const surfaceRole: SurfaceRole = elevation === 'subtle' ? 'subtle' : elevation === 'elevated' ? 'elevated' : 'card';
@@ -25,6 +27,7 @@ export function NexusCard({
     borderRadius: '8px',
     cursor: interactive ? 'pointer' : 'default',
     transition: 'border-color 0.15s ease',
+    ...style,
   };
 
   return (

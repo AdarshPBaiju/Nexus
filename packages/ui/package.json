@@ -11,6 +11,7 @@
     "test": "echo ui tested"
   },
   "dependencies": {
+    "@nexus/contracts": "workspace:*",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },

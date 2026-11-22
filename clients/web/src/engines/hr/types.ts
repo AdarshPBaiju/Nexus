@@ -16,6 +16,11 @@ export interface EmployeeDto {
   readonly designation: string;
   readonly reportingManagerId?: string | null;
   readonly isActive: boolean;
+  readonly email?: string;
+  readonly employmentType?: ContractType;
+  readonly status?: 'ACTIVE' | 'INACTIVE' | 'ON_LEAVE';
+  readonly isOnDuty?: boolean;
+  readonly lastPunchAt?: string;
 }
 
 export interface ContractDto {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NexusButton } from '@nexus/ui';
+import { NexusButton, NexusSelect, NexusText } from '@nexus/ui';
 
 export interface SupervisorPinModalProps {
   readonly isOpen: boolean;
@@ -15,7 +15,7 @@ export const SupervisorPinModal: React.FC<SupervisorPinModalProps> = ({
   onAuthorize,
 }) => {
   const [pin, setPin] = useState('');
-  const [reason, setReason] = useState('SUPERVISOR_AUTHORIZED');
+  const [reason, setReason] = useState('MANAGER_DISCRETION');
 
   if (!isOpen) return null;
 
@@ -37,18 +37,29 @@ export const SupervisorPinModal: React.FC<SupervisorPinModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
       <div className="w-full max-w-sm rounded-xl border border-[var(--nx-border-default)] bg-[var(--nx-surface-card)] p-6 shadow-2xl">
-        <h2 className="text-center text-lg font-bold text-[var(--nx-text-primary)]">Supervisor Authorization</h2>
-        <p className="mt-1 text-center text-xs text-[var(--nx-text-secondary)]">{actionTitle}</p>
+        <NexusText variant="h3" style={{ textAlign: 'center' }}>Supervisor Authorization</NexusText>
+        <NexusText variant="caption" role="muted" style={{ textAlign: 'center', marginTop: '4px' }}>
+          {actionTitle}
+        </NexusText>
 
-        <div className="my-4 flex justify-center">
-          <input
-            type="password"
-            maxLength={6}
-            readOnly
-            value={pin}
-            placeholder="••••"
-            className="w-48 text-center font-mono text-2xl tracking-widest rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] py-2 text-[var(--nx-text-primary)]"
-          />
+        <div className="my-4 flex justify-center gap-2">
+          {[0, 1, 2, 3].map((idx) => {
+            const filled = idx < pin.length;
+            return (
+              <span
+                key={idx}
+                aria-hidden="true"
+                style={{
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '9999px',
+                  border: `2px solid ${filled ? 'var(--nx-action-primary)' : 'var(--nx-border-default)'}`,
+                  backgroundColor: filled ? 'var(--nx-action-primary)' : 'transparent',
+                  transition: 'background-color 0.12s ease',
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* PIN keypad */}
@@ -70,17 +81,19 @@ export const SupervisorPinModal: React.FC<SupervisorPinModalProps> = ({
         </div>
 
         <div className="mt-4">
-          <label className="block text-xs font-semibold text-[var(--nx-text-secondary)]">Audit Justification</label>
-          <select
+          <NexusText variant="caption" role="secondary" style={{ display: 'block', marginBottom: '4px' }}>
+            Audit Justification
+          </NexusText>
+          <NexusSelect
             value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            className="mt-1 w-full rounded border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] px-2 py-1.5 text-xs text-[var(--nx-text-primary)]"
-          >
-            <option value="CUSTOMER_SATISFACTION">Customer Satisfaction Comp</option>
-            <option value="ORDERING_ERROR">Cashier / Barista Input Mistake</option>
-            <option value="DEFECTIVE_PRODUCT">Product Quality Issue</option>
-            <option value="MANAGER_DISCRETION">Manager Discretionary Courtesy</option>
-          </select>
+            onChange={setReason}
+            options={[
+              { value: 'CUSTOMER_SATISFACTION', label: 'Customer Satisfaction Comp' },
+              { value: 'ORDERING_ERROR', label: 'Cashier / Barista Input Mistake' },
+              { value: 'DEFECTIVE_PRODUCT', label: 'Product Quality Issue' },
+              { value: 'MANAGER_DISCRETION', label: 'Manager Discretionary Courtesy' },
+            ]}
+          />
         </div>
 
         <div className="mt-6 flex justify-between gap-3">

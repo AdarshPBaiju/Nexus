@@ -1,179 +1,215 @@
 'use client';
 
-import React, { useState } from 'react';
-import {
-  NexusBadge,
-  NexusBox,
-  NexusButton,
-  NexusCard,
-  NexusStack,
-  NexusText,
-} from '@nexus/ui';
-import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
-import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
+import React, { useMemo, useState } from 'react';
+import { NexusBadge, NexusButton, NexusStack, NexusText } from '@nexus/ui';
+import type { DateRange, LocalizedStringMap } from '@nexus/ui';
+import { Money } from '@nexus/contracts';
+import { StudioInspector } from './components/StudioInspector';
+import { StudioTextSection } from './components/StudioTextSection';
+import { StudioChoiceSection } from './components/StudioChoiceSection';
+import { StudioDateTimeSection } from './components/StudioDateTimeSection';
+import { StudioSpecializedSection } from './components/StudioSpecializedSection';
+
+type PreviewState = 'default' | 'error' | 'disabled';
+
+const STATION_OPTIONS = [
+  { value: 'BARISTA', label: 'Barista bar' },
+  { value: 'COLD_BAR', label: 'Cold bar' },
+  { value: 'HOT_KITCHEN', label: 'Hot kitchen' },
+  { value: 'BAKERY', label: 'Bakery' },
+];
+
+const CHANNEL_OPTIONS = [
+  { value: 'POS', label: 'Counter POS' },
+  { value: 'KDS', label: 'Kitchen display' },
+  { value: 'QR', label: 'Table QR' },
+  { value: 'DELIVERY', label: 'Delivery' },
+];
+
+const PLAN_OPTIONS = [
+  { value: 'STARTER', label: 'Starter' },
+  { value: 'PRO', label: 'Professional' },
+  { value: 'ENTERPRISE', label: 'Enterprise' },
+];
+
+const PERMISSION_OPTIONS = [
+  { value: 'INVENTORY_READ', label: 'Read stock levels' },
+  { value: 'INVENTORY_WRITE', label: 'Adjust stock levels' },
+  { value: 'PRICE_OVERRIDE', label: 'Override unit prices' },
+];
 
 export default function InputsStudioPage(): React.JSX.Element {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeState, setActiveState] = useState<'default' | 'focus' | 'error' | 'disabled'>('default');
-  const [textVal, setTextVal] = useState('Flat White Oat');
-  const [numVal, setNumVal] = useState('4.80');
-  const [skuVal, setSkuVal] = useState('SKU-COF-0042');
-  const [pinVal, setPinVal] = useState('9999');
-  const [bidiVal, setBidiVal] = useState('قهوة لاتيه (Latte Coffee)');
-  const [isRtl, setIsRtl] = useState(false);
-  const [uploadedFiles] = useState<readonly string[]>(['receipt_audit_20261122.pdf']);
+  const [previewState, setPreviewState] = useState<PreviewState>('default');
+  const [copied, setCopied] = useState(false);
+
+  const [itemName, setItemName] = useState('Signature Flat White');
+  const [searchQuery, setSearchQuery] = useState('SKU-COF-0042');
+  const [notes, setNotes] = useState('Double ristretto, steamed oat milk, 62°C serve temperature.');
+  const [unitPrice, setUnitPrice] = useState(() => new Money('4.2000', 'USD'));
+  const [safetyStock, setSafetyStock] = useState(12);
+  const [wasteAllowance, setWasteAllowance] = useState(15);
+  const [managerPin, setManagerPin] = useState('9999');
+  const [isTaxable, setIsTaxable] = useState(true);
+  const [allowBackorder, setAllowBackorder] = useState(false);
+  const [station, setStation] = useState('BARISTA');
+  const [channels, setChannels] = useState<readonly string[]>(['POS', 'KDS']);
+  const [plan, setPlan] = useState('PRO');
+  const [permissions, setPermissions] = useState<readonly string[]>(['INVENTORY_READ']);
+  const [openedOn, setOpenedOn] = useState('2026-11-22');
+  const [shiftStart, setShiftStart] = useState('08:00');
+  const [period, setPeriod] = useState<DateRange>({ startDate: '2026-11-01', endDate: '2026-11-22' });
+  const [brandColor, setBrandColor] = useState('#2563EB');
+  const [attachment, setAttachment] = useState<File | null>(null);
+  const [locale, setLocale] = useState('en');
+  const [labels, setLabels] = useState<LocalizedStringMap>({
+    en: 'Signature Flat White',
+    ar: 'فلات وايت مميز',
+    fr: 'Flat White Signature',
+  });
+
+  const isDisabled = previewState === 'disabled';
+  const errorKey = previewState === 'error' ? 'This value does not satisfy the field constraint.' : undefined;
+
+  const payload = useMemo(
+    () => ({
+      itemName,
+      searchQuery,
+      notes,
+      unitPrice: { amount: unitPrice.amount, currency: unitPrice.currency },
+      safetyStock,
+      wasteAllowance: `${wasteAllowance}%`,
+      managerPin: '••••',
+      isTaxable,
+      allowBackorder,
+      station,
+      channels,
+      plan,
+      permissions,
+      openedOn,
+      shiftStart,
+      fiscalPeriod: period,
+      brandColor,
+      attachment: attachment?.name ?? null,
+      localizedLabels: labels,
+    }),
+    [
+      itemName,
+      searchQuery,
+      notes,
+      unitPrice,
+      safetyStock,
+      wasteAllowance,
+      isTaxable,
+      allowBackorder,
+      station,
+      channels,
+      plan,
+      permissions,
+      openedOn,
+      shiftStart,
+      period,
+      brandColor,
+      attachment,
+      labels,
+    ]
+  );
 
   return (
-    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
-      <NexusMainTopNavbar
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
-      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
-
-      <NexusBox
-        style={{
-          marginLeft: isSidebarOpen ? '280px' : 0,
-          marginTop: '56px',
-          padding: 'var(--nx-space-8) var(--nx-space-6)',
-          transition: 'margin-left 0.2s ease',
-        }}
-      >
-        <NexusStack gap="var(--nx-space-6)" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          {/* Header & State Matrix Bar */}
-          <NexusStack direction="row" align="center" justify="space-between">
-            <NexusStack gap="var(--nx-space-1)">
-              <NexusText variant="h1">Enterprise Input Controls Studio</NexusText>
-              <NexusText variant="body" role="secondary">
-                Interactive playground for all 19 custom in-house `@nexus/ui/inputs/*` components across all 5 UI states.
-              </NexusText>
-            </NexusStack>
-
-            <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-              <NexusText variant="caption" role="muted">Test State:</NexusText>
-              {(['default', 'focus', 'error', 'disabled'] as const).map((s) => (
-                <NexusButton
-                  key={s}
-                  variant={activeState === s ? 'primary' : 'outline'}
-                  size="sm"
-                  onClick={() => setActiveState(s)}
-                >
-                  <NexusText variant="caption">{s.toUpperCase()}</NexusText>
-                </NexusButton>
-              ))}
-            </NexusStack>
+    <NexusStack gap="var(--nx-space-6)">
+      <NexusStack direction="row" align="center" justify="space-between" style={{ flexWrap: 'wrap', gap: '12px' }}>
+        <NexusStack gap="var(--nx-space-1)">
+          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+            <NexusText variant="h1">Enterprise Input Controls Studio</NexusText>
+            <NexusBadge variant="info" label="19 Custom Controls" />
           </NexusStack>
-
-          {/* Section 01: Numeric & Monetary Primitives */}
-          <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-            <NexusStack gap="var(--nx-space-4)">
-              <NexusStack direction="row" align="center" justify="space-between">
-                <NexusText variant="h3">01. Standard Text & Precision Numeric Primitives</NexusText>
-                <NexusBadge variant="success" label="Exact Decimal Math" />
-              </NexusStack>
-
-              <NexusStack direction="row" gap="var(--nx-space-4)">
-                <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Item Name</NexusText>
-                  <input
-                    type="text"
-                    value={textVal}
-                    disabled={activeState === 'disabled'}
-                    onChange={(e) => setTextVal(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface text-sm"
-                  />
-                </NexusBox>
-
-                <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Unit Price (ISO 4217 Tabular)</NexusText>
-                  <input
-                    type="text"
-                    value={numVal}
-                    disabled={activeState === 'disabled'}
-                    onChange={(e) => setNumVal(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-mono text-sm"
-                  />
-                </NexusBox>
-              </NexusStack>
-            </NexusStack>
-          </NexusCard>
-
-          {/* Section 02: Specialized Masked Inputs */}
-          <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-            <NexusStack gap="var(--nx-space-4)">
-              <NexusStack direction="row" align="center" justify="space-between">
-                <NexusText variant="h3">02. Specialized Enterprise Masked Inputs</NexusText>
-                <NexusBadge variant="info" label="HID Scanner & Supervisor Lock" />
-              </NexusStack>
-
-              <NexusStack direction="row" gap="var(--nx-space-4)">
-                <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Barcode / SKU Scanner (HID Buffer)</NexusText>
-                  <input
-                    type="text"
-                    value={skuVal}
-                    disabled={activeState === 'disabled'}
-                    onChange={(e) => setSkuVal(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-primary font-mono text-sm font-bold"
-                  />
-                </NexusBox>
-
-                <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Cashier Supervisor PIN Mask</NexusText>
-                  <input
-                    type="password"
-                    maxLength={4}
-                    value={pinVal}
-                    disabled={activeState === 'disabled'}
-                    onChange={(e) => setPinVal(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-mono text-sm tracking-widest"
-                  />
-                </NexusBox>
-              </NexusStack>
-            </NexusStack>
-          </NexusCard>
-
-          {/* Section 03: Multilingual & BiDi */}
-          <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-            <NexusStack gap="var(--nx-space-3)">
-              <NexusStack direction="row" align="center" justify="space-between">
-                <NexusText variant="h3">03. Multilingual BiDi Localized Input (LTR / RTL)</NexusText>
-                <NexusButton variant="outline" size="sm" onClick={() => setIsRtl(!isRtl)}>
-                  <NexusText variant="caption">Switch to {isRtl ? 'LTR' : 'RTL'}</NexusText>
-                </NexusButton>
-              </NexusStack>
-              <input
-                type="text"
-                dir={isRtl ? 'rtl' : 'ltr'}
-                value={bidiVal}
-                onChange={(e) => setBidiVal(e.target.value)}
-                className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface text-sm"
-              />
-            </NexusStack>
-          </NexusCard>
-
-          {/* Section 04: Industrial File Upload Zone */}
-          <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-            <NexusStack gap="var(--nx-space-3)">
-              <NexusText variant="h3">04. All-Case Industrial File Upload & Media Studio</NexusText>
-              <div className="p-8 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center bg-surface-container text-center cursor-pointer">
-                <span className="material-symbols-outlined text-[32px] text-primary mb-2">cloud_upload</span>
-                <span className="text-sm font-semibold text-on-surface">Drag & drop tax invoices or thermal templates</span>
-                <span className="text-xs text-outline mt-0.5">Supported: PDF, JSON, CSV, PNG (Up to 25MB)</span>
-              </div>
-              {uploadedFiles.map((f) => (
-                <div key={f} className="p-3 rounded-lg bg-surface-container flex items-center justify-between border border-surface-container-highest">
-                  <div className="flex items-center gap-2 text-xs font-mono">
-                    <span className="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
-                    <span>{f}</span>
-                  </div>
-                  <NexusBadge variant="success" label="Scanned & Verified" />
-                </div>
-              ))}
-            </NexusStack>
-          </NexusCard>
+          <NexusText variant="body" role="secondary">
+            100% in-house `@nexus/ui/inputs/*` primitives with universal Dark/Light parity and zero raw HTML inputs.
+          </NexusText>
         </NexusStack>
-      </NexusBox>
-    </NexusBox>
+
+        <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+          {(['default', 'error', 'disabled'] as const).map((s) => (
+            <NexusButton
+              key={s}
+              variant={previewState === s ? 'primary' : 'outline'}
+              size="sm"
+              onClick={() => setPreviewState(s)}
+            >
+              {s.toUpperCase()}
+            </NexusButton>
+          ))}
+        </NexusStack>
+      </NexusStack>
+
+      <div className="nx-studio-layout">
+        <NexusStack gap="var(--nx-space-6)" style={{ minWidth: 0 }}>
+          <StudioTextSection
+            itemName={itemName}
+            onChangeItemName={setItemName}
+            searchQuery={searchQuery}
+            onChangeSearchQuery={setSearchQuery}
+            notes={notes}
+            onChangeNotes={setNotes}
+            isDisabled={isDisabled}
+            errorKey={errorKey}
+          />
+          <StudioChoiceSection
+            station={station}
+            onChangeStation={setStation}
+            channels={channels}
+            onChangeChannels={setChannels}
+            plan={plan}
+            onChangePlan={setPlan}
+            permissions={permissions}
+            onChangePermissions={setPermissions}
+            isTaxable={isTaxable}
+            onChangeIsTaxable={setIsTaxable}
+            allowBackorder={allowBackorder}
+            onChangeAllowBackorder={setAllowBackorder}
+            stationOptions={STATION_OPTIONS}
+            channelOptions={CHANNEL_OPTIONS}
+            planOptions={PLAN_OPTIONS}
+            permissionOptions={PERMISSION_OPTIONS}
+            isDisabled={isDisabled}
+            errorKey={errorKey}
+          />
+          <StudioDateTimeSection
+            openedOn={openedOn}
+            onChangeOpenedOn={setOpenedOn}
+            shiftStart={shiftStart}
+            onChangeShiftStart={setShiftStart}
+            period={period}
+            onChangePeriod={setPeriod}
+            isDisabled={isDisabled}
+            errorKey={errorKey}
+          />
+          <StudioSpecializedSection
+            unitPrice={unitPrice}
+            onChangeUnitPrice={setUnitPrice}
+            safetyStock={safetyStock}
+            onChangeSafetyStock={setSafetyStock}
+            wasteAllowance={wasteAllowance}
+            onChangeWasteAllowance={setWasteAllowance}
+            managerPin={managerPin}
+            onChangeManagerPin={setManagerPin}
+            brandColor={brandColor}
+            onChangeBrandColor={setBrandColor}
+            attachment={attachment}
+            onChangeAttachment={setAttachment}
+            locale={locale}
+            onChangeLocale={setLocale}
+            labels={labels}
+            onChangeLabels={setLabels}
+            isDisabled={isDisabled}
+            errorKey={errorKey}
+          />
+        </NexusStack>
+
+        <StudioInspector
+          payload={payload}
+          previewState={previewState}
+        />
+      </div>
+    </NexusStack>
   );
 }

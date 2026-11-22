@@ -3,16 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { NexusBadge, NexusBox, NexusStack, NexusText } from '@nexus/ui';
+import { NexusBadge, NexusStack, NexusText } from '@nexus/ui';
+import { NexusGlyph, type GlyphName } from './NexusGlyph';
 
 export interface NexusEnterpriseSidebarProps {
   readonly isOpen?: boolean;
+  readonly onNavigate?: () => void;
 }
 
 interface NavItem {
   readonly href: string;
   readonly label: string;
-  readonly icon: string;
+  readonly icon: GlyphName;
+  readonly hint?: string;
   readonly badge?: string;
   readonly badgeVariant?: 'success' | 'warning' | 'info' | 'neutral';
 }
@@ -22,86 +25,74 @@ interface NavGroup {
   readonly items: readonly NavItem[];
 }
 
+const NAV_GROUPS: readonly NavGroup[] = [
+  {
+    title: 'Mission Control',
+    items: [
+      { href: '/', label: 'System Overview', icon: 'dashboard', hint: 'D', badge: 'LIVE', badgeVariant: 'success' },
+      { href: '/inputs', label: 'Input Controls Studio', icon: 'tune', hint: 'I', badge: '19', badgeVariant: 'info' },
+    ],
+  },
+  {
+    title: 'Commerce & POS',
+    items: [
+      { href: '/pos', label: 'Counter POS', icon: 'point_of_sale', hint: 'F2' },
+      { href: '/kitchen', label: 'Kitchen Display', icon: 'skillet', hint: 'K', badge: '3', badgeVariant: 'warning' },
+    ],
+  },
+  {
+    title: 'Inventory & Recipes',
+    items: [
+      { href: '/inventory', label: 'Recipe BOM & Stock', icon: 'inventory_2', hint: 'N' },
+    ],
+  },
+  {
+    title: 'Finance & Treasury',
+    items: [
+      { href: '/finance', label: 'Shift Cashier Console', icon: 'payments', hint: 'S' },
+      { href: '/gateways', label: 'Payment Rails', icon: 'credit_card', hint: 'G', badge: '5', badgeVariant: 'success' },
+    ],
+  },
+  {
+    title: 'Workforce & HRMS',
+    items: [
+      { href: '/hr', label: 'Roster & Punch Clock', icon: 'badge', hint: 'H' },
+    ],
+  },
+  {
+    title: 'SaaS Lifecycle',
+    items: [
+      { href: '/billing', label: 'Subscription & Quotas', icon: 'receipt_long', hint: 'B', badge: 'PRO', badgeVariant: 'neutral' },
+      { href: '/onboarding', label: 'Tenant Onboarding', icon: 'domain_add', hint: 'T' },
+    ],
+  },
+];
+
 export function NexusEnterpriseSidebar({
   isOpen = true,
+  onNavigate,
 }: NexusEnterpriseSidebarProps): React.JSX.Element {
   const pathname = usePathname();
 
-  const navGroups: readonly NavGroup[] = [
-    {
-      title: 'MISSION CONTROL',
-      items: [
-        { href: '/', label: 'System Overview', icon: 'dashboard', badge: 'LIVE', badgeVariant: 'success' },
-        { href: '/inputs', label: 'Inputs & Form Studio', icon: 'edit_note', badge: '19 Controls', badgeVariant: 'info' },
-      ],
-    },
-    {
-      title: 'COMMERCE & POS',
-      items: [
-        { href: '/pos', label: 'Counter POS Canvas', icon: 'point_of_sale', badge: 'F4 Pay', badgeVariant: 'neutral' },
-        { href: '/kitchen', label: 'KDS Barista Canvas', icon: 'skillet', badge: '3 Orders', badgeVariant: 'warning' },
-      ],
-    },
-    {
-      title: 'INVENTORY & RECIPE BOM',
-      items: [
-        { href: '/inventory', label: 'Recipe BOM & Stock', icon: 'inventory_2', badge: '6 SKUs', badgeVariant: 'info' },
-      ],
-    },
-    {
-      title: 'FINANCE & TREASURY',
-      items: [
-        { href: '/finance', label: 'Shift Cashier Console', icon: 'payments' },
-        { href: '/gateways', label: 'Payment Gateways & Rails', icon: 'credit_card', badge: '5 Rails', badgeVariant: 'success' },
-      ],
-    },
-    {
-      title: 'WORKFORCE & HRMS',
-      items: [
-        { href: '/hr', label: 'Staff Roster & Punch Clock', icon: 'badge' },
-      ],
-    },
-    {
-      title: 'SAAS LIFECYCLE',
-      items: [
-        { href: '/billing', label: 'Subscription & Quotas', icon: 'receipt_long', badge: 'PRO', badgeVariant: 'neutral' },
-        { href: '/onboarding', label: 'Tenant Onboarding', icon: 'domain_add' },
-      ],
-    },
-  ];
-
-  if (!isOpen) return <></>;
-
   return (
-    <NexusBox
-      style={{
-        position: 'fixed',
-        left: 0,
-        top: '56px',
-        bottom: 0,
-        width: '280px',
-        backgroundColor: 'var(--nx-surface-card)',
-        borderRight: '1px solid var(--nx-border-default)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        zIndex: 40,
-        overflowY: 'auto',
-      }}
+    <aside
+      className={`nx-sidebar ${isOpen ? '' : 'nx-sidebar--collapsed'}`.trim()}
+      aria-label="Primary navigation"
+      aria-hidden={!isOpen}
     >
-      <NexusBox padding="var(--nx-space-4)">
-        <NexusStack gap="var(--nx-space-4)">
-          {navGroups.map((group) => (
-            <NexusStack key={group.title} gap="var(--nx-space-1)">
+      <nav className="nx-scroll-area" style={{ flex: 1, minHeight: 0, padding: '12px 10px 16px' }}>
+        <NexusStack gap="18px">
+          {NAV_GROUPS.map((group) => (
+            <NexusStack key={group.title} gap="2px">
               <NexusText
                 variant="caption"
                 role="muted"
                 style={{
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.05em',
-                  paddingLeft: 'var(--nx-space-2)',
-                  marginBottom: 'var(--nx-space-1)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  padding: '0 10px 6px',
+                  fontSize: '10px',
+                  fontWeight: 600,
                 }}
               >
                 {group.title}
@@ -110,69 +101,94 @@ export function NexusEnterpriseSidebar({
               {group.items.map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link key={item.href} href={item.href}>
-                    <NexusBox
-                      padding="7px 12px"
-                      style={{
-                        borderRadius: '6px',
-                        backgroundColor: isActive ? 'var(--nx-surface-subtle)' : 'transparent',
-                        border: isActive ? '1px solid var(--nx-border-subtle)' : '1px solid transparent',
-                        transition: 'background-color 0.12s ease',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <NexusStack direction="row" align="center" justify="space-between">
-                        <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-                          <span
-                            className="material-symbols-outlined"
-                            style={{
-                              fontSize: '18px',
-                              color: isActive ? 'var(--nx-action-primary)' : 'var(--nx-text-secondary)',
-                            }}
-                          >
-                            {item.icon}
-                          </span>
-                          <NexusText
-                            variant="label"
-                            role={isActive ? 'primary' : 'secondary'}
-                            style={{ fontWeight: isActive ? 600 : 500, fontSize: '12px' }}
-                          >
-                            {item.label}
-                          </NexusText>
-                        </NexusStack>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onNavigate}
+                    aria-current={isActive ? 'page' : undefined}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '8px',
+                      minHeight: '34px',
+                      padding: '6px 10px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      backgroundColor: isActive ? 'var(--nx-surface-selected)' : 'transparent',
+                      border: `1px solid ${isActive ? 'var(--nx-border-default)' : 'transparent'}`,
+                      transition: 'background-color 0.12s ease, border-color 0.12s ease',
+                    }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '9px', minWidth: 0 }}>
+                      <NexusGlyph
+                        name={item.icon}
+                        size={18}
+                        color={isActive ? 'var(--nx-action-primary)' : 'var(--nx-text-muted)'}
+                      />
+                      <NexusText
+                        variant="label"
+                        role={isActive ? 'primary' : 'secondary'}
+                        style={{
+                          fontWeight: isActive ? 600 : 500,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {item.label}
+                      </NexusText>
+                    </span>
 
-                        {item.badge && (
-                          <NexusBadge variant={item.badgeVariant ?? 'neutral'} label={item.badge} />
-                        )}
-                      </NexusStack>
-                    </NexusBox>
+                    {item.badge ? (
+                      <NexusBadge variant={item.badgeVariant ?? 'neutral'} label={item.badge} />
+                    ) : (
+                      item.hint && (
+                        <NexusText
+                          variant="code"
+                          role="muted"
+                          style={{
+                            fontSize: '10px',
+                            padding: '1px 5px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--nx-border-subtle)',
+                          }}
+                        >
+                          {item.hint}
+                        </NexusText>
+                      )
+                    )}
                   </Link>
                 );
               })}
             </NexusStack>
           ))}
         </NexusStack>
-      </NexusBox>
+      </nav>
 
-      {/* Hardware Telemetry Footer */}
-      <NexusBox
-        padding="var(--nx-space-3) var(--nx-space-4)"
+      <div
         style={{
+          flexShrink: 0,
+          padding: '10px 12px 12px',
+          borderTop: '1px solid var(--nx-border-subtle)',
           backgroundColor: 'var(--nx-surface-subtle)',
-          borderTop: '1px solid var(--nx-border-default)',
         }}
       >
-        <NexusStack gap="var(--nx-space-1)">
+        <NexusStack gap="6px">
           <NexusStack direction="row" align="center" justify="space-between">
             <NexusText variant="caption" role="muted">ESC/POS Printer</NexusText>
-            <NexusBadge variant="success" label="Connected" />
+            <NexusBadge variant="success" dot label="Connected" />
           </NexusStack>
           <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="caption" role="muted">RJ11 Drawer</NexusText>
+            <NexusText variant="caption" role="muted">Cash Drawer</NexusText>
             <NexusBadge variant="neutral" label="Armed" />
           </NexusStack>
+          <NexusStack direction="row" align="center" justify="space-between">
+            <NexusText variant="caption" role="muted">Offline Outbox</NexusText>
+            <NexusBadge variant="info" label="0 queued" />
+          </NexusStack>
         </NexusStack>
-      </NexusBox>
-    </NexusBox>
+      </div>
+    </aside>
   );
 }

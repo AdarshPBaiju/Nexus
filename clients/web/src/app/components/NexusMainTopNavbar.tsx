@@ -1,19 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import {
-  NexusBadge,
-  NexusBox,
-  NexusButton,
-  NexusStack,
-  NexusText,
-} from '@nexus/ui';
+import { NexusBadge, NexusBox, NexusButton, NexusStack, NexusText } from '@nexus/ui';
 import { useAuth } from '../../runtime/auth/AuthContext';
+import { TopNavSearch } from './navbar/TopNavSearch';
+import { TopNavTelemetry } from './navbar/TopNavTelemetry';
+import { TopNavOperator } from './navbar/TopNavOperator';
 
 export interface NexusMainTopNavbarProps {
   readonly onToggleSidebar?: () => void;
   readonly isSidebarOpen?: boolean;
+}
+
+type ThemeMode = 'dark' | 'light';
+
+const THEME_STORAGE_KEY = 'nexus.theme';
+
+function readStoredTheme(): ThemeMode {
+  if (typeof window === 'undefined') return 'dark';
+  try {
+    const stored = window.sessionStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark') return stored;
+  } catch {
+    // Ignore restricted storage contexts.
+  }
+  return 'dark';
 }
 
 export function NexusMainTopNavbar({
@@ -21,18 +33,27 @@ export function NexusMainTopNavbar({
   isSidebarOpen = true,
 }: NexusMainTopNavbarProps): React.JSX.Element {
   const { session, activeStaff, lockWorkstation } = useAuth();
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<ThemeMode>('dark');
 
-  const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+  useEffect(() => {
+    const stored = readStoredTheme();
+    setTheme(stored);
+    document.documentElement.setAttribute('data-theme', stored);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    const nextTheme: ThemeMode = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
-    document.documentElement.className = nextTheme;
-  };
+    try {
+      window.sessionStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch {
+      // Theme stays in memory when storage is unavailable.
+    }
+  }, [theme]);
 
   return (
-    <NexusBox
-      padding="0 var(--nx-space-4)"
+    <header
       style={{
         height: '56px',
         backgroundColor: 'var(--nx-surface-card)',
@@ -45,121 +66,104 @@ export function NexusMainTopNavbar({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 'var(--nx-space-3)',
+        padding: '0 12px',
       }}
     >
-      {/* Left: Mobile/Sidebar trigger + Brand Logo + Tenant & Scope */}
-      <NexusStack direction="row" align="center" gap="var(--nx-space-3)">
-        <NexusButton variant="ghost" size="sm" onClick={onToggleSidebar}>
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+      <NexusStack direction="row" align="center" gap="var(--nx-space-3)" style={{ minWidth: 0 }}>
+        <NexusButton
+          variant="ghost"
+          size="sm"
+          onClick={onToggleSidebar}
+          ariaLabel={isSidebarOpen ? 'Collapse navigation' : 'Expand navigation'}
+          title={isSidebarOpen ? 'Collapse navigation' : 'Expand navigation'}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '19px' }} aria-hidden="true">
             {isSidebarOpen ? 'menu_open' : 'menu'}
           </span>
         </NexusButton>
 
-        <Link href="/">
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <NexusText variant="h3" style={{ letterSpacing: '-0.5px', fontWeight: 800 }}>
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <NexusStack direction="row" align="center" gap="8px">
+            <NexusBox
+              style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '7px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'var(--nx-action-primary)',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: '17px', color: 'var(--nx-action-text)' }}
+                aria-hidden="true"
+              >
+                apps
+              </span>
+            </NexusBox>
+            <NexusText variant="h4" style={{ letterSpacing: '-0.02em' }}>
               NEXUS
             </NexusText>
             <NexusBadge variant="neutral" label="v5.4 PRO" />
           </NexusStack>
         </Link>
 
-        {/* 6-Dim Org Scope Pill */}
         <NexusBox
-          padding="4px 10px"
+          className="nx-topnav-scope"
           style={{
-            backgroundColor: 'var(--nx-surface-subtle)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '7px',
+            height: '28px',
+            padding: '0 9px',
             borderRadius: '6px',
             border: '1px solid var(--nx-border-subtle)',
+            backgroundColor: 'var(--nx-surface-subtle)',
+            minWidth: 0,
           }}
         >
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--nx-text-secondary)' }}>
-              storefront
-            </span>
-            <NexusText variant="caption" role="primary">
-              {session.tenantName}
-            </NexusText>
-            <NexusText variant="caption" role="muted">
-              · {session.branchName}
-            </NexusText>
-          </NexusStack>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: '15px', color: 'var(--nx-text-muted)' }}
+            aria-hidden="true"
+          >
+            storefront
+          </span>
+          <NexusText variant="caption" style={{ whiteSpace: 'nowrap' }}>
+            {session.tenantName}
+          </NexusText>
+          <NexusText variant="caption" role="muted" style={{ whiteSpace: 'nowrap' }}>
+            · {session.branchName}
+          </NexusText>
         </NexusBox>
       </NexusStack>
 
-      {/* Center: Global Command Palette Search */}
-      <NexusBox style={{ flex: 1, maxWidth: '380px', margin: '0 var(--nx-space-4)' }}>
-        <NexusBox
-          padding="6px 12px"
-          style={{
-            backgroundColor: 'var(--nx-surface-subtle)',
-            borderRadius: '6px',
-            border: '1px solid var(--nx-border-subtle)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            cursor: 'pointer',
-          }}
-        >
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--nx-text-muted)' }}>
-              search
-            </span>
-            <NexusText variant="caption" role="muted">
-              Quick navigate, scan SKU, or command...
-            </NexusText>
-          </NexusStack>
-          <NexusText variant="code" role="muted" style={{ fontSize: '10px', padding: '1px 4px', backgroundColor: 'var(--nx-surface-card)', borderRadius: '3px' }}>
-            ⌘K
-          </NexusText>
-        </NexusBox>
-      </NexusBox>
+      <TopNavSearch />
 
-      {/* Right: Runtime Status + Latency + Theme + Cashier Profile & Lock */}
-      <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-        {/* Latency Pill */}
-        <NexusBox
-          padding="3px 8px"
-          style={{
-            backgroundColor: 'var(--nx-surface-subtle)',
-            borderRadius: '6px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <NexusText variant="caption" role="muted" style={{ fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
-            43ms (p99 &lt; 50ms)
-          </NexusText>
-        </NexusBox>
+      <NexusStack direction="row" align="center" gap="8px" style={{ flexShrink: 0 }}>
+        <TopNavTelemetry />
 
-        {/* Theme Toggle */}
-        <NexusButton variant="outline" size="sm" onClick={toggleTheme}>
-          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+        <NexusButton
+          variant="outline"
+          size="sm"
+          onClick={toggleTheme}
+          ariaLabel={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '16px' }} aria-hidden="true">
             {theme === 'dark' ? 'light_mode' : 'dark_mode'}
           </span>
         </NexusButton>
 
-        {/* Cashier User & Lock Terminal */}
-        <NexusButton
-          variant="secondary"
-          size="sm"
-          onClick={lockWorkstation}
-          title="Click to lock workstation (Cashier PIN required to resume)"
-        >
-          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-            <span style={{ fontSize: '14px' }}>{activeStaff.avatarIcon}</span>
-            <NexusText variant="caption" style={{ fontWeight: 600 }}>
-              {session.name}
-            </NexusText>
-            <NexusBadge variant="neutral" label={session.role} />
-            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--nx-text-muted)' }}>
-              lock
-            </span>
-          </NexusStack>
-        </NexusButton>
+        <TopNavOperator
+          session={session}
+          activeStaff={activeStaff}
+          onLock={lockWorkstation}
+        />
       </NexusStack>
-    </NexusBox>
+    </header>
   );
 }

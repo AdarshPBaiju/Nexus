@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { NexusMainTopNavbar } from '../components/NexusMainTopNavbar';
-import { NexusEnterpriseSidebar } from '../components/NexusEnterpriseSidebar';
 import { ShiftRegisterConsole } from '../../engines/finance/ShiftRegisterConsole';
 import {
   NexusBadge,
@@ -15,24 +13,23 @@ import type { ShiftRegisterSessionDto } from '../../engines/finance/types';
 
 export default function FinancePage(): React.JSX.Element {
   const { session: authSession } = useAuth();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const [session, setSession] = useState<ShiftRegisterSessionDto>({
-    sessionId: 'SES-2026-0089',
-    cashierId: authSession.id,
-    cashierName: authSession.name,
+    id: 'SES-2026-0089',
     workstationId: authSession.workstationId,
+    cashierUserId: authSession.id,
+    treasuryAccountId: 'TRS-CASH-DRAWER-01',
     status: 'OPEN',
     openedAt: new Date(Date.now() - 14400000).toISOString(),
     openingFloat: '200.00',
-    expectedCash: '742.50',
-    cashSales: '542.50',
-    paidOutTotal: '0.00',
-    currency: 'USD',
-    expenses: [],
+    systemCashTotal: '542.50',
+    expectedCashTotal: '742.50',
+    actualCashCount: null,
+    varianceAmount: null,
   });
 
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
+
 
   const handleOpen = async (float: string) => {
     setSession((s) => ({ ...s, openingFloat: float, status: 'OPEN' }));
@@ -40,11 +37,12 @@ export default function FinancePage(): React.JSX.Element {
   };
 
   const handleClose = async (actualCount: string) => {
-    const diff = (parseFloat(actualCount) - parseFloat(session.expectedCash)).toFixed(2);
+    const diff = (parseFloat(actualCount) - parseFloat(session.expectedCashTotal)).toFixed(2);
     setSession((s) => ({
       ...s,
       status: 'CLOSED',
-      closingCashActual: actualCount,
+      closedAt: new Date().toISOString(),
+      actualCashCount: actualCount,
       varianceAmount: diff,
     }));
     setStatusMsg(`Shift closed. Actual: $${actualCount} | Variance: $${diff}`);
@@ -53,55 +51,35 @@ export default function FinancePage(): React.JSX.Element {
   const handleExpense = async (amount: string, reason: string) => {
     setSession((s) => ({
       ...s,
-      paidOutTotal: (parseFloat(s.paidOutTotal) + parseFloat(amount)).toFixed(2),
-      expectedCash: (parseFloat(s.expectedCash) - parseFloat(amount)).toFixed(2),
-      expenses: [...s.expenses, { id: `EXP-${Date.now()}`, amount, reason, timestamp: new Date().toISOString() }],
+      expectedCashTotal: (parseFloat(s.expectedCashTotal) - parseFloat(amount)).toFixed(2),
     }));
-    setStatusMsg(`Recorded expense: $${amount} for ${reason}`);
+    setStatusMsg(`Recorded petty cash: $${amount} for ${reason}`);
   };
 
   return (
-    <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
-      <NexusMainTopNavbar
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+    <NexusStack gap="var(--nx-space-4)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      {statusMsg && (
+        <NexusBox
+          padding="var(--nx-space-2) var(--nx-space-4)"
+          style={{
+            backgroundColor: 'var(--nx-surface-card)',
+            borderRadius: '6px',
+            border: '1px solid var(--nx-border-default)',
+          }}
+        >
+          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+            <NexusBadge variant="info" label="Audit Event" />
+            <NexusText variant="label">{statusMsg}</NexusText>
+          </NexusStack>
+        </NexusBox>
+      )}
+
+      <ShiftRegisterConsole
+        initialSession={session}
+        onOpenShift={handleOpen}
+        onCloseShift={handleClose}
+        onAddExpense={handleExpense}
       />
-
-      <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
-
-      <NexusBox
-        style={{
-          marginLeft: isSidebarOpen ? '280px' : 0,
-          marginTop: '56px',
-          padding: 'var(--nx-space-8) var(--nx-space-6)',
-          transition: 'margin-left 0.2s ease',
-        }}
-      >
-        <NexusStack gap="var(--nx-space-4)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          {statusMsg && (
-            <NexusBox
-              padding="var(--nx-space-2) var(--nx-space-4)"
-              style={{
-                backgroundColor: 'var(--nx-surface-card)',
-                borderRadius: '6px',
-                border: '1px solid var(--nx-border-default)',
-              }}
-            >
-              <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-                <NexusBadge variant="info" label="Audit Event" />
-                <NexusText variant="label">{statusMsg}</NexusText>
-              </NexusStack>
-            </NexusBox>
-          )}
-
-          <ShiftRegisterConsole
-            initialSession={session}
-            onOpenShift={handleOpen}
-            onCloseShift={handleClose}
-            onAddExpense={handleExpense}
-          />
-        </NexusStack>
-      </NexusBox>
-    </NexusBox>
+    </NexusStack>
   );
 }

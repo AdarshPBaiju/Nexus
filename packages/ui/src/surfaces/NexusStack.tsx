@@ -6,6 +6,7 @@ export interface NexusStackProps {
   readonly align?: 'start' | 'center' | 'end' | 'stretch';
   readonly justify?: 'start' | 'center' | 'end' | 'space-between';
   readonly className?: string;
+  readonly style?: React.CSSProperties;
   readonly children: React.ReactNode;
 }
 
@@ -15,6 +16,7 @@ export function NexusStack({
   align = 'stretch',
   justify = 'start',
   className = '',
+  style = {},
   children,
 }: NexusStackProps): React.JSX.Element {
   const stackStyle: React.CSSProperties = {
@@ -23,6 +25,7 @@ export function NexusStack({
     gap,
     alignItems: align,
     justifyContent: justify,
+    ...style,
   };
 
   return (

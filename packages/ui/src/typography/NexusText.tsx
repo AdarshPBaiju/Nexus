@@ -20,7 +20,52 @@ export interface NexusTextProps {
   readonly role?: TextColorRole;
   readonly tabular?: boolean;
   readonly className?: string;
+  readonly style?: React.CSSProperties;
+  readonly title?: string;
   readonly children: React.ReactNode;
+}
+
+const VARIANT_ELEMENT: Record<TextVariant, keyof React.JSX.IntrinsicElements> = {
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  h4: 'h4',
+  body: 'p',
+  caption: 'span',
+  code: 'code',
+  label: 'span',
+  kpi: 'span',
+};
+
+function resolveColor(surface: string, role: TextColorRole): string {
+  if (surface === 'primary-action' || surface === 'destructive-action') {
+    return 'var(--nx-action-text)';
+  }
+  if (surface === 'tooltip') {
+    return 'var(--nx-text-inverse)';
+  }
+  if (surface === 'status-success-subtle') {
+    return 'var(--nx-status-success-text)';
+  }
+  if (surface === 'status-warning-subtle') {
+    return 'var(--nx-status-warning-text)';
+  }
+  if (surface === 'status-danger-subtle') {
+    return 'var(--nx-status-danger-text)';
+  }
+  if (surface === 'status-info-subtle') {
+    return 'var(--nx-status-info-text)';
+  }
+  if (role === 'secondary') {
+    return 'var(--nx-text-secondary)';
+  }
+  if (role === 'muted') {
+    return 'var(--nx-text-muted)';
+  }
+  if (role === 'disabled') {
+    return 'var(--nx-text-disabled)';
+  }
+  return 'var(--nx-text-primary)';
 }
 
 export function NexusText({
@@ -28,42 +73,25 @@ export function NexusText({
   role = 'primary',
   tabular = false,
   className = '',
+  style = {},
+  title,
   children,
 }: NexusTextProps): React.JSX.Element {
   const surface = useSurface();
+  const Component = VARIANT_ELEMENT[variant];
 
-  // Background-Aware Token Resolution
-  let colorVar = 'var(--nx-text-primary)';
-  if (surface === 'primary-action' || surface === 'destructive-action') {
-    colorVar = 'var(--nx-action-text)';
-  } else if (surface === 'tooltip') {
-    colorVar = 'var(--nx-text-inverse)';
-  } else if (surface === 'status-success-subtle') {
-    colorVar = 'var(--nx-status-success-text)';
-  } else if (surface === 'status-warning-subtle') {
-    colorVar = 'var(--nx-status-warning-text)';
-  } else if (surface === 'status-danger-subtle') {
-    colorVar = 'var(--nx-status-danger-text)';
-  } else if (surface === 'status-info-subtle') {
-    colorVar = 'var(--nx-status-info-text)';
-  } else if (role === 'secondary') {
-    colorVar = 'var(--nx-text-secondary)';
-  } else if (role === 'muted') {
-    colorVar = 'var(--nx-text-muted)';
-  } else if (role === 'disabled') {
-    colorVar = 'var(--nx-text-disabled)';
-  }
-
-  const baseStyle: React.CSSProperties = {
-    color: colorVar,
-    fontVariantNumeric: tabular ? 'tabular-nums lining-nums' : undefined,
-    textAlign: tabular ? 'end' : undefined,
+  const textStyle: React.CSSProperties = {
+    color: resolveColor(surface, role),
+    ...style,
   };
 
-  const Component = variant.startsWith('h') ? (variant as keyof React.JSX.IntrinsicElements) : 'span';
-  return (
-    <Component style={baseStyle} className={className}>
-      {children}
-    </Component>
+  return React.createElement(
+    Component,
+    {
+      className: `nx-text nx-text--${variant} ${tabular ? 'nx-numeric' : ''} ${className}`.trim(),
+      style: textStyle,
+      title,
+    },
+    children
   );
 }

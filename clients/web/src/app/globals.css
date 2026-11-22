@@ -1,11 +1,10 @@
+/* Font and token imports must precede every other CSS rule. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import '../../../../packages/ui/src/tokens/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Project Nexus Semantic Design Tokens & Next.js App Global CSS */
-@import '../../../../packages/ui/src/tokens/tokens.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 :root,
 html[data-theme="dark"],
@@ -126,23 +125,250 @@ body {
   background: rgba(140, 144, 159, 0.45);
 }
 
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-
 .nx-tabular {
   font-variant-numeric: tabular-nums;
   font-family: var(--font-mono);
+}
+
+/* ------------------------------------------------------------------
+   Application Chrome Layout
+   One shell owns the fixed navbar, sidebar and scrollable work area so
+   individual routes never re-mount or double-offset the chrome.
+------------------------------------------------------------------ */
+.nx-shell {
+  min-height: 100dvh;
+  background-color: var(--nx-surface-bg);
+}
+
+.nx-shell-main {
+  margin-inline-start: 272px;
+  padding-block-start: 56px;
+  min-height: 100dvh;
+  transition: margin-inline-start 0.18s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.nx-shell-main--collapsed {
+  margin-inline-start: 0;
+}
+
+.nx-shell-content {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: 24px 24px 48px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nx-shell-content--narrow {
+  max-width: 880px;
+}
+
+.nx-shell-content--flush {
+  max-width: none;
+  padding: 0;
+  min-height: 0;
+  height: calc(100dvh - 56px);
+  display: flex;
+  flex-direction: column;
+}
+
+.nx-sidebar {
+  position: fixed;
+  inset-block: 56px 0;
+  inset-inline-start: 0;
+  width: 272px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--nx-surface-card);
+  border-inline-end: 1px solid var(--nx-border-default);
+  transition: transform 0.18s ease;
+}
+
+.nx-sidebar--collapsed {
+  transform: translateX(-100%);
+}
+
+.nx-sidebar-scrim {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .nx-shell-main {
+    margin-inline-start: 0;
+  }
+
+  .nx-sidebar {
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.45);
+  }
+
+  .nx-sidebar--collapsed {
+    transform: translateX(-100%);
+  }
+
+  .nx-sidebar-scrim {
+    display: block;
+    position: fixed;
+    inset: 56px 0 0;
+    background: rgba(3, 6, 12, 0.5);
+    z-index: 80;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 760px) {
+  .nx-shell-content {
+    padding: 16px 14px 40px;
+  }
+
+  .nx-topnav-search,
+  .nx-topnav-latency,
+  .nx-topnav-scope {
+    display: none !important;
+  }
+}
+
+/* Enterprise Input Controls Studio */
+.nx-studio-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 316px;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .nx-studio-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nx-studio-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 1180px) {
+  .nx-studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.nx-inspector {
+  position: sticky;
+  top: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--nx-border-default);
+  background-color: var(--nx-surface-card);
+  overflow: hidden;
+}
+
+/* POS workspace layout */
+.nx-pos-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 376px;
+  gap: 12px;
+  padding: 12px;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1360px) {
+  .nx-pos-workspace {
+    grid-template-columns: minmax(0, 1fr) 336px;
+  }
+}
+
+@media (max-width: 960px) {
+  .nx-pos-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: auto;
+  }
+}
+
+.nx-pos-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--nx-border-default);
+  background-color: var(--nx-surface-card);
+}
+
+/* POS catalog density helpers */
+.nx-pos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(206px, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+
+@media (max-width: 1500px) {
+  .nx-pos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
+  }
+}
+
+.nx-pos-product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 132px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--nx-border-subtle);
+  background-color: var(--nx-surface-subtle);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.nx-pos-product:hover {
+  border-color: var(--nx-border-focus);
+}
+
+.nx-pos-product:active {
+  transform: scale(0.995);
+}
+
+.nx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid var(--nx-border-default);
+  background-color: transparent;
+  color: var(--nx-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.nx-chip:hover {
+  background-color: var(--nx-surface-subtle);
+  color: var(--nx-text-primary);
+}
+
+.nx-chip--active {
+  background-color: var(--nx-action-primary);
+  border-color: var(--nx-action-primary);
+  color: var(--nx-action-text);
+}
+
+.nx-chip--active:hover {
+  background-color: var(--nx-action-primary-hover);
+  color: var(--nx-action-text);
 }

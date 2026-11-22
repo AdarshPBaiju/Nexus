@@ -3,6 +3,9 @@ import {
   NexusBadge,
   NexusButton,
   NexusListingPageShell,
+  NexusSearchInput,
+  NexusSelect,
+  NexusText,
 } from '@nexus/ui';
 import type { EmployeeDto } from './types';
 
@@ -47,27 +50,23 @@ export const StaffDirectoryView: React.FC<StaffDirectoryViewProps> = ({
       }
     >
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <input
-          type="search"
-          placeholder="Search by code or name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-72 rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] px-3 py-2 text-sm text-[var(--nx-text-primary)]"
-        />
+        <div style={{ width: '280px' }}>
+          <NexusSearchInput
+            placeholderKey="Search by code or name..."
+            value={searchTerm}
+            onChange={setSearchTerm}
+          />
+        </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[var(--nx-text-secondary)]">Department:</span>
-          <select
-            value={selectedDept}
-            onChange={(e) => setSelectedDept(e.target.value)}
-            className="rounded-lg border border-[var(--nx-border-default)] bg-[var(--nx-surface-subtle)] px-3 py-1.5 text-sm text-[var(--nx-text-primary)]"
-          >
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
+          <NexusText variant="caption" role="secondary">Department:</NexusText>
+          <div style={{ width: '180px' }}>
+            <NexusSelect
+              value={selectedDept}
+              onChange={setSelectedDept}
+              options={departments.map((dept) => ({ value: dept, label: dept }))}
+            />
+          </div>
         </div>
       </div>
 

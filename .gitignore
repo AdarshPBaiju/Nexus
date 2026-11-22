@@ -38,6 +38,8 @@ desktop.ini
 *.p12
 
 # --- Node.js & TypeScript ---
+# --- Build & Temporary Artifacts ---
+.agent-tmp/
 node_modules/
 .pnpm-store/
 .npm/

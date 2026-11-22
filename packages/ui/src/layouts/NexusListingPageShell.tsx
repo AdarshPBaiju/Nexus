@@ -4,8 +4,10 @@ import { NexusBadge } from '../surfaces/NexusBadge';
 
 export interface NexusListingPageShellProps {
   readonly title: string;
+  readonly subtitle?: string;
   readonly recordCount?: number;
   readonly actions?: React.ReactNode;
+  readonly primaryAction?: React.ReactNode;
   readonly searchBar?: React.ReactNode;
   readonly filterPresets?: React.ReactNode;
   readonly children: React.ReactNode;
@@ -13,12 +15,15 @@ export interface NexusListingPageShellProps {
 
 export function NexusListingPageShell({
   title,
+  subtitle,
   recordCount,
   actions,
+  primaryAction,
   searchBar,
   filterPresets,
   children,
 }: NexusListingPageShellProps): React.JSX.Element {
+  const resolvedActions = actions ?? primaryAction;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '100dvh' }}>
       <header
@@ -37,8 +42,13 @@ export function NexusListingPageShell({
           {recordCount !== undefined && (
             <NexusBadge label={recordCount.toString()} variant="neutral" />
           )}
+          {subtitle && (
+            <NexusText variant="caption" role="secondary">
+              {subtitle}
+            </NexusText>
+          )}
         </div>
-        {actions && <div>{actions}</div>}
+        {resolvedActions && <div>{resolvedActions}</div>}
       </header>
       {(searchBar || filterPresets) && (
         <div

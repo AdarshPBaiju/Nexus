@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import { AuthProvider } from '../runtime/auth/AuthContext';
-import { NexusShellRoot } from './components/NexusShellRoot';
-import { NexusBox } from '@nexus/ui';
+import { NexusAppChrome } from './components/NexusAppChrome';
 
 export const metadata: Metadata = {
   title: 'Project Nexus — Mission Control & Enterprise Operating System',
@@ -19,11 +18,7 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <body>
         <AuthProvider>
-          <NexusShellRoot>
-            <NexusBox style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-              {children}
-            </NexusBox>
-          </NexusShellRoot>
+          <NexusAppChrome>{children}</NexusAppChrome>
         </AuthProvider>
       </body>
     </html>
