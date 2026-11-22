@@ -6,6 +6,7 @@ import type { PosCartItem, PosCartSummary, PosHeldTab } from '../types';
 
 export class PosCounterController {
   private items: PosCartItem[] = [];
+  private cachedItems: readonly PosCartItem[] = Object.freeze([]);
   private heldTabs: Map<string, PosHeldTab> = new Map();
   private discountPercent: number = 0;
   private readonly taxRate: number = 0.10;
@@ -17,7 +18,7 @@ export class PosCounterController {
   }
 
   public get currentItems(): readonly PosCartItem[] {
-    return Object.freeze([...this.items]);
+    return this.cachedItems;
   }
 
   public get allHeldTabs(): readonly PosHeldTab[] {
@@ -129,6 +130,7 @@ export class PosCounterController {
   }
 
   private notify(): void {
+    this.cachedItems = Object.freeze([...this.items]);
     this.listeners.forEach((l) => l());
   }
 }

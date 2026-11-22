@@ -3,9 +3,18 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  NexusBadge,
+  NexusBox,
+  NexusButton,
+  NexusStack,
+  NexusText,
+} from '@nexus/ui';
+import { useAuth } from '../../runtime/auth/AuthContext';
 
 export function Navbar(): React.JSX.Element {
   const pathname = usePathname();
+  const { session } = useAuth();
 
   const links = [
     { href: '/', label: 'Overview' },
@@ -16,12 +25,9 @@ export function Navbar(): React.JSX.Element {
   ];
 
   return (
-    <header
+    <NexusBox
+      padding="var(--nx-space-3) var(--nx-space-6)"
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '12px 24px',
         backgroundColor: 'var(--nx-surface-card)',
         borderBottom: '1px solid var(--nx-border-default)',
         position: 'sticky',
@@ -29,77 +35,44 @@ export function Navbar(): React.JSX.Element {
         zIndex: 50,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '-0.5px' }}>
-            NEXUS
-          </span>
-          <span
-            style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              backgroundColor: 'var(--nx-surface-subtle)',
-              color: 'var(--nx-text-secondary)',
-              fontWeight: 600,
-            }}
-          >
-            v5.4
-          </span>
-        </Link>
+      <NexusStack direction="row" align="center" justify="space-between">
+        <NexusStack direction="row" align="center" gap="var(--nx-space-5)">
+          <Link href="/">
+            <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+              <NexusText variant="h3">NEXUS</NexusText>
+              <NexusBadge variant="neutral" label="v5.4" />
+            </NexusStack>
+          </Link>
 
-        <nav style={{ display: 'flex', gap: '8px' }}>
-          {links.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  backgroundColor: isActive ? 'var(--nx-surface-subtle)' : 'transparent',
-                  color: isActive ? 'var(--nx-text-primary)' : 'var(--nx-text-secondary)',
-                  transition: 'background-color 0.15s',
-                }}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
+          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+            {links.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link key={link.href} href={link.href}>
+                  <NexusButton
+                    variant={isActive ? 'secondary' : 'ghost'}
+                    size="sm"
+                  >
+                    <NexusText
+                      variant="label"
+                      role={isActive ? 'primary' : 'secondary'}
+                    >
+                      {link.label}
+                    </NexusText>
+                  </NexusButton>
+                </Link>
+              );
+            })}
+          </NexusStack>
+        </NexusStack>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '4px 10px',
-            borderRadius: '16px',
-            backgroundColor: 'var(--nx-surface-subtle)',
-            fontSize: '12px',
-          }}
-        >
-          <span
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--nx-status-success)',
-              display: 'inline-block',
-            }}
-          />
-          <span style={{ color: 'var(--nx-text-secondary)' }}>API:8000</span>
-        </div>
-
-        <div style={{ fontSize: '12px', color: 'var(--nx-text-muted)' }}>
-          Artisan Coffee · WS-LND-01
-        </div>
-      </div>
-    </header>
+        <NexusStack direction="row" align="center" gap="var(--nx-space-4)">
+          <NexusBadge variant="success" label="API: Active" />
+          <NexusText variant="caption" role="muted">
+            {session.tenantName} · {session.workstationId} ({session.role})
+          </NexusText>
+        </NexusStack>
+      </NexusStack>
+    </NexusBox>
   );
 }

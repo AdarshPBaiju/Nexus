@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { SurfaceProvider, SurfaceRole } from '../theme/SurfaceContext';
 import { NexusText } from '../typography/NexusText';

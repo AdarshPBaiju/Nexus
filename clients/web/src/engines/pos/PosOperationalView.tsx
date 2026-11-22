@@ -32,7 +32,7 @@ export const PosOperationalView: React.FC<PosOperationalViewProps> = ({
   useSyncExternalStore(
     (cb) => controller.subscribe(cb),
     () => controller.currentItems,
-    () => []
+    () => controller.currentItems
   );
 
   const summary = controller.summary;

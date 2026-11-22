@@ -4,6 +4,14 @@ import React, { useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { StaffDirectoryView } from '../../engines/hr/StaffDirectoryView';
 import { EssPunchClockWidget } from '../../engines/hr/EssPunchClockWidget';
+import {
+  NexusBadge,
+  NexusBox,
+  NexusCard,
+  NexusStack,
+  NexusText,
+} from '@nexus/ui';
+import { useAuth } from '../../runtime/auth/AuthContext';
 import type { EmployeeDto, PunchRecordDto } from '../../engines/hr/types';
 
 const INITIAL_STAFF: EmployeeDto[] = [
@@ -62,6 +70,7 @@ const INITIAL_STAFF: EmployeeDto[] = [
 ];
 
 export default function HrPage(): React.JSX.Element {
+  const { session } = useAuth();
   const [employees] = useState<EmployeeDto[]>(INITIAL_STAFF);
   const [punches, setPunches] = useState<PunchRecordDto[]>([
     {
@@ -78,7 +87,7 @@ export default function HrPage(): React.JSX.Element {
   const handlePunch = async (punchType: 'CLOCK_IN' | 'CLOCK_OUT') => {
     const newRecord: PunchRecordDto = {
       id: `PCH-${Date.now()}`,
-      employeeId: 'EMP-01',
+      employeeId: session.id,
       punchType,
       timestamp: new Date().toISOString(),
       verificationMethod: 'GPS_GEOFENCE',
@@ -88,41 +97,39 @@ export default function HrPage(): React.JSX.Element {
   };
 
   return (
-    <>
+    <NexusBox>
       <Navbar />
-      <main style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
-          <div>
+      <NexusBox
+        padding="var(--nx-space-6)"
+        style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}
+      >
+        <NexusStack direction="row" gap="var(--nx-space-6)" align="start">
+          <NexusBox style={{ flex: 2 }}>
             <StaffDirectoryView
               employees={employees}
               onSelectEmployee={setSelectedEmpId}
               onRegisterEmployee={() => {}}
             />
             {selectedEmpId && (
-              <div
-                style={{
-                  marginTop: '16px',
-                  padding: '12px 16px',
-                  backgroundColor: 'var(--nx-surface-card)',
-                  borderRadius: '8px',
-                  border: '1px solid var(--nx-border-default)',
-                  fontSize: '13px',
-                }}
-              >
-                Selected Employee: <strong>{selectedEmpId}</strong>
-              </div>
+              <NexusCard elevation="subtle" style={{ marginTop: 'var(--nx-space-4)', padding: 'var(--nx-space-3)' }}>
+                <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+                  <NexusBadge variant="info" label="Roster Profile" />
+                  <NexusText variant="label">Employee ID: {selectedEmpId}</NexusText>
+                </NexusStack>
+              </NexusCard>
             )}
-          </div>
-          <div>
+          </NexusBox>
+
+          <NexusBox style={{ flex: 1 }}>
             <EssPunchClockWidget
-              employeeName="Sarah Jenkins (NX-001)"
+              employeeName={`${session.name} (${session.id})`}
               department="BARISTA"
               recentPunches={punches}
               onRecordPunch={handlePunch}
             />
-          </div>
-        </div>
-      </main>
-    </>
+          </NexusBox>
+        </NexusStack>
+      </NexusBox>
+    </NexusBox>
   );
 }

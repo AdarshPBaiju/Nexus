@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { NavItem } from './types';
 import { NexusText } from '../typography/NexusText';

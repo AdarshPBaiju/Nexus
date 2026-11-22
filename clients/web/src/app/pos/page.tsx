@@ -4,9 +4,19 @@ import React, { useMemo, useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { PosOperationalView } from '../../engines/pos/PosOperationalView';
 import { PosCounterController } from '../../engines/pos/controllers/PosCounterController';
+import { useAuth } from '../../runtime/auth/AuthContext';
+import {
+  NexusBadge,
+  NexusBox,
+  NexusButton,
+  NexusStack,
+  NexusText,
+} from '@nexus/ui';
 import type { SplitTenderEntry } from '../../engines/pos/types';
 
 export default function PosPage(): React.JSX.Element {
+  const { session } = useAuth();
+
   const controller = useMemo(() => {
     const c = PosCounterController.create();
     c.addItem({
@@ -42,39 +52,35 @@ export default function PosPage(): React.JSX.Element {
   };
 
   return (
-    <>
+    <NexusBox style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       <Navbar />
+
       {lastPayment && (
-        <div
+        <NexusBox
+          padding="var(--nx-space-2) var(--nx-space-6)"
           style={{
-            padding: '10px 24px',
             backgroundColor: 'var(--nx-status-success-subtle)',
-            color: 'var(--nx-status-success-text)',
-            fontSize: '13px',
-            fontWeight: 600,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            borderBottom: '1px solid var(--nx-border-default)',
           }}
         >
-          <span>✓ {lastPayment}</span>
-          <button
-            onClick={() => setLastPayment(null)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-          >
-            ✕
-          </button>
-        </div>
+          <NexusStack direction="row" align="center" justify="space-between">
+            <NexusText variant="label">✓ {lastPayment}</NexusText>
+            <NexusButton variant="ghost" size="sm" onClick={() => setLastPayment(null)}>
+              <NexusText variant="caption">✕ Dismiss</NexusText>
+            </NexusButton>
+          </NexusStack>
+        </NexusBox>
       )}
-      <div style={{ flex: 1, height: 'calc(100vh - 60px)' }}>
+
+      <NexusBox style={{ flex: 1, overflow: 'hidden' }}>
         <PosOperationalView
           controller={controller}
-          branchName="Artisan Coffee Roasters — London SoHo"
-          cashierName="Sarah Jenkins"
-          workstationId="WS-LND-01"
+          branchName={session.branchName}
+          cashierName={session.name}
+          workstationId={session.workstationId}
           onCheckoutTenders={handleCheckout}
         />
-      </div>
-    </>
+      </NexusBox>
+    </NexusBox>
   );
 }

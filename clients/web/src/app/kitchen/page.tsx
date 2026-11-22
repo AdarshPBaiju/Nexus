@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { KdsTouchCanvas } from '../../engines/kitchen/KdsTouchCanvas';
+import { NexusBox } from '@nexus/ui';
 import type { KdsStationType, KdsTicketDto } from '../../engines/kitchen/kds.types';
 
 const INITIAL_TICKETS: KdsTicketDto[] = [
@@ -88,9 +89,9 @@ export default function KitchenPage(): React.JSX.Element {
   };
 
   return (
-    <>
+    <NexusBox style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       <Navbar />
-      <div style={{ flex: 1, height: 'calc(100vh - 60px)' }}>
+      <NexusBox style={{ flex: 1, overflow: 'hidden' }}>
         <KdsTouchCanvas
           tickets={tickets}
           activeStation={activeStation}
@@ -98,7 +99,7 @@ export default function KitchenPage(): React.JSX.Element {
           onBumpTicket={handleBump}
           onRecallTicket={handleRecall}
         />
-      </div>
-    </>
+      </NexusBox>
+    </NexusBox>
   );
 }
