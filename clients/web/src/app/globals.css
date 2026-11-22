@@ -233,6 +233,12 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  .nx-topnav-user-meta {
+    display: none !important;
+  }
+}
+
 /* Enterprise Input Controls Studio */
 .nx-studio-layout {
   display: grid;
