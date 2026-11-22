@@ -24,7 +24,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: uv pip install --system ruff import-linter
+        run: uv pip install --system ruff import-linter -e services/nexus-api
 
       - name: Format Check
         run: ruff format --check .
@@ -35,7 +35,6 @@ jobs:
       - name: Architectural Import Boundaries
         run: |
           cd services/nexus-api
-          export PYTHONPATH="$PWD/src:$PYTHONPATH"
           lint-imports
 
       - name: RLS Coverage Audit
