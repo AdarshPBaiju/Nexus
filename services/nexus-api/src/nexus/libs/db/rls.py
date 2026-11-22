@@ -6,34 +6,66 @@ from __future__ import annotations
 
 import uuid
 from contextlib import contextmanager
-from typing import Generator
+from typing import Generator, Optional
 
 from django.db import connection, transaction
 
+from nexus.libs.db.audit_context import AuditRequestContext, get_current_audit_context
+
+
+def _apply_audit_gucs(cursor, audit_ctx: AuditRequestContext) -> None:
+    """Set transaction-local audit context GUCs inside PgBouncer session."""
+    guc_params: list[tuple[str, str]] = [
+        ("app.current_actor_id", str(audit_ctx.actor_id)),
+        ("app.current_actor_type", audit_ctx.actor_type),
+        ("app.current_surface", audit_ctx.surface),
+    ]
+    if audit_ctx.device_id:
+        guc_params.append(("app.current_device_id", str(audit_ctx.device_id)))
+    if audit_ctx.request_id:
+        guc_params.append(("app.current_request_id", audit_ctx.request_id))
+    if audit_ctx.trace_id:
+        guc_params.append(("app.current_trace_id", audit_ctx.trace_id))
+    if audit_ctx.client_ip:
+        guc_params.append(("app.current_client_ip", audit_ctx.client_ip))
+    if audit_ctx.reason:
+        guc_params.append(("app.current_audit_reason", audit_ctx.reason))
+
+    for param_name, param_val in guc_params:
+        cursor.execute(
+            f"SELECT set_config('{param_name}', %s, true)",
+            [param_val],
+        )
+
 
 @contextmanager
-def tenant_transaction(tenant_id: uuid.UUID | str) -> Generator[None, None, None]:
+def tenant_transaction(
+    tenant_id: uuid.UUID | str,
+    audit_ctx: Optional[AuditRequestContext] = None,
+) -> Generator[None, None, None]:
     """
     Execute database operations within an isolated tenant session context.
-    Sets LOCAL app.current_tenant_id inside an atomic transaction block.
+    Sets LOCAL app.current_tenant_id and audit GUCs inside atomic transaction.
     """
     tid_str = str(tenant_id)
-    # Validate UUID format fails closed
-    uuid.UUID(tid_str)
+    uuid.UUID(tid_str)  # Validates UUID format
+
+    active_audit = audit_ctx or get_current_audit_context()
 
     with transaction.atomic():
         with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT set_config('app.current_tenant_id', %s, true)",
-                [tid_str],
-            )
+            if connection.vendor == "postgresql":
+                cursor.execute(
+                    "SELECT set_config('app.current_tenant_id', %s, true)",
+                    [tid_str],
+                )
+                if active_audit:
+                    _apply_audit_gucs(cursor, active_audit)
         yield
 
 
 def generate_forced_rls_sql(table_name: str) -> list[str]:
-    """
-    Generate PostgreSQL 16 DDL statements to enable and force RLS on a table.
-    """
+    """Generate PostgreSQL 16 DDL statements to enable and force RLS on a table."""
     policy_name = f"{table_name}_tenant_isolation_policy"
     return [
         f"ALTER TABLE {table_name} ENABLE ROW LEVEL SECURITY;",
@@ -49,9 +81,7 @@ def generate_forced_rls_sql(table_name: str) -> list[str]:
 
 
 def generate_drop_rls_sql(table_name: str) -> list[str]:
-    """
-    Generate DDL statements to drop RLS policy from a table (for rollbacks).
-    """
+    """Generate DDL statements to drop RLS policy from a table."""
     policy_name = f"{table_name}_tenant_isolation_policy"
     return [
         f"DROP POLICY IF EXISTS {policy_name} ON {table_name};",
