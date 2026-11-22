@@ -71,6 +71,7 @@ const NAV_GROUPS: readonly NavGroup[] = [
       { href: '/register', label: 'Tenant Registration', icon: 'domain_add', hint: 'R' },
       { href: '/onboarding', label: 'Onboarding Wizard', icon: 'storefront', hint: 'O' },
       { href: '/billing', label: 'Subscription & Quotas', icon: 'receipt_long', hint: 'B', badge: 'PRO', badgeVariant: 'neutral' },
+      { href: '/provider', label: 'Provider Mesh Fleet', icon: 'hub', hint: 'P', badge: 'ADMIN', badgeVariant: 'info' },
     ],
   },
 ];

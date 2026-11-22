@@ -46,6 +46,7 @@ def test_all_cloud_saas_routes() -> None:
         "/onboarding",
         "/hr",
         "/inputs",
+        "/provider",
     ]
     for r in routes:
         url = f"http://localhost:3000{r}"
@@ -88,6 +89,11 @@ def test_code_length_ceilings() -> None:
         NEXUS_ROOT / "clients/web/src/app/billing/page.tsx",
         NEXUS_ROOT / "clients/web/src/app/billing/components/BillingQuotaMeters.tsx",
         NEXUS_ROOT / "clients/web/src/app/billing/components/BillingInvoicesTable.tsx",
+        NEXUS_ROOT / "clients/web/src/app/billing/components/PlanUpgradeModal.tsx",
+        NEXUS_ROOT / "clients/web/src/app/inventory/components/ReceiveDeliveryModal.tsx",
+        NEXUS_ROOT / "clients/web/src/app/inventory/page.tsx",
+        NEXUS_ROOT / "clients/web/src/app/provider/page.tsx",
+        NEXUS_ROOT / "clients/web/src/app/onboarding/page.tsx",
         NEXUS_ROOT / "services/nexus-api/src/nexus/server_endpoints/tenancy.py",
         NEXUS_ROOT / "services/nexus-api/src/nexus/server_endpoints/tenancy_types.py",
     ]

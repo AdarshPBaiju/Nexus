@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import {
   NexusBadge,
-  NexusBox,
   NexusButton,
   NexusCard,
   NexusStack,
   NexusText,
 } from '@nexus/ui';
+import { ReceiveDeliveryModal } from './components/ReceiveDeliveryModal';
 
 interface IngredientStock {
   id: string;
@@ -34,12 +34,12 @@ export default function InventoryPage(): React.JSX.Element {
   const [ingredients, setIngredients] = useState<IngredientStock[]>(INITIAL_INGREDIENTS);
   const [selectedBOM, setSelectedBOM] = useState<'flat-white' | 'latte' | 'avo-toast'>('flat-white');
   const [poNotice, setPoNotice] = useState<string | null>(null);
+  const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
 
   const bomRecipes = {
     'flat-white': {
       title: 'Signature Flat White (12 oz)',
       sku: 'BEV-FW',
-      yield: '1 Cup',
       lines: [
         { ingredient: 'Ethiopian Yirgacheffe Beans', qty: '18.0 g', cost: '$0.43' },
         { ingredient: 'Organic Whole Milk (or Oat)', qty: '220.0 ml', cost: '$0.44' },
@@ -52,7 +52,6 @@ export default function InventoryPage(): React.JSX.Element {
     latte: {
       title: 'Artisan Caffè Latte (16 oz)',
       sku: 'BEV-LAT',
-      yield: '1 Cup',
       lines: [
         { ingredient: 'Ethiopian Yirgacheffe Beans', qty: '18.0 g', cost: '$0.43' },
         { ingredient: 'Organic Whole Milk', qty: '320.0 ml', cost: '$0.64' },
@@ -65,7 +64,6 @@ export default function InventoryPage(): React.JSX.Element {
     'avo-toast': {
       title: 'Avocado Sourdough Toast',
       sku: 'KIT-AVO',
-      yield: '1 Plate',
       lines: [
         { ingredient: 'Country Sourdough Loaf (Slices)', qty: '2.0 slices', cost: '$0.62' },
         { ingredient: 'Hass Avocado', qty: '1.0 unit', cost: '$1.20' },
@@ -79,129 +77,139 @@ export default function InventoryPage(): React.JSX.Element {
 
   const currentRecipe = bomRecipes[selectedBOM];
 
+  const handleConfirmDelivery = (ingId: string, qty: number, supplier: string, poRef: string) => {
+    setIngredients((prev) =>
+      prev.map((item) => {
+        if (item.id !== ingId) return item;
+        const newStock = item.currentStock + qty;
+        const newStatus = newStock >= item.minThreshold ? 'OPTIMAL' : 'LOW';
+        return { ...item, currentStock: newStock, status: newStatus };
+      })
+    );
+    const targetItem = ingredients.find((i) => i.id === ingId);
+    setPoNotice(
+      `✓ Restocked ${qty.toLocaleString()} ${targetItem?.unit || 'units'} of ${targetItem?.name} via ${poRef} from ${supplier}. Stock updated to OPTIMAL.`
+    );
+  };
+
   return (
-    <NexusStack gap="var(--nx-space-6)" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header */}
-      <NexusStack direction="row" align="center" justify="space-between" style={{ flexWrap: 'wrap', gap: 'var(--nx-space-3)' }}>
-        <NexusStack gap="var(--nx-space-1)">
-          <NexusText variant="h1">Café Inventory & Recipe BOM</NexusText>
-          <NexusText variant="body" role="secondary">
-            Real-time stock decrement upon POS settlement, automated ingredient depletion, and recipe unit margins.
-          </NexusText>
-        </NexusStack>
-        <NexusButton variant="primary" size="sm" onClick={() => setPoNotice('PO Intake modal: Supplier PO-9021 delivery draft created.')}>
-          + Receive Delivery PO
-        </NexusButton>
-      </NexusStack>
-
-      {poNotice && (
-        <NexusCard elevation="card" style={{ padding: '8px 14px', backgroundColor: 'var(--nx-surface-selected)' }}>
-          <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="label">{poNotice}</NexusText>
-            <NexusButton variant="ghost" size="sm" onClick={() => setPoNotice(null)}>
-              Dismiss
-            </NexusButton>
-          </NexusStack>
-        </NexusCard>
-      )}
-
-      {/* Recipe Bill of Materials Simulator */}
-      <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-        <NexusStack gap="var(--nx-space-4)">
-          <NexusStack direction="row" align="center" justify="space-between">
-            <div>
-              <NexusText variant="h3">Auto-Depletion Recipe BOM</NexusText>
-              <NexusText variant="caption" role="muted">Atomic deduction on counter POS purchase</NexusText>
-            </div>
-            <div className="flex gap-1.5">
-              {(['flat-white', 'latte', 'avo-toast'] as const).map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  onClick={() => setSelectedBOM(r)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                    selectedBOM === r
-                      ? 'bg-[var(--nx-action-primary)] border-[var(--nx-action-primary)] text-[var(--nx-action-text)]'
-                      : 'bg-[var(--nx-surface-subtle)] border-[var(--nx-border-default)] text-[var(--nx-text-secondary)]'
-                  }`}
-                >
-                  {bomRecipes[r].title.split(' (')[0]}
-                </button>
-              ))}
-            </div>
-          </NexusStack>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl bg-[var(--nx-surface-subtle)] border border-[var(--nx-border-default)]">
-            <div>
-              <span className="text-xs text-[var(--nx-text-muted)] block">Menu Product</span>
-              <span className="text-sm font-bold text-[var(--nx-text-primary)]">{currentRecipe.title}</span>
-              <span className="text-xs font-mono text-[var(--nx-text-muted)] block">{currentRecipe.sku}</span>
-            </div>
-            <div className="font-mono">
-              <span className="text-xs text-[var(--nx-text-muted)] block">Cost vs Retail</span>
-              <span className="text-sm font-bold text-[var(--nx-status-success-text)]">{currentRecipe.totalCost}</span>
-              <span className="text-xs text-[var(--nx-text-muted)]"> of {currentRecipe.retailPrice}</span>
-            </div>
-            <div>
-              <span className="text-xs text-[var(--nx-text-muted)] block">Gross Margin</span>
-              <span className="text-base font-bold text-[var(--nx-action-primary)] font-mono">{currentRecipe.margin}</span>
-              <NexusBadge variant="success" label="Healthy Margin" />
-            </div>
+    <div className="nx-page-shell" style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 20px 48px' }}>
+      <NexusStack gap="var(--nx-space-6)">
+        {/* Header */}
+        <NexusStack direction="row" align="center" justify="space-between" style={{ flexWrap: 'wrap', gap: 'var(--nx-space-3)' }}>
+          <div>
+            <NexusText variant="h1">Café Inventory & Recipe BOM</NexusText>
+            <NexusText variant="body" role="secondary" style={{ marginTop: '4px' }}>
+              Real-time stock decrement upon POS settlement, automated ingredient depletion, and recipe unit margins.
+            </NexusText>
           </div>
+          <NexusButton variant="primary" size="sm" onClick={() => setIsDeliveryModalOpen(true)}>
+            + Receive Delivery PO
+          </NexusButton>
+        </NexusStack>
 
-          {/* BOM Lines */}
-          <div className="overflow-x-auto">
-            <table className="nx-data-table">
+        {poNotice && (
+          <NexusCard elevation="card" style={{ padding: '10px 16px', backgroundColor: 'var(--nx-surface-selected)' }}>
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="label">{poNotice}</NexusText>
+              <NexusButton variant="ghost" size="sm" onClick={() => setPoNotice(null)}>
+                Dismiss
+              </NexusButton>
+            </NexusStack>
+          </NexusCard>
+        )}
+
+        {/* Recipe BOM Simulator */}
+        <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
+          <NexusStack gap="var(--nx-space-4)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <div>
+                <NexusText variant="h3">Auto-Depletion Recipe BOM</NexusText>
+                <NexusText variant="caption" role="muted" style={{ display: 'block', marginTop: '2px' }}>
+                  Atomic deduction on counter POS checkout
+                </NexusText>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {(['flat-white', 'latte', 'avo-toast'] as const).map((r) => (
+                  <NexusButton
+                    key={r}
+                    variant={selectedBOM === r ? 'primary' : 'outline'}
+                    size="sm"
+                    onClick={() => setSelectedBOM(r)}
+                  >
+                    {bomRecipes[r].title.split(' (')[0]}
+                  </NexusButton>
+                ))}
+              </div>
+            </NexusStack>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', padding: '16px', borderRadius: '10px', backgroundColor: 'var(--nx-surface-subtle)', border: '1px solid var(--nx-border-subtle)' }}>
+              <div>
+                <NexusText variant="caption" role="muted">Menu Product</NexusText>
+                <NexusText variant="label" style={{ fontWeight: 700, display: 'block' }}>{currentRecipe.title}</NexusText>
+                <NexusText variant="caption" style={{ fontFamily: 'var(--font-mono, monospace)', color: 'var(--nx-text-muted)' }}>{currentRecipe.sku}</NexusText>
+              </div>
+              <div>
+                <NexusText variant="caption" role="muted">Cost vs Retail</NexusText>
+                <NexusText variant="label" style={{ fontWeight: 700, color: 'var(--nx-status-success)' }}>{currentRecipe.totalCost}</NexusText>
+                <NexusText variant="caption" role="muted"> of {currentRecipe.retailPrice}</NexusText>
+              </div>
+              <div>
+                <NexusText variant="caption" role="muted">Gross Margin</NexusText>
+                <NexusText variant="h3" style={{ fontFamily: 'var(--font-mono, monospace)', color: 'var(--nx-action-primary)' }}>{currentRecipe.margin}</NexusText>
+                <NexusBadge variant="success" label="Healthy Margin" />
+              </div>
+            </div>
+
+            <table className="nx-data-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th className="py-2 px-3">Ingredient</th>
-                  <th className="py-2 px-3">Dose / Consumption</th>
-                  <th className="py-2 px-3">Ingredient Unit Cost</th>
+                <tr style={{ borderBottom: '1px solid var(--nx-border-default)', textAlign: 'left' }}>
+                  <th style={{ padding: '8px 12px' }}>Ingredient</th>
+                  <th style={{ padding: '8px 12px' }}>Dose / Consumption</th>
+                  <th style={{ padding: '8px 12px' }}>Ingredient Unit Cost</th>
                 </tr>
               </thead>
               <tbody>
                 {currentRecipe.lines.map((l) => (
-                  <tr key={l.ingredient}>
-                    <td className="py-2.5 px-3 font-sans font-medium">{l.ingredient}</td>
-                    <td className="py-2.5 px-3 font-bold text-[var(--nx-action-primary)]">{l.qty}</td>
-                    <td className="py-2.5 px-3">{l.cost}</td>
+                  <tr key={l.ingredient} style={{ borderBottom: '1px solid var(--nx-border-subtle)' }}>
+                    <td style={{ padding: '8px 12px' }}>{l.ingredient}</td>
+                    <td style={{ padding: '8px 12px', fontWeight: 700, color: 'var(--nx-action-primary)' }}>{l.qty}</td>
+                    <td style={{ padding: '8px 12px' }}>{l.cost}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </NexusStack>
-      </NexusCard>
-
-      {/* Raw Ingredients Stock Ledger */}
-      <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-        <NexusStack gap="var(--nx-space-4)">
-          <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="h3">Raw Ingredients & Dry Goods</NexusText>
-            <NexusBadge variant="neutral" label="6 Tracked SKUs" />
           </NexusStack>
+        </NexusCard>
 
-          <div className="overflow-x-auto">
-            <table className="nx-data-table">
+        {/* Raw Ingredients Stock Ledger */}
+        <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
+          <NexusStack gap="var(--nx-space-4)">
+            <NexusStack direction="row" align="center" justify="space-between">
+              <NexusText variant="h3">Raw Ingredients & Dry Goods</NexusText>
+              <NexusBadge variant="neutral" label="6 Tracked SKUs" />
+            </NexusStack>
+
+            <table className="nx-data-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th className="py-2 px-3">SKU</th>
-                  <th className="py-2 px-3">Ingredient Name</th>
-                  <th className="py-2 px-3">Available On-Hand</th>
-                  <th className="py-2 px-3">Cost Basis</th>
-                  <th className="py-2 px-3">Stock Health</th>
+                <tr style={{ borderBottom: '1px solid var(--nx-border-default)', textAlign: 'left' }}>
+                  <th style={{ padding: '10px 12px' }}>SKU</th>
+                  <th style={{ padding: '10px 12px' }}>Ingredient Name</th>
+                  <th style={{ padding: '10px 12px' }}>Available On-Hand</th>
+                  <th style={{ padding: '10px 12px' }}>Cost Basis</th>
+                  <th style={{ padding: '10px 12px' }}>Stock Health</th>
                 </tr>
               </thead>
               <tbody>
                 {ingredients.map((ing) => (
-                  <tr key={ing.id} className="font-mono">
-                    <td className="py-3 px-3 text-[var(--nx-text-muted)]">{ing.id}</td>
-                    <td className="py-3 px-3 font-sans font-semibold">{ing.name}</td>
-                    <td className="py-3 px-3 font-bold text-[var(--nx-action-primary)]">
+                  <tr key={ing.id} style={{ borderBottom: '1px solid var(--nx-border-subtle)' }}>
+                    <td style={{ padding: '10px 12px', color: 'var(--nx-text-muted)', fontFamily: 'var(--font-mono, monospace)' }}>{ing.id}</td>
+                    <td style={{ padding: '10px 12px', fontWeight: 600 }}>{ing.name}</td>
+                    <td style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--nx-action-primary)', fontFamily: 'var(--font-mono, monospace)' }}>
                       {ing.currentStock.toLocaleString()} {ing.unit}
                     </td>
-                    <td className="py-3 px-3">{ing.costPerUnit}</td>
-                    <td className="py-3 px-3">
+                    <td style={{ padding: '10px 12px' }}>{ing.costPerUnit}</td>
+                    <td style={{ padding: '10px 12px' }}>
                       <NexusBadge
                         variant={ing.status === 'OPTIMAL' ? 'success' : ing.status === 'LOW' ? 'warning' : 'danger'}
                         label={ing.status}
@@ -211,9 +219,16 @@ export default function InventoryPage(): React.JSX.Element {
                 ))}
               </tbody>
             </table>
-          </div>
-        </NexusStack>
-      </NexusCard>
-    </NexusStack>
+          </NexusStack>
+        </NexusCard>
+      </NexusStack>
+
+      <ReceiveDeliveryModal
+        isOpen={isDeliveryModalOpen}
+        onClose={() => setIsDeliveryModalOpen(false)}
+        onConfirmDelivery={handleConfirmDelivery}
+        availableIngredients={ingredients.map((i) => ({ id: i.id, name: i.name, unit: i.unit }))}
+      />
+    </div>
   );
 }
