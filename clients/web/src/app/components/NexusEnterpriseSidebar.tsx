@@ -3,12 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  NexusBadge,
-  NexusBox,
-  NexusStack,
-  NexusText,
-} from '@nexus/ui';
+import { NexusBadge, NexusBox, NexusStack, NexusText } from '@nexus/ui';
 
 export interface NexusEnterpriseSidebarProps {
   readonly isOpen?: boolean;
@@ -48,9 +43,16 @@ export function NexusEnterpriseSidebar({
       ],
     },
     {
+      title: 'INVENTORY & RECIPE BOM',
+      items: [
+        { href: '/inventory', label: 'Recipe BOM & Stock', icon: 'inventory_2', badge: '6 SKUs', badgeVariant: 'info' },
+      ],
+    },
+    {
       title: 'FINANCE & TREASURY',
       items: [
         { href: '/finance', label: 'Shift Cashier Console', icon: 'payments' },
+        { href: '/gateways', label: 'Payment Gateways & Rails', icon: 'credit_card', badge: '5 Rails', badgeVariant: 'success' },
       ],
     },
     {
@@ -59,11 +61,16 @@ export function NexusEnterpriseSidebar({
         { href: '/hr', label: 'Staff Roster & Punch Clock', icon: 'badge' },
       ],
     },
+    {
+      title: 'SAAS LIFECYCLE',
+      items: [
+        { href: '/billing', label: 'Subscription & Quotas', icon: 'receipt_long', badge: 'PRO', badgeVariant: 'neutral' },
+        { href: '/onboarding', label: 'Tenant Onboarding', icon: 'domain_add' },
+      ],
+    },
   ];
 
-  if (!isOpen) {
-    return <></>;
-  }
+  if (!isOpen) return <></>;
 
   return (
     <NexusBox
@@ -82,9 +89,8 @@ export function NexusEnterpriseSidebar({
         overflowY: 'auto',
       }}
     >
-      {/* Navigation Groups */}
       <NexusBox padding="var(--nx-space-4)">
-        <NexusStack gap="var(--nx-space-5)">
+        <NexusStack gap="var(--nx-space-4)">
           {navGroups.map((group) => (
             <NexusStack key={group.title} gap="var(--nx-space-1)">
               <NexusText
@@ -106,7 +112,7 @@ export function NexusEnterpriseSidebar({
                 return (
                   <Link key={item.href} href={item.href}>
                     <NexusBox
-                      padding="8px 12px"
+                      padding="7px 12px"
                       style={{
                         borderRadius: '6px',
                         backgroundColor: isActive ? 'var(--nx-surface-subtle)' : 'transparent',
@@ -129,17 +135,14 @@ export function NexusEnterpriseSidebar({
                           <NexusText
                             variant="label"
                             role={isActive ? 'primary' : 'secondary'}
-                            style={{ fontWeight: isActive ? 600 : 500 }}
+                            style={{ fontWeight: isActive ? 600 : 500, fontSize: '12px' }}
                           >
                             {item.label}
                           </NexusText>
                         </NexusStack>
 
                         {item.badge && (
-                          <NexusBadge
-                            variant={item.badgeVariant ?? 'neutral'}
-                            label={item.badge}
-                          />
+                          <NexusBadge variant={item.badgeVariant ?? 'neutral'} label={item.badge} />
                         )}
                       </NexusStack>
                     </NexusBox>
@@ -151,7 +154,7 @@ export function NexusEnterpriseSidebar({
         </NexusStack>
       </NexusBox>
 
-      {/* Hardware Station Telemetry Footer */}
+      {/* Hardware Telemetry Footer */}
       <NexusBox
         padding="var(--nx-space-3) var(--nx-space-4)"
         style={{
@@ -165,12 +168,8 @@ export function NexusEnterpriseSidebar({
             <NexusBadge variant="success" label="Connected" />
           </NexusStack>
           <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="caption" role="muted">RJ11 Cash Drawer</NexusText>
+            <NexusText variant="caption" role="muted">RJ11 Drawer</NexusText>
             <NexusBadge variant="neutral" label="Armed" />
-          </NexusStack>
-          <NexusStack direction="row" align="center" justify="space-between">
-            <NexusText variant="caption" role="muted">WAN Ping</NexusText>
-            <NexusText variant="caption" role="secondary" tabular>8ms</NexusText>
           </NexusStack>
         </NexusStack>
       </NexusBox>

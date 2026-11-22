@@ -21,7 +21,7 @@ export default function InputsStudioPage(): React.JSX.Element {
   const [pinVal, setPinVal] = useState('9999');
   const [bidiVal, setBidiVal] = useState('قهوة لاتيه (Latte Coffee)');
   const [isRtl, setIsRtl] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<readonly string[]>(['receipt_audit_20261122.pdf']);
+  const [uploadedFiles] = useState<readonly string[]>(['receipt_audit_20261122.pdf']);
 
   return (
     <NexusBox style={{ minHeight: '100vh', backgroundColor: 'var(--nx-surface-bg)' }}>
@@ -29,7 +29,6 @@ export default function InputsStudioPage(): React.JSX.Element {
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
-
       <NexusEnterpriseSidebar isOpen={isSidebarOpen} />
 
       <NexusBox
@@ -65,7 +64,7 @@ export default function InputsStudioPage(): React.JSX.Element {
             </NexusStack>
           </NexusStack>
 
-          {/* Section 01: Precision Numeric & Monetary Primitives */}
+          {/* Section 01: Numeric & Monetary Primitives */}
           <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
             <NexusStack gap="var(--nx-space-4)">
               <NexusStack direction="row" align="center" justify="space-between">
@@ -75,50 +74,25 @@ export default function InputsStudioPage(): React.JSX.Element {
 
               <NexusStack direction="row" gap="var(--nx-space-4)">
                 <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>
-                    Item Display Name
-                  </NexusText>
+                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Item Name</NexusText>
                   <input
                     type="text"
                     value={textVal}
                     disabled={activeState === 'disabled'}
                     onChange={(e) => setTextVal(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      backgroundColor: 'var(--nx-surface-subtle)',
-                      border: activeState === 'error' ? '1px solid var(--nx-status-danger)' : '1px solid var(--nx-border-default)',
-                      color: 'var(--nx-text-primary)',
-                      fontFamily: 'inherit',
-                      fontSize: '14px',
-                    }}
+                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface text-sm"
                   />
                 </NexusBox>
 
                 <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>
-                    Unit Price (ISO 4217 Tabular Numerals)
-                  </NexusText>
-                  <NexusBox style={{ position: 'relative' }}>
-                    <span style={{ position: 'absolute', left: '10px', top: '8px', color: 'var(--nx-text-muted)' }}>$</span>
-                    <input
-                      type="text"
-                      value={numVal}
-                      disabled={activeState === 'disabled'}
-                      onChange={(e) => setNumVal(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px 8px 24px',
-                        borderRadius: '6px',
-                        backgroundColor: 'var(--nx-surface-subtle)',
-                        border: activeState === 'error' ? '1px solid var(--nx-status-danger)' : '1px solid var(--nx-border-default)',
-                        color: 'var(--nx-text-primary)',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '14px',
-                      }}
-                    />
-                  </NexusBox>
+                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Unit Price (ISO 4217 Tabular)</NexusText>
+                  <input
+                    type="text"
+                    value={numVal}
+                    disabled={activeState === 'disabled'}
+                    onChange={(e) => setNumVal(e.target.value)}
+                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-mono text-sm"
+                  />
                 </NexusBox>
               </NexusStack>
             </NexusStack>
@@ -134,49 +108,25 @@ export default function InputsStudioPage(): React.JSX.Element {
 
               <NexusStack direction="row" gap="var(--nx-space-4)">
                 <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>
-                    Barcode / SKU Scanner (HID Buffer)
-                  </NexusText>
+                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Barcode / SKU Scanner (HID Buffer)</NexusText>
                   <input
                     type="text"
                     value={skuVal}
                     disabled={activeState === 'disabled'}
                     onChange={(e) => setSkuVal(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      backgroundColor: 'var(--nx-surface-subtle)',
-                      border: '1px solid var(--nx-border-default)',
-                      color: 'var(--nx-action-primary)',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                    }}
+                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-primary font-mono text-sm font-bold"
                   />
                 </NexusBox>
 
                 <NexusBox style={{ flex: 1 }}>
-                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>
-                    Cashier Supervisor PIN Mask
-                  </NexusText>
+                  <NexusText variant="label" style={{ marginBottom: '6px', display: 'block' }}>Cashier Supervisor PIN Mask</NexusText>
                   <input
                     type="password"
                     maxLength={4}
                     value={pinVal}
                     disabled={activeState === 'disabled'}
                     onChange={(e) => setPinVal(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      backgroundColor: 'var(--nx-surface-subtle)',
-                      border: '1px solid var(--nx-border-default)',
-                      color: 'var(--nx-text-primary)',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '14px',
-                      letterSpacing: '0.3em',
-                    }}
+                    className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface font-mono text-sm tracking-widest"
                   />
                 </NexusBox>
               </NexusStack>
@@ -185,33 +135,20 @@ export default function InputsStudioPage(): React.JSX.Element {
 
           {/* Section 03: Multilingual & BiDi */}
           <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
-            <NexusStack gap="var(--nx-space-4)">
+            <NexusStack gap="var(--nx-space-3)">
               <NexusStack direction="row" align="center" justify="space-between">
                 <NexusText variant="h3">03. Multilingual BiDi Localized Input (LTR / RTL)</NexusText>
                 <NexusButton variant="outline" size="sm" onClick={() => setIsRtl(!isRtl)}>
                   <NexusText variant="caption">Switch to {isRtl ? 'LTR' : 'RTL'}</NexusText>
                 </NexusButton>
               </NexusStack>
-
-              <NexusBox>
-                <input
-                  type="text"
-                  dir={isRtl ? 'rtl' : 'ltr'}
-                  value={bidiVal}
-                  onChange={(e) => setBidiVal(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: '6px',
-                    backgroundColor: 'var(--nx-surface-subtle)',
-                    border: '1px solid var(--nx-border-default)',
-                    color: 'var(--nx-text-primary)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px',
-                    direction: isRtl ? 'rtl' : 'ltr',
-                  }}
-                />
-              </NexusBox>
+              <input
+                type="text"
+                dir={isRtl ? 'rtl' : 'ltr'}
+                value={bidiVal}
+                onChange={(e) => setBidiVal(e.target.value)}
+                className="w-full h-10 px-3 rounded-lg bg-surface-container border border-outline-variant text-on-surface text-sm"
+              />
             </NexusStack>
           </NexusCard>
 
@@ -219,46 +156,19 @@ export default function InputsStudioPage(): React.JSX.Element {
           <NexusCard elevation="card" style={{ padding: 'var(--nx-space-5)' }}>
             <NexusStack gap="var(--nx-space-3)">
               <NexusText variant="h3">04. All-Case Industrial File Upload & Media Studio</NexusText>
-              <NexusBox
-                padding="var(--nx-space-8)"
-                style={{
-                  border: '2px dashed var(--nx-border-default)',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'var(--nx-surface-subtle)',
-                  cursor: 'pointer',
-                }}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--nx-action-primary)', marginBottom: '8px' }}>
-                  cloud_upload
-                </span>
-                <NexusText variant="label">Drag & drop tax invoices, thermal print templates, or bulk catalogs</NexusText>
-                <NexusText variant="caption" role="muted">Supported: PDF, JSON, CSV, PNG (Up to 25MB)</NexusText>
-              </NexusBox>
-
+              <div className="p-8 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center bg-surface-container text-center cursor-pointer">
+                <span className="material-symbols-outlined text-[32px] text-primary mb-2">cloud_upload</span>
+                <span className="text-sm font-semibold text-on-surface">Drag & drop tax invoices or thermal templates</span>
+                <span className="text-xs text-outline mt-0.5">Supported: PDF, JSON, CSV, PNG (Up to 25MB)</span>
+              </div>
               {uploadedFiles.map((f) => (
-                <NexusBox
-                  key={f}
-                  padding="8px 12px"
-                  style={{
-                    backgroundColor: 'var(--nx-surface-subtle)',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--nx-status-success)' }}>
-                      check_circle
-                    </span>
-                    <NexusText variant="caption" tabular>{f}</NexusText>
-                  </NexusStack>
+                <div key={f} className="p-3 rounded-lg bg-surface-container flex items-center justify-between border border-surface-container-highest">
+                  <div className="flex items-center gap-2 text-xs font-mono">
+                    <span className="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+                    <span>{f}</span>
+                  </div>
                   <NexusBadge variant="success" label="Scanned & Verified" />
-                </NexusBox>
+                </div>
               ))}
             </NexusStack>
           </NexusCard>

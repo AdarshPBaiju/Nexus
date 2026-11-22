@@ -20,9 +20,8 @@ export function NexusMainTopNavbar({
   onToggleSidebar,
   isSidebarOpen = true,
 }: NexusMainTopNavbarProps): React.JSX.Element {
-  const { session } = useAuth();
+  const { session, activeStaff, lockWorkstation } = useAuth();
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [isLocked, setIsLocked] = useState(false);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
@@ -89,7 +88,7 @@ export function NexusMainTopNavbar({
       </NexusStack>
 
       {/* Center: Global Command Palette Search */}
-      <NexusBox style={{ flex: 1, maxWidth: '420px', margin: '0 var(--nx-space-4)' }}>
+      <NexusBox style={{ flex: 1, maxWidth: '380px', margin: '0 var(--nx-space-4)' }}>
         <NexusBox
           padding="6px 12px"
           style={{
@@ -116,13 +115,24 @@ export function NexusMainTopNavbar({
         </NexusBox>
       </NexusBox>
 
-      {/* Right: Runtime Status + Theme + Cashier PIN Lock */}
-      <NexusStack direction="row" align="center" gap="var(--nx-space-3)">
-        {/* Runtime Status */}
-        <NexusStack direction="row" align="center" gap="var(--nx-space-1)">
-          <NexusBadge variant="success" label="API:8000" />
-          <NexusBadge variant="neutral" label="DESKTOP:OK" />
-        </NexusStack>
+      {/* Right: Runtime Status + Latency + Theme + Cashier Profile & Lock */}
+      <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+        {/* Latency Pill */}
+        <NexusBox
+          padding="3px 8px"
+          style={{
+            backgroundColor: 'var(--nx-surface-subtle)',
+            borderRadius: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <NexusText variant="caption" role="muted" style={{ fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
+            43ms (p99 &lt; 50ms)
+          </NexusText>
+        </NexusBox>
 
         {/* Theme Toggle */}
         <NexusButton variant="outline" size="sm" onClick={toggleTheme}>
@@ -131,19 +141,22 @@ export function NexusMainTopNavbar({
           </span>
         </NexusButton>
 
-        {/* Cashier User & Lock */}
+        {/* Cashier User & Lock Terminal */}
         <NexusButton
-          variant={isLocked ? 'destructive' : 'secondary'}
+          variant="secondary"
           size="sm"
-          onClick={() => setIsLocked(!isLocked)}
+          onClick={lockWorkstation}
+          title="Click to lock workstation (Cashier PIN required to resume)"
         >
-          <NexusStack direction="row" align="center" gap="var(--nx-space-1)">
-            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
-              {isLocked ? 'lock' : 'lock_open'}
-            </span>
-            <NexusText variant="caption">
-              {isLocked ? 'LOCKED' : session.name}
+          <NexusStack direction="row" align="center" gap="var(--nx-space-2)">
+            <span style={{ fontSize: '14px' }}>{activeStaff.avatarIcon}</span>
+            <NexusText variant="caption" style={{ fontWeight: 600 }}>
+              {session.name}
             </NexusText>
+            <NexusBadge variant="neutral" label={session.role} />
+            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'var(--nx-text-muted)' }}>
+              lock
+            </span>
           </NexusStack>
         </NexusButton>
       </NexusStack>
