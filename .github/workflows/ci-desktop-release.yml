@@ -23,7 +23,12 @@ jobs:
           components: clippy, rustfmt
 
       - name: Rustfmt Check
-        run: cargo fmt --all -- --check
+        run: |
+          cargo fmt --all
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::rustfmt failed! Diff: $(git diff | head -n 30)"
+            exit 1
+          fi
 
       - name: Cargo Clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
