@@ -1,6 +1,8 @@
 """
-nexus.extensions.commerce.pos.models - Barrel exports for POS Counter models.
+nexus.extensions.commerce.pos.models - Domain models barrel export.
 """
+
+from __future__ import annotations
 
 from nexus.extensions.commerce.pos.models.pos_order import CreatePosOrderDto, PosOrder
 from nexus.extensions.commerce.pos.models.pos_order_line import (
@@ -11,6 +13,9 @@ from nexus.extensions.commerce.pos.models.pos_tender import (
     CreatePosTenderDto,
     PosPaymentTender,
 )
+from nexus.extensions.commerce.pos.models.processed_event_inbox import (
+    ProcessedEventInbox,
+)
 
 __all__ = [
     "CreatePosLineDto",
@@ -19,4 +24,5 @@ __all__ = [
     "PosOrder",
     "PosOrderLine",
     "PosPaymentTender",
+    "ProcessedEventInbox",
 ]
