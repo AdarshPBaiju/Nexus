@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.gateways.stripe_adapter - Stripe PaymentIntents Gateway Adapter.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -28,11 +29,15 @@ class StripeGatewayAdapter(BasePaymentGatewayAdapter):
         payment_method_id = payment_data.get("payment_method_id", "pm_card_visa")
         tx_id = f"pi_stripe_{uuid.uuid4().hex[:16]}"
         # Standard Stripe fee: 2.9% + $0.30
-        fee = (Decimal(str(intent.amount)) * Decimal("0.029") + Decimal("0.30")).quantize(Decimal("0.0001"))
+        fee = (Decimal(str(intent.amount)) * Decimal("0.029") + Decimal("0.30")).quantize(
+            Decimal("0.0001")
+        )
         raw = {
             "id": tx_id,
             "status": "succeeded",
             "payment_method": payment_method_id,
-            "charges": {"data": [{"captured": True, "balance_transaction": f"txn_{uuid.uuid4().hex[:12]}"}]},
+            "charges": {
+                "data": [{"captured": True, "balance_transaction": f"txn_{uuid.uuid4().hex[:12]}"}]
+            },
         }
         return True, tx_id, fee, raw

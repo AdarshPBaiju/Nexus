@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.preference - User Notification Preferences & Quiet Hours.
 """
+
 from __future__ import annotations
 
 from django.db import models

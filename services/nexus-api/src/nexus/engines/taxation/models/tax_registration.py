@@ -1,6 +1,7 @@
 """
 nexus.engines.taxation.models.tax_registration - Statutory Tax Registration model.
 """
+
 from __future__ import annotations
 
 from django.db import models

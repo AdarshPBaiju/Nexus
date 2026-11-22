@@ -1,6 +1,7 @@
 """
 nexus.engines.commerce_folio.models.line_item - Individual Folio Charge Line Item model.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

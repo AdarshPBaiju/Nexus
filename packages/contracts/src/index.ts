@@ -2,6 +2,7 @@ export * from './headers';
 export * from './surfaces';
 export * from './money/Money';
 export * from './money/MoneyFormatter';
+export * from './money/AmountInWords';
 export * from './time/DateTimeFormatter';
 export * from './filtering/ast.types';
 export * from './lookups/option.types';

@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.engine - 5-Level Resolution, 5-Step Fallback & ICU MessageFormat Engine.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -99,7 +100,10 @@ class TranslationResolutionEngine:
             return False
         cleaned_client = if_none_match.strip()
         cleaned_current = current_etag.strip()
-        return cleaned_client == cleaned_current or cleaned_client == f'W/"{cleaned_current.strip("W/\"")}"'
+        return (
+            cleaned_client == cleaned_current
+            or cleaned_client == f'W/"{cleaned_current.strip('W/"')}"'
+        )
 
     @classmethod
     def resolve_key(

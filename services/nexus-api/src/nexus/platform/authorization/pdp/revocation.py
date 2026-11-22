@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.pdp.revocation - Sub-Second Live Authorization Revocation.
 """
+
 from __future__ import annotations
 
 import uuid

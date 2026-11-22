@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.email.resend_adapter - Resend Transactional Email Provider Adapter.
 """
+
 from __future__ import annotations
 
 import hashlib

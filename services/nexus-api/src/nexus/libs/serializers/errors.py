@@ -41,7 +41,6 @@ class RFC9457ProblemDetail:
             "code": self.code,
             "i18n_key": self.i18n_key,
             "invalid_params": [
-                {"field": p.field, "reason": p.reason, "code": p.code}
-                for p in self.invalid_params
+                {"field": p.field, "reason": p.reason, "code": p.code} for p in self.invalid_params
             ],
         }

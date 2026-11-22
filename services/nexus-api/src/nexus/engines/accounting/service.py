@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.service - General Ledger Posting Service with Invariant & Lock Enforcement.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -58,7 +59,9 @@ class LedgerPostingService:
             )
 
     @classmethod
-    def assert_period_open(cls, tenant_id: uuid.UUID, legal_entity_id: uuid.UUID, posting_date) -> None:
+    def assert_period_open(
+        cls, tenant_id: uuid.UUID, legal_entity_id: uuid.UUID, posting_date
+    ) -> None:
         """Asserts posting date does not fall within a locked fiscal period."""
         locked_periods = FiscalPeriod.objects.filter(
             tenant_id=tenant_id,
@@ -68,7 +71,9 @@ class LedgerPostingService:
             status__in=[FiscalPeriod.PeriodStatus.LOCKED, FiscalPeriod.PeriodStatus.AUDITED_FINAL],
         )
         if locked_periods.exists():
-            raise ValidationError("FiscalPeriodClosedError: Posting to a locked fiscal period is strictly prohibited.")
+            raise ValidationError(
+                "FiscalPeriodClosedError: Posting to a locked fiscal period is strictly prohibited."
+            )
 
     @classmethod
     @transaction.atomic
@@ -81,7 +86,9 @@ class LedgerPostingService:
         Atomically posts journal lines with canonical lock ordering and balance checks.
         """
         if entry.status == JournalEntry.EntryStatus.POSTED:
-            raise ValidationError("POSTED_GL_ENTRY_IMMUTABLE: Cannot modify an already posted journal.")
+            raise ValidationError(
+                "POSTED_GL_ENTRY_IMMUTABLE: Cannot modify an already posted journal."
+            )
 
         cls.assert_zero_sum_balance(lines)
         now_date = timezone.now().date()

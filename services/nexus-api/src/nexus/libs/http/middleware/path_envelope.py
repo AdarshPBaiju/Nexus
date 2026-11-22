@@ -2,6 +2,7 @@
 nexus.libs.http.middleware.path_envelope - Stage 2 Encrypted Path Envelope & Anti-Enumeration Middleware.
 Unseals /api/v1/{resource}/nx1{mode}_{token}/ and strictly rejects raw UUIDs and query strings with 404.
 """
+
 from __future__ import annotations
 
 import re
@@ -102,7 +103,9 @@ class EncryptedPathEnvelopeMiddleware:
     @staticmethod
     def _extract_tenant_id(request: HttpRequest) -> uuid.UUID | str:
         """Extracts tenant ID from header or request attributes."""
-        tenant_raw = request.META.get("HTTP_X_NEXUS_TENANT_SLUG") or getattr(request, "tenant_id", None)
+        tenant_raw = request.META.get("HTTP_X_NEXUS_TENANT_SLUG") or getattr(
+            request, "tenant_id", None
+        )
         if tenant_raw:
             try:
                 return uuid.UUID(str(tenant_raw))

@@ -1,6 +1,7 @@
 """
 nexus.libs.listing.etag - Listing Weak ETag Builder & 304 Fast Path Evaluator.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -32,4 +33,4 @@ class ListingETagBuilder:
             return False
         clean_client = if_none_match.strip()
         clean_server = current_etag.strip()
-        return clean_client == clean_server or clean_client == f'W/"{clean_server.strip("W/\"")}"'
+        return clean_client == clean_server or clean_client == f'W/"{clean_server.strip('W/"')}"'

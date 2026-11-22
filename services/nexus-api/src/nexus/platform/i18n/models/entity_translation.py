@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.entity_translation - Granular Entity Field Translation Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

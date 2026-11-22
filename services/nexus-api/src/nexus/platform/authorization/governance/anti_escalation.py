@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.anti_escalation - Anti-Privilege Escalation & Last Owner Guard.
 """
+
 from __future__ import annotations
 
 import uuid

@@ -29,11 +29,11 @@ export function NexusTextInput({
   };
 
   const inputStyle: React.CSSProperties = {
-    height: size === 'sm' ? '32px' : size === 'lg' ? '44px' : '38px',
+    height: size === 'sm' ? 'var(--input-height-compact, 32px)' : size === 'lg' ? '44px' : '38px',
     padding: '0 var(--nx-space-3)',
     borderRadius: '6px',
     border: `1px solid ${errorKey ? 'var(--nx-status-danger)' : 'var(--nx-border-default)'}`,
-    backgroundColor: 'var(--nx-surface-card)',
+    backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
     color: 'var(--nx-text-primary)',
     outline: 'none',
     width: '100%',

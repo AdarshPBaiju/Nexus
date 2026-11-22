@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.contracts.types - Contracts & Data Transfer Objects for Channel Providers.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

@@ -9,6 +9,7 @@ Validates:
 5. TemplateDefinition model with Forced RLS isolation.
 6. Frontend @nexus/template-studio package structure.
 """
+
 from __future__ import annotations
 
 import os

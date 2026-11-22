@@ -1,6 +1,7 @@
 """
 nexus.engines.resource_scheduler.models.allocation - Non-Overlapping Resource Allocation model.
 """
+
 from __future__ import annotations
 
 from django.db import models
@@ -61,4 +62,6 @@ class ResourceAllocation(TenantScopedModel):
         ]
 
     def __str__(self) -> str:
-        return f"Allocation({self.resource.code}: {self.start_time} - {self.end_time} [{self.status}])"
+        return (
+            f"Allocation({self.resource.code}: {self.start_time} - {self.end_time} [{self.status}])"
+        )

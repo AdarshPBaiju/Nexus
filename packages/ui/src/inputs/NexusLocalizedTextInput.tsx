@@ -21,6 +21,7 @@ export function NexusLocalizedTextInput({
   translationStatus = 'APPROVED',
   labelKey,
   isDisabled = false,
+  size = 'md',
   testId,
 }: NexusLocalizedTextInputProps): React.JSX.Element {
   const currentText = value[activeLocale] || '';
@@ -47,12 +48,13 @@ export function NexusLocalizedTextInput({
         disabled={isDisabled}
         onChange={(e) => handleTextChange(e.target.value)}
         style={{
-          height: '38px',
+          height: size === 'sm' ? 'var(--input-height-compact, 32px)' : size === 'lg' ? '44px' : '38px',
           padding: '0 var(--nx-space-3)',
           borderRadius: '6px',
           border: '1px solid var(--nx-border-default)',
-          backgroundColor: 'var(--nx-surface-card)',
+          backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
           color: 'var(--nx-text-primary)',
+          outline: 'none',
         }}
       />
     </div>

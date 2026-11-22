@@ -19,6 +19,7 @@ export function NexusSelect<T extends string = string>({
   placeholderKey = 'Select an option...',
   isDisabled = false,
   errorKey,
+  size = 'md',
   testId,
 }: NexusSelectProps<T>): React.JSX.Element {
   return (
@@ -29,11 +30,11 @@ export function NexusSelect<T extends string = string>({
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.value as T)}
         style={{
-          height: '38px',
+          height: size === 'sm' ? 'var(--input-height-compact, 32px)' : size === 'lg' ? '44px' : '38px',
           padding: '0 var(--nx-space-3)',
           borderRadius: '6px',
-          border: '1px solid var(--nx-border-default)',
-          backgroundColor: 'var(--nx-surface-card)',
+          border: `1px solid ${errorKey ? 'var(--nx-status-danger)' : 'var(--nx-border-default)'}`,
+          backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
           color: 'var(--nx-text-primary)',
           outline: 'none',
         }}

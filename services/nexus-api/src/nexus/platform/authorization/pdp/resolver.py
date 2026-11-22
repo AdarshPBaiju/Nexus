@@ -2,6 +2,7 @@
 nexus.platform.authorization.pdp.resolver - Sub-1.5ms Policy Decision Point (PDP) Resolver.
 Enforces: Explicit Deny Always Wins, Scope Hierarchy, and ABAC Guardrails.
 """
+
 from __future__ import annotations
 
 import uuid

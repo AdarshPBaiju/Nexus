@@ -10,6 +10,7 @@ Validates:
 6. TenantChannelCredential KMS envelope encryption.
 7. Frontend NexusNotificationCenter component existence and structure.
 """
+
 from __future__ import annotations
 
 import os

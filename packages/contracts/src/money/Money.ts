@@ -11,12 +11,16 @@ export class Money {
   private readonly rawUnits: bigint;
 
   public constructor(amount: string, currency: string) {
-    if (!currency || currency.length !== 3) {
-      throw new Error(`Invalid ISO 4217 currency code: ${currency}`);
+    if (!currency || currency.length < 3 || currency.length > 12) {
+      throw new Error(`Invalid ISO 4217 or custom currency code: ${currency}`);
     }
     this.currency = currency.toUpperCase();
     this.rawUnits = Money.parseToRawUnits(amount);
     this.amount = Money.rawUnitsToString(this.rawUnits);
+  }
+
+  public getRawUnits(): bigint {
+    return this.rawUnits;
   }
 
   public static of(amount: string | number, currency: string): Money {

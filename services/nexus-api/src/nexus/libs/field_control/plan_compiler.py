@@ -36,9 +36,7 @@ class FieldPlanCompiler:
 
         sql_cols = tuple(sorted(self.contract.resolve_sql_columns(requested_fields)))
         relations = tuple(sorted(self.contract.resolve_relations(requested_fields)))
-        allowed_output = tuple(
-            f for f in requested_fields if f in self.contract.allowed_fields
-        )
+        allowed_output = tuple(f for f in requested_fields if f in self.contract.allowed_fields)
 
         plan = CompiledFieldPlan(
             model_label=self.contract.model_label,

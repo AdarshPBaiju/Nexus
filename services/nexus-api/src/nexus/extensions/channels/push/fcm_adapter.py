@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.push.fcm_adapter - Firebase Cloud Messaging HTTP v1 Provider Adapter.
 """
+
 from __future__ import annotations
 
 import uuid

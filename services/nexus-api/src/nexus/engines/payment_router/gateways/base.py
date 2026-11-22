@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.gateways.base - Base Payment Gateway Adapter Protocol.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

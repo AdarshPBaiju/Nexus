@@ -1,6 +1,7 @@
 """
 nexus.platform.config.models.node - 6-Level Dynamic Config Node model.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -57,4 +58,3 @@ class DynamicConfigNode(TenantScopedModel):
 
     def __str__(self) -> str:
         return f"ConfigNode({self.scope_level} : {self.scope_id})"
-

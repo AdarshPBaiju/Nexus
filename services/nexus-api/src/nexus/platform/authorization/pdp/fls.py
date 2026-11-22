@@ -2,6 +2,7 @@
 nexus.platform.authorization.pdp.fls - Field-Level Security (FLS) Projector.
 Applies column-level classifications (READ, MASKED, WRITE, HIDDEN).
 """
+
 from __future__ import annotations
 
 import copy

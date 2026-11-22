@@ -9,6 +9,7 @@ Validates:
 5. Direct NPCI UPI QR URI construction with 0% MDR fee.
 6. Frontend @nexus/payments-ui checkout components and Go settlement reconciler.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

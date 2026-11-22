@@ -1,6 +1,7 @@
 """
 nexus.engines.templates.compilers.base - Base Target Compiler Protocol.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -30,4 +31,6 @@ class BaseTargetCompiler(ABC):
         """Helper extracting recursive plain text from AST."""
         if node.content:
             return node.content
-        return " ".join([cls.collect_text(child) for child in node.children if cls.collect_text(child)])
+        return " ".join(
+            [cls.collect_text(child) for child in node.children if cls.collect_text(child)]
+        )

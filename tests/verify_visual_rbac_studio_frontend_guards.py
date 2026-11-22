@@ -8,6 +8,7 @@ Validates:
 4. Scope boundary validation in AccessSimulator.
 5. Presence and structural integrity of ClientAuthorizationStore and UI components.
 """
+
 from __future__ import annotations
 
 import os
@@ -109,7 +110,9 @@ def test_access_simulator_denials() -> None:
 
     # Scope Mismatch
     mismatch_scope = uuid.uuid4()
-    report_scope = AccessSimulator.simulate(policy, "pos.order.create", target_scope_id=mismatch_scope)
+    report_scope = AccessSimulator.simulate(
+        policy, "pos.order.create", target_scope_id=mismatch_scope
+    )
     assert report_scope.decision == AuthzDecision.DENY
     assert "Scope boundary mismatch" in report_scope.final_reason
     print("[PASS] test_access_simulator_denials")

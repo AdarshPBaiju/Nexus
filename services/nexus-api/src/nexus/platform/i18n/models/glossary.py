@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.glossary - Protected Brand & Legal Glossary Term Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

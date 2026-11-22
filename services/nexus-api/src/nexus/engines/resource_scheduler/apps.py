@@ -1,6 +1,7 @@
 """
 nexus.engines.resource_scheduler.apps - Django app configuration for Resource Scheduler Engine.
 """
+
 from django.apps import AppConfig
 
 

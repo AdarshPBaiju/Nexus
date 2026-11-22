@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.tasks - Asynchronous Celery translation chord pipeline & bundle compilation.
 """
+
 from __future__ import annotations
 
 import re

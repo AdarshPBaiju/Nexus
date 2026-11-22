@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.models.payment_attempt - Payment Attempt Model.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

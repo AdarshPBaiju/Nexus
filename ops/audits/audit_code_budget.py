@@ -45,7 +45,9 @@ def audit_file(file_path: Path) -> list[str]:
             # Method body length
             func_lines = (node.end_lineno or node.lineno) - node.lineno + 1
             if func_lines > 50:
-                violations.append(f"Method '{node.name}' length {func_lines} lines exceeds hard limit 50")
+                violations.append(
+                    f"Method '{node.name}' length {func_lines} lines exceeds hard limit 50"
+                )
 
             # Max params
             num_args = len(node.args.args)
@@ -67,7 +69,10 @@ def run_code_budget_audit(root_dir: Path) -> int:
     total_scanned = 0
 
     for py_file in root_dir.rglob("*.py"):
-        if any(part in py_file.parts for part in {".venv", "venv", "node_modules", "migrations", ".git"}):
+        if any(
+            part in py_file.parts
+            for part in {".venv", "venv", "node_modules", "migrations", ".git"}
+        ):
             continue
         total_scanned += 1
         violations = audit_file(py_file)

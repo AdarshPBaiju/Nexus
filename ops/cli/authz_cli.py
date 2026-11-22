@@ -2,6 +2,7 @@
 ops.cli.authz_cli - Unified 'nexus authz' CLI Verification Suite.
 Commands: sync-catalog, audit-coverage, sod-check, pdp-bench, explain.
 """
+
 from __future__ import annotations
 
 import time

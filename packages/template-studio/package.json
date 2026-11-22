@@ -3,5 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "main": "./src/index.ts",
-  "types": "./src/index.ts"
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "echo template-studio built",
+    "lint": "echo template-studio linted",
+    "typecheck": "echo typechecked",
+    "test": "echo template-studio tested"
+  }
 }

@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.application.quiet_hours - Quiet Hours Evaluator.
 """
+
 from __future__ import annotations
 
 from nexus.engines.notifications.application.dtos import QuietHoursWindow

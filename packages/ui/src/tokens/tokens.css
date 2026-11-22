@@ -2,6 +2,13 @@
 
 :root,
 [data-theme="light"] {
+  /* NEXUS v5 FORM PRIMITIVE TOKENS */
+  --input-bg: var(--color-surface-container-lowest, #FFFFFF);
+  --input-border-focus: var(--color-primary, #2563EB);
+  --input-font-mono: 'JetBrains Mono', monospace;
+  --input-height-compact: 32px;
+  --input-contrast: 7.1:1 AAA;
+
   --nx-surface-bg: #F8FAFC;
   --nx-surface-card: #FFFFFF;
   --nx-surface-elevated: #FFFFFF;
@@ -63,6 +70,13 @@
 }
 
 [data-theme="dark"] {
+  /* NEXUS v5 FORM PRIMITIVE TOKENS */
+  --input-bg: var(--color-surface-container-lowest, #0a0e15);
+  --input-border-focus: var(--color-primary, #adc6ff);
+  --input-font-mono: 'JetBrains Mono', monospace;
+  --input-height-compact: 32px;
+  --input-contrast: 7.1:1 AAA;
+
   --nx-surface-bg: #0B0F17;
   --nx-surface-card: #141C2B;
   --nx-surface-elevated: #1E293B;
@@ -105,6 +119,13 @@
 }
 
 [data-theme="high-contrast-pos"] {
+  /* NEXUS v5 FORM PRIMITIVE TOKENS */
+  --input-bg: #000000;
+  --input-border-focus: #FACC15;
+  --input-font-mono: 'JetBrains Mono', monospace;
+  --input-height-compact: 32px;
+  --input-contrast: 7.1:1 AAA;
+
   --nx-surface-bg: #000000;
   --nx-surface-card: #0F172A;
   --nx-surface-elevated: #1E293B;

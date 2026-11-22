@@ -25,5 +25,7 @@ class SecurityHeadersMiddleware:
         response["X-Frame-Options"] = "DENY"
         response["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-        response["Content-Security-Policy"] = f"default-src 'self'; script-src 'self' 'nonce-{nonce}'"
+        response["Content-Security-Policy"] = (
+            f"default-src 'self'; script-src 'self' 'nonce-{nonce}'"
+        )
         return response

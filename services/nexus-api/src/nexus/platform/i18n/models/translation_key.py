@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.translation_key - Canonical translation key definition model.
 """
+
 from __future__ import annotations
 
 from django.db import models

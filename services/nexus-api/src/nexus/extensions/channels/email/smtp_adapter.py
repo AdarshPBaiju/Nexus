@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.email.smtp_adapter - Direct SMTP Corporate Mail Adapter.
 """
+
 from __future__ import annotations
 
 from typing import Any

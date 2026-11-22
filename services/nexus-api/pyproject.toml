@@ -43,6 +43,7 @@ select = [
 ]
 ignore = [
     "E501",   # Line length handled by formatter
+    "RUF001", # Ambiguous Unicode characters (allowed for international currencies & scripts)
     "RUF012", # Mutable class attributes in Django model Meta
     "TC001",  # Move app imports into type-checking block
     "TC002",  # Move third-party imports into type-checking block

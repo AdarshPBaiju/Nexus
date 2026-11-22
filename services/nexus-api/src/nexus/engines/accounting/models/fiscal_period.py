@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.models.fiscal_period - Fiscal Accounting Period and Lockout model.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.apps - Django app configuration for Multi-Rail Payment Router.
 """
+
 from django.apps import AppConfig
 
 

@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.models.document - Master Fiscal Invoice Document Model.
 """
+
 from __future__ import annotations
 
 import hashlib

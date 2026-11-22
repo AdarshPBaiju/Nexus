@@ -164,13 +164,13 @@ def _verify_actor_api_key_and_device(middleware: ActorSeparationMiddleware) -> N
     req_apikey.headers = {"Authorization": "ApiKey nx_live_secret123456"}
     req_apikey.path = "/api/v1/orders/"
     assert middleware(req_apikey).status_code == 200
-    assert getattr(req_apikey, "actor").actor_type == ActorType.API_KEY
+    assert req_apikey.actor.actor_type == ActorType.API_KEY
 
     req_device = HttpRequest()
     req_device.headers = {"Authorization": "Device device_station_pos1"}
     req_device.path = "/api/v1/pos/register/"
     assert middleware(req_device).status_code == 200
-    assert getattr(req_device, "actor").actor_type == ActorType.DESKTOP_DEVICE
+    assert req_device.actor.actor_type == ActorType.DESKTOP_DEVICE
 
 
 def _verify_actor_bearer_and_consumer(middleware: ActorSeparationMiddleware) -> None:
@@ -187,7 +187,7 @@ def _verify_actor_bearer_and_consumer(middleware: ActorSeparationMiddleware) -> 
     req_staff.headers = {"Authorization": f"Bearer {fake_jwt}"}
     req_staff.path = "/api/v1/workspace/billing/"
     assert middleware(req_staff).status_code == 200
-    assert getattr(req_staff, "actor").actor_type == ActorType.STAFF
+    assert req_staff.actor.actor_type == ActorType.STAFF
 
     consumer_claims = {
         "sub": str(new_uuid7()),

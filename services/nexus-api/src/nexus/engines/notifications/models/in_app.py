@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.in_app - In-App Notification Center Record.
 """
+
 from __future__ import annotations
 
 from django.db import models

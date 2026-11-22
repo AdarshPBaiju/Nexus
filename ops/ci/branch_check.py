@@ -16,12 +16,13 @@ import re
 import subprocess
 import sys
 
-BRANCH_REGEX = re.compile(
-    r"^(main|development|(feat|test|fix|perf|refactor|chore)\/[a-z0-9\-]+)$"
-)
+BRANCH_REGEX = re.compile(r"^(main|development|(feat|test|fix|perf|refactor|chore)\/[a-z0-9\-]+)$")
 
 FORBIDDEN_PATTERNS = [
-    (re.compile(r"^phase", re.IGNORECASE), "Branch names must NEVER start with 'phase' or 'phase/'"),
+    (
+        re.compile(r"^phase", re.IGNORECASE),
+        "Branch names must NEVER start with 'phase' or 'phase/'",
+    ),
     (re.compile(r"\/phase", re.IGNORECASE), "Branch names must NEVER contain '/phase'"),
     (re.compile(r"[A-Z]"), "Branch names must be strictly lowercase"),
     (re.compile(r"_"), "Branch names must use kebab-case hyphens, never underscores"),

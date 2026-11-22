@@ -27,9 +27,7 @@ class DryRunBatchValidator:
         error_count = 0
 
         for staged in rows:
-            errors = cls._validate_single_row(
-                staged.raw_data, mandatory_fields, type_checks or {}
-            )
+            errors = cls._validate_single_row(staged.raw_data, mandatory_fields, type_checks or {})
             staged.is_valid = len(errors) == 0
             staged.validation_errors = errors
             staged.save(update_fields=["is_valid", "validation_errors", "updated_at"])

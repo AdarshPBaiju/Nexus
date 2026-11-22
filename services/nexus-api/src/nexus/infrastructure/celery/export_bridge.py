@@ -2,6 +2,7 @@
 nexus.infrastructure.celery.export_bridge - Polyglot Heavy Export Dispatch Bridge.
 Threshold: <= 5,000 rows streams synchronously; > 5,000 rows dispatches to Go Asynq worker.
 """
+
 from __future__ import annotations
 
 import uuid

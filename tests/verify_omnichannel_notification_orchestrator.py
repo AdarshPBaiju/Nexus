@@ -8,6 +8,7 @@ Validates:
 4. Idempotency (zero duplicate sends on retry).
 5. Inbound DLR webhook ingestion and bounce auto-suppression.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -165,7 +166,7 @@ def test_quiet_hours() -> None:
     # 22:00 (1320) to 08:00 (480)
     window = QuietHoursWindow(enabled=True, start_minute=1320, end_minute=480)
     assert QuietHoursEvaluator.is_in_quiet_hours(window, 1350) is True  # 22:30
-    assert QuietHoursEvaluator.is_in_quiet_hours(window, 200) is True   # 03:20
+    assert QuietHoursEvaluator.is_in_quiet_hours(window, 200) is True  # 03:20
     assert QuietHoursEvaluator.is_in_quiet_hours(window, 600) is False  # 10:00
 
     tenant_id = uuid.uuid4()

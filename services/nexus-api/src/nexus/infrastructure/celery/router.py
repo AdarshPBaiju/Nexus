@@ -1,6 +1,7 @@
 """
 nexus.infrastructure.celery.router - Deterministic Multi-Queue Task Router.
 """
+
 from __future__ import annotations
 
 from typing import Any

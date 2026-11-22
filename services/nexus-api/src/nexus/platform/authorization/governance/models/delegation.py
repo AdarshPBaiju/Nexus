@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.models.delegation - Vacation Delegation model.
 """
+
 from __future__ import annotations
 
 from django.db import models

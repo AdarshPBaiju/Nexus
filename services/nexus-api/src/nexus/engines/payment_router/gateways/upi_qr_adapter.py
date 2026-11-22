@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.gateways.upi_qr_adapter - NPCI Direct UPI Intent & QR Adapter.
 """
+
 from __future__ import annotations
 
 import urllib.parse

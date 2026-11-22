@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.whatsapp.meta_adapter - Meta WhatsApp Cloud API Provider Adapter.
 """
+
 from __future__ import annotations
 
 from typing import Any

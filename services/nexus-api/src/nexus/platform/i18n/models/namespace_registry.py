@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.namespace_registry - Registered namespace isolation model.
 """
+
 from __future__ import annotations
 
 from django.db import models

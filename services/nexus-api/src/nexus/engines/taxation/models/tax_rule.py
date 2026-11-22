@@ -1,6 +1,7 @@
 """
 nexus.engines.taxation.models.tax_rule - Statutory Tax Rule and Rate Revision model.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

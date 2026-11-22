@@ -27,9 +27,7 @@ class HashChainVerifier:
     @classmethod
     def verify_tenant_chain(cls, tenant_id: uuid.UUID) -> VerificationResult:
         events = list(
-            AuditDomainEventLog.objects.filter(tenant_id=tenant_id).order_by(
-                "created_at", "id"
-            )
+            AuditDomainEventLog.objects.filter(tenant_id=tenant_id).order_by("created_at", "id")
         )
         if not events:
             return VerificationResult(

@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.models.abac_policy - Attribute-Based Access Control (ABAC) Policy model.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -95,7 +95,9 @@ def test_universal_favourites_annotation_and_sorting() -> None:
     )
 
     # Test Pin-Favourites-First sorting: f2 must be index 0
-    sorted_qs = BaseFastListingSelector.apply_favourite_sorting(annotated_qs, pin_favourites_first=True)
+    sorted_qs = BaseFastListingSelector.apply_favourite_sorting(
+        annotated_qs, pin_favourites_first=True
+    )
     results = list(sorted_qs)
 
     assert results[0].id == f2.id

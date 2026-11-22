@@ -47,9 +47,7 @@ class NumberSeriesAllocator:
         op_date = req.operational_date or date.today()
 
         with transaction.atomic():
-            counter = cls._get_or_create_locked_counter(
-                tenant_id, series_def, req.partition_key
-            )
+            counter = cls._get_or_create_locked_counter(tenant_id, series_def, req.partition_key)
             cls._check_lazy_reset(counter, series_def.reset_frequency, op_date)
             seq_num = cls._claim_or_increment(counter)
 
@@ -82,16 +80,10 @@ class NumberSeriesAllocator:
             series_def=series_def,
             partition_key=partition_key,
         )
-        return (
-            NumberSeriesCounter.objects.select_for_update()
-            .order_by("id")
-            .get(id=counter.id)
-        )
+        return NumberSeriesCounter.objects.select_for_update().order_by("id").get(id=counter.id)
 
     @staticmethod
-    def _check_lazy_reset(
-        counter: NumberSeriesCounter, frequency: str, op_date: date
-    ) -> None:
+    def _check_lazy_reset(counter: NumberSeriesCounter, frequency: str, op_date: date) -> None:
         if frequency == "YEARLY" and counter.last_reset_date:
             if counter.last_reset_date.year != op_date.year:
                 counter.current_value = 0
@@ -108,9 +100,7 @@ class NumberSeriesAllocator:
     @staticmethod
     def _claim_or_increment(counter: NumberSeriesCounter) -> int:
         reclaimed = (
-            NumberSeriesReservation.objects.filter(
-                counter=counter, status="RECLAIMED"
-            )
+            NumberSeriesReservation.objects.filter(counter=counter, status="RECLAIMED")
             .order_by("reserved_number")
             .first()
         )

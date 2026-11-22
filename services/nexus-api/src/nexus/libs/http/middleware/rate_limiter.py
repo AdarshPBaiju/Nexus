@@ -12,7 +12,9 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 class RateLimiterMiddleware:
     """Stage 3: Sliding window rate limiting protecting endpoints from abuse."""
 
-    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse], limit: int = 1000) -> None:
+    def __init__(
+        self, get_response: Callable[[HttpRequest], HttpResponse], limit: int = 1000
+    ) -> None:
         self.get_response = get_response
         self.limit = limit
         self._counts: dict[str, int] = {}

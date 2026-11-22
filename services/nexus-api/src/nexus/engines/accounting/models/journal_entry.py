@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.models.journal_entry - Double-Entry General Ledger Journal Entry model.
 """
+
 from __future__ import annotations
 
 from django.db import models

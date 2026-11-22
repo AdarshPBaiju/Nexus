@@ -1,6 +1,7 @@
 """
 nexus.libs.models.translatable - Model Mixin for Multilingual Entity Fields.
 """
+
 from __future__ import annotations
 
 from django.db import models

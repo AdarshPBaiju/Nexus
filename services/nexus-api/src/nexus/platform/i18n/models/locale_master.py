@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.locale_master - Supported BCP 47 locale catalog model.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.models - Re-exports for authorization models.
 """
+
 from nexus.platform.authorization.governance.models.delegation import VacationDelegation
 from nexus.platform.authorization.governance.models.jit_elevation import JitElevationGrant
 from nexus.platform.authorization.governance.models.sod_rule import SodConflictRule

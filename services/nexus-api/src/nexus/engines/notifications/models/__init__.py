@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models - Re-exports for Notification Engine models.
 """
+
 from __future__ import annotations
 
 from nexus.engines.notifications.models.credential import TenantChannelCredential

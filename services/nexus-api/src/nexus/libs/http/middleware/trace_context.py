@@ -18,7 +18,10 @@ class TraceContextMiddleware:
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         req_id = request.headers.get("X-Nexus-Request-ID") or str(uuid.uuid4())
-        trace_id = request.headers.get("traceparent") or f"00-{uuid.uuid4().hex}-{uuid.uuid4().hex[:16]}-01"
+        trace_id = (
+            request.headers.get("traceparent")
+            or f"00-{uuid.uuid4().hex}-{uuid.uuid4().hex[:16]}-01"
+        )
 
         request.request_id = req_id
         request.trace_id = trace_id

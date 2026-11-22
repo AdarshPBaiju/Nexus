@@ -2,6 +2,7 @@
 """
 verify_view_field_control_strict_projection.py - Verification suite for Subphase 01.24.
 """
+
 from __future__ import annotations
 
 import os

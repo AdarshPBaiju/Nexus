@@ -1,6 +1,7 @@
 """
 nexus.libs.listing.selector - Sub-50ms Fast Listing Selector with Column Projection & Favourites.
 """
+
 from __future__ import annotations
 
 import uuid

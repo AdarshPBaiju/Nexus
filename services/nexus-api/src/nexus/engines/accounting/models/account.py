@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.models.account - Chart of Accounts (CoA) Ledger Account model.
 """
+
 from __future__ import annotations
 
 from django.db import models

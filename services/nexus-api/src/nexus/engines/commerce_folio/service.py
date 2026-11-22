@@ -1,6 +1,7 @@
 """
 nexus.engines.commerce_folio.service - Optimistic Concurrency & Folio Settlement Service.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -74,5 +75,7 @@ class FolioOptimisticLockService:
         folio.tax_amount += dto.tax_amount
         folio.total_amount += total
         folio.version += 1
-        folio.save(update_fields=["subtotal_amount", "tax_amount", "total_amount", "version", "updated_at"])
+        folio.save(
+            update_fields=["subtotal_amount", "tax_amount", "total_amount", "version", "updated_at"]
+        )
         return line

@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.models.grant - Multi-Dimensional Scoped Resource Grant model.
 """
+
 from __future__ import annotations
 
 from django.db import models

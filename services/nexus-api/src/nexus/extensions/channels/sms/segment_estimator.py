@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.sms.segment_estimator - SMS GSM-7 vs UCS-2 Cost Inflation Guard.
 """
+
 from __future__ import annotations
 
 import math

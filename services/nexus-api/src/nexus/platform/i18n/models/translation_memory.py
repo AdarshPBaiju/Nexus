@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.translation_memory - Translation Memory Cache Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

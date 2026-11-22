@@ -1,6 +1,7 @@
 """
 nexus.engines.commerce_folio.models.folio - Polymorphic Commerce Folio Master model.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

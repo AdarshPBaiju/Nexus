@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.models.payment_intent - Master Payment Intent Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

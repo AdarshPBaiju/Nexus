@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.apps - Django app configuration for General Ledger & Bookkeeping Engine.
 """
+
 from django.apps import AppConfig
 
 

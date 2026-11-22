@@ -22,9 +22,7 @@ def nexus_exception_handler(exc: Exception, context: dict[str, Any]) -> Response
         if isinstance(exc.detail, dict):
             for field, msgs in exc.detail.items():
                 reason = msgs[0] if isinstance(msgs, list) else str(msgs)
-                invalid_params.append(
-                    InvalidParameterDetail(field=str(field), reason=str(reason))
-                )
+                invalid_params.append(InvalidParameterDetail(field=str(field), reason=str(reason)))
         problem = RFC9457ProblemDetail(
             title="Validation Failed",
             status=status.HTTP_400_BAD_REQUEST,

@@ -20,6 +20,9 @@ class RyowStickinessMiddleware:
         request.use_primary_db = bool(ryow_token)
 
         response = self.get_response(request)
-        if request.method in {"POST", "PATCH", "PUT", "DELETE"} and 200 <= response.status_code < 300:
+        if (
+            request.method in {"POST", "PATCH", "PUT", "DELETE"}
+            and 200 <= response.status_code < 300
+        ):
             response["X-Nexus-RYOW-Token"] = "ryow_active_token"
         return response

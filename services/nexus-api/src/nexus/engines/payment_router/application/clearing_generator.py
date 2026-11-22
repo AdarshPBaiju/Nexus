@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.application.clearing_generator - Double-Entry Clearing Generator.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -55,7 +56,9 @@ class ClearingJournalGenerator:
         d_net = Decimal(str(net))
 
         if (d_net + d_fee) != d_gross:
-            raise ValueError(f"Settlement invariant violated: net ({d_net}) + fee ({d_fee}) != gross ({d_gross})")
+            raise ValueError(
+                f"Settlement invariant violated: net ({d_net}) + fee ({d_fee}) != gross ({d_gross})"
+            )
 
         return [
             ClearingPosting(

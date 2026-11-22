@@ -2,6 +2,7 @@
 """
 verify_advanced_django_serializers_wire_contracts.py - Verification suite for Subphase 01.22.
 """
+
 from __future__ import annotations
 
 import os
@@ -193,7 +194,9 @@ def main() -> None:
     test_partial_patch_and_unset()
     test_enterprise_fields()
     test_output_pruning_and_renderer()
-    print("SUCCESS: 01.22 Advanced Django Serializers & Wire-Contracts verified with 100% assertions.")
+    print(
+        "SUCCESS: 01.22 Advanced Django Serializers & Wire-Contracts verified with 100% assertions."
+    )
 
 
 if __name__ == "__main__":

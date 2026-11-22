@@ -1,6 +1,7 @@
 """
 nexus.engines.taxation.service - Jurisdiction-Agnostic Tax Calculation Engine.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

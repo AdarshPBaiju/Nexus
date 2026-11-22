@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.email.ses_adapter - Amazon SES High-Volume Email Provider Adapter.
 """
+
 from __future__ import annotations
 
 from typing import Any

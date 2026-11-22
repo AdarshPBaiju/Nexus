@@ -97,13 +97,17 @@ def test_sod_static_and_dynamic_conflicts() -> None:
 
     # Self-approval blocked
     try:
-        SodConflictValidator.assert_maker_checker_separation(initiator_id, initiator_id, "Discount Approval")
+        SodConflictValidator.assert_maker_checker_separation(
+            initiator_id, initiator_id, "Discount Approval"
+        )
         assert False, "Self-approval must raise SodViolationError"
     except SodViolationError as err:
         assert "Maker-Checker Violation" in str(err)
 
     # Independent approval allowed
-    SodConflictValidator.assert_maker_checker_separation(initiator_id, approver_id, "Discount Approval")
+    SodConflictValidator.assert_maker_checker_separation(
+        initiator_id, approver_id, "Discount Approval"
+    )
     print("[PASS] test_sod_static_and_dynamic_conflicts")
 
 

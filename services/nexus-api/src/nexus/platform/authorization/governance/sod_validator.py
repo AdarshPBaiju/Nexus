@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.sod_validator - Segregation of Duties (SoD) Validator.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -34,11 +35,17 @@ class SodConflictValidator:
         assigned_set = set(assigned_permissions)
 
         for rule in rules:
-            if rule.first_permission == new_permission and rule.conflicting_permission in assigned_set:
+            if (
+                rule.first_permission == new_permission
+                and rule.conflicting_permission in assigned_set
+            ):
                 raise SodViolationError(
                     f"SoD Conflict: Cannot grant '{new_permission}' because user already holds conflicting '{rule.conflicting_permission}' ({rule.rule_code})."
                 )
-            if rule.conflicting_permission == new_permission and rule.first_permission in assigned_set:
+            if (
+                rule.conflicting_permission == new_permission
+                and rule.first_permission in assigned_set
+            ):
                 raise SodViolationError(
                     f"SoD Conflict: Cannot grant '{new_permission}' because user already holds conflicting '{rule.first_permission}' ({rule.rule_code})."
                 )

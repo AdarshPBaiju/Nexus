@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.models.permission - Canonical Permission Catalog model.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -1,6 +1,7 @@
 """
 nexus.infrastructure.celery.config - 6-Queue Celery Configuration & Redis DB Topology.
 """
+
 from __future__ import annotations
 
 from typing import Final

@@ -1,6 +1,7 @@
 """
 nexus.engines.commerce_folio.apps - Django app configuration for Commerce Folio Engine.
 """
+
 from django.apps import AppConfig
 
 

@@ -2,6 +2,7 @@
 """
 verify_dynamic_universal_number_series_fiscal_sequence.py - Verification suite for Subphase 01.27.
 """
+
 from __future__ import annotations
 
 import os
@@ -96,7 +97,9 @@ def test_format_compiler_latency() -> None:
         )
     elapsed_ms = (time.perf_counter() - start) * 1000 / 1000
     assert elapsed_ms < 0.25, f"Compiler exceeded 0.25ms SLA: {elapsed_ms:.4f} ms"
-    print(f"PASS: NumberSeriesFormatCompiler sub-0.25ms compilation verified ({elapsed_ms:.4f} ms).")
+    print(
+        f"PASS: NumberSeriesFormatCompiler sub-0.25ms compilation verified ({elapsed_ms:.4f} ms)."
+    )
 
 
 def test_number_series_allocator_and_reclaim() -> None:

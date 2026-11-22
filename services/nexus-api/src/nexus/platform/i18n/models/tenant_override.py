@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.tenant_override - Tenant/Brand/Branch translation override model.
 """
+
 from __future__ import annotations
 
 from django.db import models

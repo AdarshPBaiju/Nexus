@@ -1,6 +1,7 @@
 """
 nexus.libs.pagination.keyset - Zero-OFFSET Keyset Cursor Paginator.
 """
+
 from __future__ import annotations
 
 import base64

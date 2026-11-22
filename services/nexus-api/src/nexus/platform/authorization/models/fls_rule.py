@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.models.fls_rule - Field-Level Security (FLS) Classification model.
 """
+
 from __future__ import annotations
 
 from django.db import models
@@ -51,4 +52,6 @@ class FieldSecurityRule(TenantScopedModel):
         ]
 
     def __str__(self) -> str:
-        return f"FLS({self.entity_type}.{self.field_name} -> {self.classification} [{self.role_code}])"
+        return (
+            f"FLS({self.entity_type}.{self.field_name} -> {self.classification} [{self.role_code}])"
+        )

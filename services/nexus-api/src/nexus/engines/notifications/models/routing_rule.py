@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.routing_rule - Notification Fallback Routing Rule.
 """
+
 from __future__ import annotations
 
 from django.db import models

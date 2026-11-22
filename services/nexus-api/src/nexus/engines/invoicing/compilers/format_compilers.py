@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.compilers.format_compilers - 6 Major Physical & Electronic Invoice Compilers.
 """
+
 from __future__ import annotations
 
 from typing import Any
@@ -42,7 +43,9 @@ class ThermalEscPosInvoiceCompiler:
         payload.extend(cls.ESC_ALIGN_LEFT)
 
         for line in invoice_data.get("lines", []):
-            line_str = f"{line.get('qty', 1)}x {line.get('name', 'Item')}  ${line.get('total', '0.00')}\n"
+            line_str = (
+                f"{line.get('qty', 1)}x {line.get('name', 'Item')}  ${line.get('total', '0.00')}\n"
+            )
             payload.extend(line_str.encode("utf-8"))
 
         total_str = f"\nTOTAL: ${invoice_data.get('total_gross', '0.00')}\n"
@@ -57,7 +60,12 @@ class DotMatrixEscPCompiler:
     @classmethod
     def compile(cls, invoice_data: dict[str, Any]) -> str:
         header = f"=== INVOICE: {invoice_data.get('number')} ===\n"
-        body = "\n".join([f"{item.get('qty')}x {item.get('name')} {item.get('total')}" for item in invoice_data.get("lines", [])])
+        body = "\n".join(
+            [
+                f"{item.get('qty')}x {item.get('name')} {item.get('total')}"
+                for item in invoice_data.get("lines", [])
+            ]
+        )
         footer = f"\nTOTAL DUE: ${invoice_data.get('total_gross')}\n\x0c"  # Form Feed \x0c
         return header + body + footer
 
@@ -66,16 +74,20 @@ class StationeryOverlayCompiler:
     """Precision overlay coordinate engine for pre-printed letterhead forms (±0.1 mm)."""
 
     @classmethod
-    def compile(cls, invoice_data: dict[str, Any], field_coords: dict[str, tuple[float, float]]) -> dict[str, Any]:
+    def compile(
+        cls, invoice_data: dict[str, Any], field_coords: dict[str, tuple[float, float]]
+    ) -> dict[str, Any]:
         overlay_elements: list[dict[str, Any]] = []
         for field_name, (x_mm, y_mm) in field_coords.items():
             val = invoice_data.get(field_name, "")
-            overlay_elements.append({
-                "field": field_name,
-                "x_mm": round(x_mm, 2),
-                "y_mm": round(y_mm, 2),
-                "value": str(val),
-            })
+            overlay_elements.append(
+                {
+                    "field": field_name,
+                    "x_mm": round(x_mm, 2),
+                    "y_mm": round(y_mm, 2),
+                    "value": str(val),
+                }
+            )
         return {"precision_mode": "ABSOLUTE_MILLIMETER", "elements": overlay_elements}
 
 

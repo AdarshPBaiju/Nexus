@@ -1,6 +1,7 @@
 """
 nexus.engines.resource_scheduler.models.resource - Unified Venue Resource Master model.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -1,6 +1,7 @@
 """
 nexus.extensions.channels.push.in_app_adapter - In-App Notification Center Adapter.
 """
+
 from __future__ import annotations
 
 import uuid

@@ -42,3 +42,18 @@ impl EnvelopeCodec {
         serde_json::from_slice(json_bytes).map_err(|e| e.to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn test_encode_decode() {
+        let val = json!({"hello": "world"});
+        let enc = EnvelopeCodec::encode_payload(&val, "fake_key").unwrap();
+        assert!(enc.starts_with(PREFIX));
+        let dec = EnvelopeCodec::decode_payload(&enc, "fake_key").unwrap();
+        assert_eq!(dec["hello"], "world");
+    }
+}

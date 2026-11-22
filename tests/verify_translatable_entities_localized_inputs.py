@@ -8,6 +8,7 @@ Validates:
 4. EntityTranslationService syncing entity localized_cache and recording entries.
 5. Presence of NexusLocalizedTextInput component (#19).
 """
+
 from __future__ import annotations
 
 import os
@@ -156,7 +157,15 @@ def test_sync_entity_cache() -> None:
 
 
 def test_frontend_localized_input_component() -> None:
-    input_file = REPO_ROOT / "packages" / "ui" / "src" / "inputs" / "localized" / "NexusLocalizedTextInput.tsx"
+    input_file = (
+        REPO_ROOT
+        / "packages"
+        / "ui"
+        / "src"
+        / "inputs"
+        / "localized"
+        / "NexusLocalizedTextInput.tsx"
+    )
     assert input_file.exists(), "NexusLocalizedTextInput.tsx must exist"
     index_file = REPO_ROOT / "packages" / "ui" / "src" / "inputs" / "localized" / "index.ts"
     assert index_file.exists(), "localized/index.ts must exist"

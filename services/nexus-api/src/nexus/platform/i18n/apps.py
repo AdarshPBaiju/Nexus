@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.apps - Django app configuration for multilingual kernel module.
 """
+
 from django.apps import AppConfig
 
 

@@ -7,6 +7,7 @@ Validates:
 3. Logical CSS compliance in frontend components (zero physical directional classes).
 4. KeyInspectorDrawer and TranslationStudioView components presence and exports.
 """
+
 from __future__ import annotations
 
 import os

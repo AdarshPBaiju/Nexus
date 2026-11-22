@@ -14,6 +14,7 @@ export function NexusPinInput({
   isMasked = true,
   labelKey,
   isDisabled = false,
+  size = 'md',
   testId,
 }: NexusPinInputProps): React.JSX.Element {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -27,6 +28,8 @@ export function NexusPinInput({
       inputsRef.current[index + 1]?.focus();
     }
   };
+
+  const boxSize = size === 'sm' ? 'var(--input-height-compact, 32px)' : size === 'lg' ? '54px' : '44px';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nx-space-2)' }} data-testid={testId}>
@@ -42,13 +45,16 @@ export function NexusPinInput({
             disabled={isDisabled}
             onChange={(e) => handleDigitChange(i, e.target.value)}
             style={{
-              width: '44px',
-              height: '48px',
+              width: boxSize,
+              height: boxSize,
               textAlign: 'center',
-              fontSize: '20px',
+              fontSize: size === 'sm' ? '16px' : '20px',
               borderRadius: '6px',
               border: '1px solid var(--nx-border-default)',
-              backgroundColor: 'var(--nx-surface-card)',
+              backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
+              color: 'var(--nx-text-primary)',
+              fontFamily: 'var(--input-font-mono, monospace)',
+              outline: 'none',
             }}
           />
         ))}

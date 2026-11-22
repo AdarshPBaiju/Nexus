@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.gateways.registry - Gateway Adapter Registry.
 """
+
 from __future__ import annotations
 
 from nexus.engines.payment_router.gateways.base import BasePaymentGatewayAdapter

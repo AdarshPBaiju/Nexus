@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.application.adapters - Pluggable Provider Adapters.
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

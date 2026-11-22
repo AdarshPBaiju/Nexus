@@ -1,6 +1,7 @@
 """
 nexus.platform.config.models.revision - Dynamic Config Change Revision model.
 """
+
 from __future__ import annotations
 
 import hashlib

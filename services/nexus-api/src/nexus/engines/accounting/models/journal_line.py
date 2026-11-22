@@ -1,6 +1,7 @@
 """
 nexus.engines.accounting.models.journal_line - Atomic General Ledger Journal Line model.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

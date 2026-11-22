@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.models.routing - Multi-Printer Split Routing Rule Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

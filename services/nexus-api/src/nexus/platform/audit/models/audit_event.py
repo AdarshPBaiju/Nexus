@@ -27,12 +27,8 @@ class AuditDomainEventLog(TenantScopedModel):
 
     category = models.CharField(max_length=64, db_index=True)
     event_type = models.CharField(max_length=128, db_index=True)
-    severity = models.CharField(
-        max_length=16, choices=Severity.choices, default=Severity.INFO
-    )
-    outcome = models.CharField(
-        max_length=16, choices=Outcome.choices, default=Outcome.SUCCESS
-    )
+    severity = models.CharField(max_length=16, choices=Severity.choices, default=Severity.INFO)
+    outcome = models.CharField(max_length=16, choices=Outcome.choices, default=Outcome.SUCCESS)
 
     actor_id = models.UUIDField(db_index=True)
     actor_type = models.CharField(max_length=32, default="STAFF")

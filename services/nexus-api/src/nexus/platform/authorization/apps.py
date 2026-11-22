@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.apps - Django app configuration for Multi-Dimensional Authorization module.
 """
+
 from django.apps import AppConfig
 
 

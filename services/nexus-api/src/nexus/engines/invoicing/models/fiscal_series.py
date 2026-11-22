@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.models.fiscal_series - Gapless Monotonic Fiscal Number Series Model.
 """
+
 from __future__ import annotations
 
 from django.db import models, transaction
@@ -47,7 +48,9 @@ class FiscalSeries(TenantScopedModel):
     class Meta:
         app_label = "invoicing"
         db_table = "inv_fiscal_series"
-        unique_together = [("tenant_id", "legal_entity_id", "branch_id", "fiscal_year", "series_code")]
+        unique_together = [
+            ("tenant_id", "legal_entity_id", "branch_id", "fiscal_year", "series_code")
+        ]
         ordering = ["series_code", "id"]
 
     def allocate_next(self) -> str:

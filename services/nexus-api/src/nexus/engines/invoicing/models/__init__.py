@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.models - Re-exports for Invoicing Engine models.
 """
+
 from __future__ import annotations
 
 from nexus.engines.invoicing.models.document import InvoiceDocument

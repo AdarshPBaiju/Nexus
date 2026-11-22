@@ -1,6 +1,7 @@
 """
 nexus.engines.templates.compilers.document_compilers - 6 Document & Hardware Output Compilers.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -105,7 +106,9 @@ class MobilePassCompiler(BaseTargetCompiler):
             "passTypeIdentifier": "pass.nexus.storecard",
             "serialNumber": meta.get("serial", "NX-PASS-001"),
             "description": text,
-            "primaryFields": [{"key": "member", "label": "MEMBER", "value": meta.get("member", "Guest")}],
+            "primaryFields": [
+                {"key": "member", "label": "MEMBER", "value": meta.get("member", "Guest")}
+            ],
         }
 
 

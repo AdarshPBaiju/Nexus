@@ -78,7 +78,7 @@ def _verify_states_and_shells(ui_dir: Path) -> None:
     for sh in shells:
         f = ui_dir / "src" / "layouts" / f"{sh}.tsx"
         assert f.exists(), f"Shell {sh} must exist"
-    print(f"  [PASS] All 5 canonical states and 7 canonical page shells verified")
+    print("  [PASS] All 5 canonical states and 7 canonical page shells verified")
 
 
 def main() -> int:

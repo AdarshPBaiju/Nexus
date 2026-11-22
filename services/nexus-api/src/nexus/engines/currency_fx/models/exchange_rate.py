@@ -1,6 +1,7 @@
 """
 nexus.engines.currency_fx.models.exchange_rate - Immutable Historical Exchange Rate Snapshot model.
 """
+
 from __future__ import annotations
 
 from django.db import models

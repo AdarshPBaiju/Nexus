@@ -8,6 +8,7 @@ Validates:
 4. Multi-printer split routing engine (Receipt -> Cashier, KOT -> Barista).
 5. Native Tauri desktop print_spooler.rs and @nexus/invoice-builder UI SDK.
 """
+
 from __future__ import annotations
 
 import os

@@ -3,6 +3,7 @@ nexus.libs.security.path_codec - Polyglot Encrypted Path Envelope Codec (AES-256
 Format: nx1{mode}_{base64url(nonce[12B] || ciphertext || tag[16B])}
 Modes: 'q' (query), 'd' (detail), 's' (share), 'e' (ephemeral), 'c' (cursor).
 """
+
 from __future__ import annotations
 
 import base64
@@ -101,4 +102,6 @@ class EncryptedPathCodec:
             payload = json.loads(decrypted_bytes.decode("utf-8"))
             return mode, payload
         except Exception as err:
-            raise PathEnvelopeDecryptionError("Envelope decryption failed or AAD mismatch.") from err
+            raise PathEnvelopeDecryptionError(
+                "Envelope decryption failed or AAD mismatch."
+            ) from err

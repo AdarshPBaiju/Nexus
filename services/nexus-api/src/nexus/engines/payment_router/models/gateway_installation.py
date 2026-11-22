@@ -1,6 +1,7 @@
 """
 nexus.engines.payment_router.models.gateway_installation - Tenant Gateway Plugin Installation Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

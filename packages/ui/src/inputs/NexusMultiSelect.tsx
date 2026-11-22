@@ -27,7 +27,18 @@ export function NexusMultiSelect({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--nx-space-1)' }} data-testid={testId}>
       {labelKey && <NexusText variant="label">{labelKey}</NexusText>}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--nx-space-2)', minHeight: '38px', padding: 'var(--nx-space-2)', border: '1px solid var(--nx-border-default)', borderRadius: '6px' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 'var(--nx-space-2)',
+          minHeight: '38px',
+          padding: 'var(--nx-space-2)',
+          border: '1px solid var(--nx-border-default)',
+          borderRadius: '6px',
+          backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
+        }}
+      >
         {options.map((opt) => {
           const selected = value.includes(opt.value);
           return (

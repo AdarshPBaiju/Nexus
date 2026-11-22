@@ -1,6 +1,7 @@
 """
 nexus.engines.currency_fx.service - Multi-Currency Tri-Currency Calculation Service.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -68,4 +69,3 @@ class CurrencyFxService:
             functional_money=fn_money,
             fx_rate_tx_to_fn=rates.rate_tx_to_fn,
         )
-

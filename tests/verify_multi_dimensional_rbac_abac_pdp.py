@@ -91,14 +91,7 @@ def test_permission_catalog_and_grants() -> None:
     print("[PASS] test_permission_catalog_and_grants")
 
 
-def test_explicit_deny_always_wins_and_scoped_pdp() -> None:
-    """Validate Explicit Deny Always Wins and sub-1.5ms PDP resolution."""
-    tenant_id = new_uuid7()
-    membership_id = new_uuid7()
-    branch_1 = new_uuid7()
-    branch_2 = new_uuid7()
-
-    # Grant allow on branch_1
+def _setup_test_policy(tenant_id, membership_id, branch_1):
     ResourceGrant.objects.create(
         tenant_id=tenant_id,
         membership_id=membership_id,
@@ -107,7 +100,6 @@ def test_explicit_deny_always_wins_and_scoped_pdp() -> None:
         scope_id=branch_1,
         effect=ResourceGrant.GrantEffect.ALLOW,
     )
-    # Explicit DENY on order.delete
     ResourceGrant.objects.create(
         tenant_id=tenant_id,
         membership_id=membership_id,
@@ -116,20 +108,29 @@ def test_explicit_deny_always_wins_and_scoped_pdp() -> None:
         scope_id=tenant_id,
         effect=ResourceGrant.GrantEffect.DENY,
     )
+    return EffectivePolicyCompiler.compile_policy(tenant_id, membership_id, rbac_version=1)
 
-    policy = EffectivePolicyCompiler.compile_policy(tenant_id, membership_id, rbac_version=1)
 
-    # Allowed on branch 1
-    dec_allowed = AuthorizationResolver.resolve_access(policy, "order.create", target_scope_id=branch_1)
-    assert dec_allowed == AuthzDecision.ALLOW
+def test_explicit_deny_always_wins_and_scoped_pdp() -> None:
+    """Validate Explicit Deny Always Wins and sub-1.5ms PDP resolution."""
+    tenant_id, membership_id = new_uuid7(), new_uuid7()
+    branch_1, branch_2 = new_uuid7(), new_uuid7()
+    policy = _setup_test_policy(tenant_id, membership_id, branch_1)
 
-    # Denied on branch 2 (out of scope)
-    dec_out_of_scope = AuthorizationResolver.resolve_access(policy, "order.create", target_scope_id=branch_2)
-    assert dec_out_of_scope == AuthzDecision.DENY
-
+    # Allowed on branch 1 & Denied on branch 2
+    assert (
+        AuthorizationResolver.resolve_access(policy, "order.create", target_scope_id=branch_1)
+        == AuthzDecision.ALLOW
+    )
+    assert (
+        AuthorizationResolver.resolve_access(policy, "order.create", target_scope_id=branch_2)
+        == AuthzDecision.DENY
+    )
     # Explicit Deny overrides all allows
-    dec_explicit_deny = AuthorizationResolver.resolve_access(policy, "order.delete", target_scope_id=branch_1)
-    assert dec_explicit_deny == AuthzDecision.DENY
+    assert (
+        AuthorizationResolver.resolve_access(policy, "order.delete", target_scope_id=branch_1)
+        == AuthzDecision.DENY
+    )
 
     # Benchmark: 1,000 warm PDP checks must finish in < 50ms (< 0.05ms per check)
     t0 = time.perf_counter()
@@ -138,7 +139,9 @@ def test_explicit_deny_always_wins_and_scoped_pdp() -> None:
     duration_ms = (time.perf_counter() - t0) * 1000
     assert duration_ms < 50.0, f"PDP check took {duration_ms:.2f}ms, must be < 50ms for 1000 checks"
 
-    print(f"[PASS] test_explicit_deny_always_wins_and_scoped_pdp (1,000 checks in {duration_ms:.2f}ms)")
+    print(
+        f"[PASS] test_explicit_deny_always_wins_and_scoped_pdp (1,000 checks in {duration_ms:.2f}ms)"
+    )
 
 
 def test_field_level_security_and_live_revocation() -> None:

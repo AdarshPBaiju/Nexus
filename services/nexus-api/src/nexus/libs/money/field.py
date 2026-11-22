@@ -1,6 +1,7 @@
 """
 nexus.libs.money.field - Django Model Field for Money amounts.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

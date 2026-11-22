@@ -11,6 +11,7 @@ export function NexusSearchInput({
   onChange,
   placeholderKey = 'Search...',
   onClear,
+  size = 'md',
   testId,
 }: NexusSearchInputProps): React.JSX.Element {
   return (
@@ -24,11 +25,11 @@ export function NexusSearchInput({
         placeholder={placeholderKey}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          height: '36px',
+          height: size === 'sm' ? 'var(--input-height-compact, 32px)' : size === 'lg' ? '44px' : '36px',
           padding: '0 32px',
           borderRadius: '6px',
           border: '1px solid var(--nx-border-default)',
-          backgroundColor: 'var(--nx-surface-card)',
+          backgroundColor: 'var(--input-bg, var(--nx-surface-card))',
           color: 'var(--nx-text-primary)',
           width: '100%',
           outline: 'none',
@@ -41,7 +42,14 @@ export function NexusSearchInput({
             onChange('');
             onClear?.();
           }}
-          style={{ position: 'absolute', right: '10px', border: 'none', background: 'transparent', cursor: 'pointer' }}
+          style={{
+            position: 'absolute',
+            right: '10px',
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            color: 'var(--nx-text-muted)',
+          }}
         >
           ×
         </button>

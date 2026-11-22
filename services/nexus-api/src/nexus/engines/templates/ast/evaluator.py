@@ -1,6 +1,7 @@
 """
 nexus.engines.templates.ast.evaluator - Sandboxed Zero-Eval Context Evaluator.
 """
+
 from __future__ import annotations
 
 import re
@@ -20,10 +21,21 @@ class SandboxedContextEvaluator:
 
     MAX_RECURSION_DEPTH = 8
     MAX_LOOP_ITERATIONS = 5000
-    FORBIDDEN_IDENTIFIERS = frozenset([
-        "__", "eval", "exec", "globals", "locals", "import", "builtins",
-        "mro", "subclasses", "class", "base",
-    ])
+    FORBIDDEN_IDENTIFIERS = frozenset(
+        [
+            "__",
+            "eval",
+            "exec",
+            "globals",
+            "locals",
+            "import",
+            "builtins",
+            "mro",
+            "subclasses",
+            "class",
+            "base",
+        ]
+    )
 
     @classmethod
     def resolve_binding(cls, binding: str, context: dict[str, Any]) -> Any:
@@ -83,7 +95,9 @@ class SandboxedContextEvaluator:
         for child in node.children:
             evaluated_children.extend(cls.evaluate_node(child, context, depth + 1))
 
-        return [ASTNode(node.node_type, node.content, node.binding, evaluated_children, node.attributes)]
+        return [
+            ASTNode(node.node_type, node.content, node.binding, evaluated_children, node.attributes)
+        ]
 
     @classmethod
     def _evaluate_condition(

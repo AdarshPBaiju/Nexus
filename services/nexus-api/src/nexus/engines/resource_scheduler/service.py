@@ -1,6 +1,7 @@
 """
 nexus.engines.resource_scheduler.service - Non-Overlapping Conflict Detection & Scheduler Service.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -88,4 +89,3 @@ class ResourceSchedulerService:
             folio_id=slot.folio_id,
             status=ResourceAllocation.AllocationStatus.CONFIRMED,
         )
-

@@ -1,6 +1,7 @@
 """
 nexus.engines.invoicing.models.printer - Registered Printer Hardware Device Model.
 """
+
 from __future__ import annotations
 
 from django.db import models

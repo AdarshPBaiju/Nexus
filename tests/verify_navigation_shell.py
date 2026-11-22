@@ -28,7 +28,7 @@ def _verify_below_nav_modes(nav_dir: Path) -> None:
         ("NexusChildSidebar.tsx", "Child Sidebar (Mode D)"),
         ("NexusOperationalMinimalBar.tsx", "Operational Minimal Bar (Mode E)"),
     ]
-    for filename, label in modes:
+    for filename, _label in modes:
         f = nav_dir / filename
         assert f.exists(), f"{filename} missing"
     print(f"  [PASS] All {len(modes)} below-navbar navigation modes verified")

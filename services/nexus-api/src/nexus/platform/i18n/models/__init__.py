@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models - Re-export of all multilingual data models.
 """
+
 from nexus.platform.i18n.models.compiled_bundle import CompiledBundle
 from nexus.platform.i18n.models.entity_translation import EntityTranslation
 from nexus.platform.i18n.models.glossary import GlossaryTerm

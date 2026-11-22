@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.step_up - Step-Up Authentication & Cashier PIN Supervisor Override.
 """
+
 from __future__ import annotations
 
 import base64
@@ -61,7 +62,11 @@ class StepUpAuthService:
             "exp": expires.isoformat(),
             "nonce": str(new_uuid7()),
         }
-        b64 = base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).decode("ascii").rstrip("=")
+        b64 = (
+            base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8"))
+            .decode("ascii")
+            .rstrip("=")
+        )
         token = f"{cls.TICKET_PREFIX}{b64}"
 
         return StepUpTicket(

@@ -1,6 +1,7 @@
 """
 nexus.platform.config.engine - RFC 7396 Merge Patch & 9-Field Provenance Resolution Engine.
 """
+
 from __future__ import annotations
 
 import copy
@@ -98,7 +99,11 @@ class ConfigResolutionEngine:
 
             for key, val in cfg.items():
                 curr_lock = locks.get(key, LockStatus.UNLOCKED)
-                chain = [*provenance_map[key].inheritance_chain, level] if key in provenance_map else [level]
+                chain = (
+                    [*provenance_map[key].inheritance_chain, level]
+                    if key in provenance_map
+                    else [level]
+                )
 
                 effective_map[key] = val
                 provenance_map[key] = ProvenanceRecord(

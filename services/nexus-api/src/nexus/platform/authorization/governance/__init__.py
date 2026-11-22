@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance - Re-exports for governance primitives.
 """
+
 from nexus.platform.authorization.governance.anti_escalation import PrivilegeEscalationGuard
 from nexus.platform.authorization.governance.models.delegation import VacationDelegation
 from nexus.platform.authorization.governance.models.jit_elevation import JitElevationGrant

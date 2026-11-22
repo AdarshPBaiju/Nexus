@@ -61,3 +61,22 @@ impl DesktopPrintSpooler {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_spooler_instantiation() {
+        let spooler = DesktopPrintSpooler::new(500);
+        let job = PrintJob {
+            job_id: "JOB-01".to_string(),
+            transport: PrinterTransport::UsbDirect {
+                vendor_id: 0x04b8,
+                product_id: 0x0202,
+            },
+            payload: vec![0x1b, 0x40],
+        };
+        assert!(spooler.dispatch(&job).is_ok());
+    }
+}

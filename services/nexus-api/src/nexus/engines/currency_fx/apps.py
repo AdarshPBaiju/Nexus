@@ -1,6 +1,7 @@
 """
 nexus.engines.currency_fx.apps - Django app configuration for Multi-Currency FX Engine.
 """
+
 from django.apps import AppConfig
 
 

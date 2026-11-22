@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.suppression - Destination Suppression & Bounce Registry.
 """
+
 from __future__ import annotations
 
 from django.db import models

@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.models.sod_rule - Segregation of Duties (SoD) Conflict Rule model.
 """
+
 from __future__ import annotations
 
 from django.db import models

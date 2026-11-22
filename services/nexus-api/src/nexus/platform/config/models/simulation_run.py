@@ -1,6 +1,7 @@
 """
 nexus.platform.config.models.simulation_run - Config Pre-Publish Simulation Run model.
 """
+
 from __future__ import annotations
 
 from django.db import models

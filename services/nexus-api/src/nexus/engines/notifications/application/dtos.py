@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.application.dtos - Notification Transfer Objects.
 """
+
 from __future__ import annotations
 
 import uuid

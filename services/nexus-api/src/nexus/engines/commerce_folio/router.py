@@ -1,6 +1,7 @@
 """
 nexus.engines.commerce_folio.router - Order Fulfillment Router for physical and digital dispatch.
 """
+
 from __future__ import annotations
 
 from enum import Enum
@@ -28,13 +29,17 @@ class OrderFulfillmentRouter:
         """Determines target dispatch destination based on item type and description."""
         if line.item_type == FolioLineItem.ItemType.FOOD_BEV:
             desc_lower = line.description.lower()
-            if any(term in desc_lower for term in ("coffee", "latte", "tea", "espresso", "beverage")):
+            if any(
+                term in desc_lower for term in ("coffee", "latte", "tea", "espresso", "beverage")
+            ):
                 return FulfillmentTarget.BARISTA_KDS
             return FulfillmentTarget.KITCHEN_KDS
         return FulfillmentTarget.RECEIPT_PRINTER
 
     @classmethod
-    def dispatch_batch(cls, lines: Sequence[FolioLineItem]) -> dict[FulfillmentTarget, list[FolioLineItem]]:
+    def dispatch_batch(
+        cls, lines: Sequence[FolioLineItem]
+    ) -> dict[FulfillmentTarget, list[FolioLineItem]]:
         """Groups items by their target dispatch destination."""
         routed: dict[FulfillmentTarget, list[FolioLineItem]] = {
             FulfillmentTarget.BARISTA_KDS: [],

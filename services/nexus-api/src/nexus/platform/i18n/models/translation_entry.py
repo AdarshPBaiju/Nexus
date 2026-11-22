@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.translation_entry - Localized translation entry model.
 """
+
 from __future__ import annotations
 
 from django.db import models

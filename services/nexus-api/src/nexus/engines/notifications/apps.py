@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.apps - Django app configuration for Omnichannel Notification Engine.
 """
+
 from django.apps import AppConfig
 
 

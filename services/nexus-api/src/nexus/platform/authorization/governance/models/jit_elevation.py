@@ -1,6 +1,7 @@
 """
 nexus.platform.authorization.governance.models.jit_elevation - Just-In-Time Break-Glass Elevation model.
 """
+
 from __future__ import annotations
 
 from django.db import models

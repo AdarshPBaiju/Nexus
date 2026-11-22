@@ -1,6 +1,7 @@
 """
 nexus.engines.taxation.apps - Django app configuration for Jurisdiction-Agnostic Tax Engine.
 """
+
 from django.apps import AppConfig
 
 

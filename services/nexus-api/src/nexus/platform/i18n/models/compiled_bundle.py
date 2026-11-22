@@ -1,6 +1,7 @@
 """
 nexus.platform.i18n.models.compiled_bundle - Compiled namespace JSON bundle with Weak ETag.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -40,7 +41,7 @@ class CompiledBundle(TenantScopedModel):
     etag = models.CharField(
         max_length=64,
         db_index=True,
-        help_text=_("Weak ETag: W/\"nx:i18n:{ns}:{locale}:{sha256_prefix}\"."),
+        help_text=_('Weak ETag: W/"nx:i18n:{ns}:{locale}:{sha256_prefix}".'),
     )
     compiled_at = models.DateTimeField(
         auto_now=True,

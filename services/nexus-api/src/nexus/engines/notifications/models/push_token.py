@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.push_token - Device Push Registration Token.
 """
+
 from __future__ import annotations
 
 from django.db import models

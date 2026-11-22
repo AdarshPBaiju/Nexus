@@ -1,6 +1,7 @@
 """
 nexus.libs.money.money - Exact string-decimal ISO 4217 Money value object.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -19,8 +20,8 @@ class Money:
     currency: str
 
     def __post_init__(self) -> None:
-        if not self.currency or len(self.currency) != 3:
-            raise ValueError(f"Invalid ISO 4217 currency code: '{self.currency}'")
+        if not self.currency or len(self.currency) < 3 or len(self.currency) > 12:
+            raise ValueError(f"Invalid ISO 4217 or custom currency code: '{self.currency}'")
         object.__setattr__(self, "currency", self.currency.upper())
         if not isinstance(self.amount, Decimal):
             object.__setattr__(self, "amount", Decimal(str(self.amount)))

@@ -2,6 +2,7 @@
 nexus.platform.authorization.pdp.simulator - 5-Layer Authorization Access Simulator.
 Traces decision tree: RLS -> Capability Gate -> Scoped RBAC -> ABAC Guardrails -> FLS/SoD.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -92,14 +93,22 @@ class AccessSimulator:
     ) -> tuple[SimulationTraceStep, bool, str]:
         if permission_code in policy.denied_permissions:
             step = SimulationTraceStep(
-                3, "Multi-Dimensional Scoped RBAC", "FAILED",
+                3,
+                "Multi-Dimensional Scoped RBAC",
+                "FAILED",
                 f"Explicit DENY found for '{permission_code}'. Explicit Deny Always Wins.",
             )
-            return step, True, f"Explicit DENY on permission '{permission_code}' overrides all grants."
+            return (
+                step,
+                True,
+                f"Explicit DENY on permission '{permission_code}' overrides all grants.",
+            )
 
         if permission_code not in policy.allowed_permissions:
             step = SimulationTraceStep(
-                3, "Multi-Dimensional Scoped RBAC", "FAILED",
+                3,
+                "Multi-Dimensional Scoped RBAC",
+                "FAILED",
                 f"Permission '{permission_code}' is not granted to actor.",
             )
             return step, True, f"Actor lacks granted permission '{permission_code}'."
@@ -120,13 +129,17 @@ class AccessSimulator:
         )
         if not is_scope_ok:
             step = SimulationTraceStep(
-                3, "Multi-Dimensional Scoped RBAC", "FAILED",
+                3,
+                "Multi-Dimensional Scoped RBAC",
+                "FAILED",
                 f"Target scope {target_scope_id} does not match actor scope bounds {grants}.",
             )
             return step, True, f"Scope boundary mismatch for target {target_scope_id}."
 
         step = SimulationTraceStep(
-            3, "Multi-Dimensional Scoped RBAC", "PASSED",
+            3,
+            "Multi-Dimensional Scoped RBAC",
+            "PASSED",
             f"Permission '{permission_code}' matched active scope bounds.",
         )
         return step, False, ""

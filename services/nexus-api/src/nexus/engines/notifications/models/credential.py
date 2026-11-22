@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.credential - Encrypted Provider BYO Credentials.
 """
+
 from __future__ import annotations
 
 from django.db import models

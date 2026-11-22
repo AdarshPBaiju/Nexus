@@ -1,6 +1,7 @@
 """
 nexus.engines.currency_fx.models.currency_master - Supported ISO 4217 Currency catalog model.
 """
+
 from __future__ import annotations
 
 from django.db import models

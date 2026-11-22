@@ -1,6 +1,7 @@
 """
 nexus.engines.notifications.models.delivery_attempt - Partitioned Delivery Ledger.
 """
+
 from __future__ import annotations
 
 from django.db import models

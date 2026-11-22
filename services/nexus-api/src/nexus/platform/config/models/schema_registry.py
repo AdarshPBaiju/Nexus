@@ -1,6 +1,7 @@
 """
 nexus.platform.config.models.schema_registry - Config JSON Schema specification model.
 """
+
 from __future__ import annotations
 
 from django.db import models
