@@ -1,13 +1,11 @@
-package pdfrender_test
+package pdfrender
 
 import (
 	"testing"
-
-	"nexus-worker/pkg/pdfrender"
 )
 
 func TestRenderer_RenderHTMLAndParse(t *testing.T) {
-	r := pdfrender.NewRenderer()
+	r := NewRenderer()
 
 	astJSON := []byte(`{
 		"version": "1.0",

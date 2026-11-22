@@ -111,7 +111,9 @@ mod tests {
         let mut encoder = EscPosEncoder::new();
         encoder.kick_cash_drawer();
         let bytes = encoder.build();
-        assert!(bytes.windows(5).any(|w| w == EscPosEncoder::RJ11_DRAWER_KICK));
+        assert!(bytes
+            .windows(5)
+            .any(|w| w == EscPosEncoder::RJ11_DRAWER_KICK));
     }
 
     #[test]
@@ -119,6 +121,8 @@ mod tests {
         let mut encoder = EscPosEncoder::new();
         encoder.cut();
         let bytes = encoder.build();
-        assert!(bytes.windows(4).any(|w| w == EscPosEncoder::GS_CUT_PARTIAL));
+        assert!(bytes
+            .windows(4)
+            .any(|w| w == EscPosEncoder::GS_CUT_PARTIAL));
     }
 }

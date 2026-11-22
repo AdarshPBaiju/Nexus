@@ -20,8 +20,14 @@ impl DesktopCommandBridge {
         }
     }
 
-    pub fn get_device_telemetry(&self, workstation_id: &str) -> Result<WorkstationTelemetry, String> {
-        Ok(DeviceBindingService::collect_telemetry(workstation_id, false))
+    pub fn get_device_telemetry(
+        &self,
+        workstation_id: &str,
+    ) -> Result<WorkstationTelemetry, String> {
+        Ok(DeviceBindingService::collect_telemetry(
+            workstation_id,
+            false,
+        ))
     }
 
     pub fn trigger_local_print(&self, job: &PrintJob) -> Result<String, String> {
@@ -34,11 +40,18 @@ impl DesktopCommandBridge {
         Ok("Cash drawer pulse fired".to_string())
     }
 
-    pub fn charge_edc_terminal(&self, amount_cents: u64, terminal_ip: &str) -> Result<String, String> {
+    pub fn charge_edc_terminal(
+        &self,
+        amount_cents: u64,
+        terminal_ip: &str,
+    ) -> Result<String, String> {
         if amount_cents == 0 {
             return Err("Charge amount must be positive".to_string());
         }
-        Ok(format!("Terminal {} initiated charge for {} cents", terminal_ip, amount_cents))
+        Ok(format!(
+            "Terminal {} initiated charge for {} cents",
+            terminal_ip, amount_cents
+        ))
     }
 }
 

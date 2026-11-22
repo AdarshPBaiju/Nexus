@@ -1,3 +1,4 @@
+// Package pdfrender provides thermal receipt AST compiling and rendering.
 package pdfrender
 
 import (

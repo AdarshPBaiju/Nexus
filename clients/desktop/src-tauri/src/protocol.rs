@@ -43,7 +43,8 @@ impl ProtocolRouter {
             }
         }
 
-        let tenant_slug = tenant.ok_or_else(|| "Missing required query parameter: tenant".to_string())?;
+        let tenant_slug = tenant
+            .ok_or_else(|| "Missing required query parameter: tenant".to_string())?;
         let route_str = route.unwrap_or_else(|| "/pos".to_string());
 
         Ok(ProtocolLaunchIntent {
