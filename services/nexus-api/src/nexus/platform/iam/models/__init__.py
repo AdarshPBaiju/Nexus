@@ -2,6 +2,7 @@
 nexus.platform.iam.models - Identity, Workspace, and OAuth models barrel.
 """
 
+from nexus.platform.iam.models.favourite import UserFavourite
 from nexus.platform.iam.models.oauth_client import OAuthClientApp
 from nexus.platform.iam.models.oauth_grant import OAuthConsentGrant
 from nexus.platform.iam.models.staff_profile import StaffProfile
@@ -15,5 +16,6 @@ __all__ = [
     "StaffProfile",
     "StaffRoleAssignment",
     "User",
+    "UserFavourite",
     "UserWorkspaceMembership",
 ]
