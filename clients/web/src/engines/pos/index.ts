@@ -8,5 +8,6 @@ export * from './components/OrderPickupBoard';
 export * from './components/SplitTenderModal';
 export * from './components/SupervisorPinModal';
 export * from './controllers/PosCounterController';
+export * from './controllers/PrintCoordinator';
 export * from './PosOperationalView';
 export * from './types';
