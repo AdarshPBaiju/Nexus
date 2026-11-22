@@ -30,7 +30,6 @@ const NAV_GROUPS: readonly NavGroup[] = [
     title: 'Mission Control',
     items: [
       { href: '/', label: 'System Overview', icon: 'dashboard', hint: 'D', badge: 'LIVE', badgeVariant: 'success' },
-      { href: '/inputs', label: 'Input Controls Studio', icon: 'tune', hint: 'I', badge: '19', badgeVariant: 'info' },
     ],
   },
   {
