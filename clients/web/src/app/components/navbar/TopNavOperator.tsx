@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { NexusBox, NexusButton, NexusStack, NexusText } from '@nexus/ui';
+import { NexusGlyph } from '../NexusGlyph';
 import type { StaffProfile } from '../../../runtime/auth/AuthContext';
 
 export interface TopNavOperatorProps {
@@ -37,7 +38,7 @@ export function TopNavOperator({ session, activeStaff, onLock }: TopNavOperatorP
       >
         {activeStaff.avatarIcon}
       </span>
-      <NexusStack gap="0px">
+      <NexusStack className="nx-topnav-user-meta" gap="0px">
         <NexusText variant="label" style={{ lineHeight: '15px' }}>
           {session.name}
         </NexusText>
@@ -52,9 +53,7 @@ export function TopNavOperator({ session, activeStaff, onLock }: TopNavOperatorP
         title="Lock workstation — PIN required to resume"
         ariaLabel="Lock workstation"
       >
-        <span className="material-symbols-outlined" style={{ fontSize: '16px' }} aria-hidden="true">
-          lock
-        </span>
+        <NexusGlyph name="lock" size={16} />
       </NexusButton>
     </NexusBox>
   );

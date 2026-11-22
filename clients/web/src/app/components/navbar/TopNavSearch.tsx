@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { NexusText } from '@nexus/ui';
+import { NexusGlyph } from '../NexusGlyph';
 
 export function TopNavSearch(): React.JSX.Element {
   return (
@@ -25,13 +26,7 @@ export function TopNavSearch(): React.JSX.Element {
       aria-label="Open command palette"
     >
       <span style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: '16px', color: 'var(--nx-text-muted)' }}
-          aria-hidden="true"
-        >
-          search
-        </span>
+        <NexusGlyph name="search" size={16} color="var(--nx-text-muted)" />
         <NexusText variant="caption" role="muted">
           Search orders, SKUs, or run a command
         </NexusText>

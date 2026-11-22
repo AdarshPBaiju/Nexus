@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { NexusBadge, NexusBox, NexusButton, NexusStack, NexusText } from '@nexus/ui';
+import { NexusGlyph } from './NexusGlyph';
 import { useAuth } from '../../runtime/auth/AuthContext';
 import { TopNavSearch } from './navbar/TopNavSearch';
 import { TopNavTelemetry } from './navbar/TopNavTelemetry';
@@ -78,9 +79,7 @@ export function NexusMainTopNavbar({
           ariaLabel={isSidebarOpen ? 'Collapse navigation' : 'Expand navigation'}
           title={isSidebarOpen ? 'Collapse navigation' : 'Expand navigation'}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: '19px' }} aria-hidden="true">
-            {isSidebarOpen ? 'menu_open' : 'menu'}
-          </span>
+          <NexusGlyph name={isSidebarOpen ? 'menu_open' : 'menu'} size={19} />
         </NexusButton>
 
         <Link href="/" style={{ textDecoration: 'none' }}>
@@ -96,13 +95,7 @@ export function NexusMainTopNavbar({
                 backgroundColor: 'var(--nx-action-primary)',
               }}
             >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: '17px', color: 'var(--nx-action-text)' }}
-                aria-hidden="true"
-              >
-                apps
-              </span>
+              <NexusGlyph name="apps" size={17} color="var(--nx-action-text)" />
             </NexusBox>
             <NexusText variant="h4" style={{ letterSpacing: '-0.02em' }}>
               NEXUS
@@ -125,13 +118,7 @@ export function NexusMainTopNavbar({
             minWidth: 0,
           }}
         >
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: '15px', color: 'var(--nx-text-muted)' }}
-            aria-hidden="true"
-          >
-            storefront
-          </span>
+          <NexusGlyph name="storefront" size={15} color="var(--nx-text-muted)" />
           <NexusText variant="caption" style={{ whiteSpace: 'nowrap' }}>
             {session.tenantName}
           </NexusText>
@@ -153,9 +140,7 @@ export function NexusMainTopNavbar({
           ariaLabel={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: '16px' }} aria-hidden="true">
-            {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-          </span>
+          <NexusGlyph name={theme === 'dark' ? 'light_mode' : 'dark_mode'} size={16} />
         </NexusButton>
 
         <TopNavOperator
