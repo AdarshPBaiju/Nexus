@@ -11,43 +11,43 @@ Provides interactive HTTP API endpoints for Project Nexus Phase 1 engines:
 
 from __future__ import annotations
 
-from decimal import Decimal
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
-from pathlib import Path
 import sys
+from decimal import Decimal
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 API_SRC = Path(__file__).resolve().parent / "src"
 sys.path.insert(0, str(API_SRC))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nexus_settings")
-import django
+import django  # noqa: E402
 
 django.setup()
 
-from nexus.engines.currency_fx.formatter import (
+from nexus.engines.currency_fx.formatter import (  # noqa: E402
     CurrencyFormatProfile,
     DynamicCurrencyFormatter,
 )
-from nexus.engines.currency_fx.words import AmountInWordsEngine, WordsOptions
-from nexus.engines.discounts.service import (
+from nexus.engines.currency_fx.words import AmountInWordsEngine, WordsOptions  # noqa: E402
+from nexus.engines.discounts.service import (  # noqa: E402
     DiscountEvaluationRequest,
     DiscountEvaluatorService,
 )
-from nexus.engines.taxation.service import TaxCalculationEngine
-from nexus.libs.money.money import Money
+from nexus.engines.taxation.service import TaxCalculationEngine  # noqa: E402
+from nexus.libs.money.money import Money  # noqa: E402
 
 
 class NexusApiHandler(BaseHTTPRequestHandler):
     """HTTP request handler for Project Nexus Development API."""
 
-    def do_OPTIONS(self) -> None:  # noqa: N802
+    def do_OPTIONS(self) -> None:
         self.send_response(204)
         self._send_cors_headers()
         self.end_headers()
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         path = self.path.split("?")[0].rstrip("/")
         if path in {"", "/healthz"}:
             self._send_json(
@@ -90,7 +90,7 @@ class NexusApiHandler(BaseHTTPRequestHandler):
         else:
             self._send_json(404, {"error": "Not Found", "path": self.path})
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         path = self.path.split("?")[0].rstrip("/")
         data = self._read_json_body()
 
@@ -191,7 +191,10 @@ class NexusApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self) -> None:
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-Nexus-Tenant-Slug")
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization, X-Requested-With, X-Nexus-Tenant-Slug",
+        )
 
     def log_message(self, format: str, *args) -> None:
         sys.stdout.write(f"[Nexus-API] {args[0]} - {args[1]}\n")
