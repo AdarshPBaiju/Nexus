@@ -27,7 +27,7 @@ class EncryptedPathEnvelopeCodec:
         if not token.startswith(cls.PREFIX):
             raise ValueError(f"Invalid envelope prefix, expected '{cls.PREFIX}'")
 
-        b64 = token[len(cls.PREFIX):]
+        b64 = token[len(cls.PREFIX) :]
         padding = (4 - len(b64) % 4) % 4
         payload = base64.urlsafe_b64decode(b64 + ("=" * padding))
 
