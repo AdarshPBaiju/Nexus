@@ -10,3 +10,5 @@ layers =
     nexus.platform
     nexus.infrastructure
     nexus.libs
+
+# Extension Independence Contract (enforced across independent business extensions)
