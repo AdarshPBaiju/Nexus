@@ -13,9 +13,18 @@ from nexus.engines.payment_router.application.clearing_generator import Clearing
 from nexus.engines.payment_router.application.dtos import (
     ConfirmPaymentCmd,
     CreatePaymentIntentCmd,
+    WebhookEventCmd,
 )
 from nexus.engines.payment_router.gateways.registry import GatewayAdapterRegistry
-from nexus.engines.payment_router.models import PaymentAttempt, PaymentIntent
+from nexus.engines.payment_router.models import (
+    GatewayInstallation,
+    PaymentAttempt,
+    PaymentIntent,
+)
+from nexus.engines.payment_router.models.webhook_event_log import (
+    LogWebhookEventDto,
+    PaymentWebhookEventLog,
+)
 
 
 class PaymentOrchestrationService:
@@ -119,3 +128,35 @@ class PaymentOrchestrationService:
 
         postings = ClearingJournalGenerator.generate_capture_postings(intent.amount)
         return intent, attempt, postings
+
+    @classmethod
+    def process_inbound_webhook(cls, cmd: WebhookEventCmd) -> tuple[bool, str]:
+        """
+        Processes inbound webhook callback with idempotent duplicate protection.
+        """
+        install = GatewayInstallation.objects.filter(
+            tenant_id=cmd.tenant_id,
+            gateway_code=cmd.gateway_code,
+            is_active=True,
+        ).first()
+        if not install:
+            raise ValueError(f"Gateway {cmd.gateway_code} not active for tenant")
+
+        exists = PaymentWebhookEventLog.objects.filter(
+            tenant_id=cmd.tenant_id,
+            gateway_installation=install,
+            provider_event_id=cmd.provider_event_id,
+        ).exists()
+        if exists:
+            return False, "Duplicate webhook event ignored"
+
+        PaymentWebhookEventLog.record_event(
+            LogWebhookEventDto(
+                tenant_id=cmd.tenant_id,
+                installation_id=install.id,
+                provider_event_id=cmd.provider_event_id,
+                event_type=cmd.event_type,
+                payload=cmd.payload,
+            )
+        )
+        return True, "Webhook processed successfully"

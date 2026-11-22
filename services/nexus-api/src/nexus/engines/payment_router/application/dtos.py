@@ -45,3 +45,14 @@ class ClearingPosting:
     direction: str  # DEBIT or CREDIT
     amount: Decimal
     description: str
+
+
+@dataclass(frozen=True)
+class WebhookEventCmd:
+    """Command payload for processing inbound payment provider webhooks."""
+
+    tenant_id: uuid.UUID
+    gateway_code: str
+    provider_event_id: str
+    event_type: str
+    payload: dict[str, Any] = field(default_factory=dict)

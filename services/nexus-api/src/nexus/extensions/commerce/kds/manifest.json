@@ -1,0 +1,8 @@
+{
+  "code": "KDS",
+  "name": "Kitchen Display System & Barista Monitor",
+  "tier": "TIER_3_COMMERCIAL",
+  "execution_surface": "WEB_ALL",
+  "dependencies": ["POS", "CORE_TENANCY"],
+  "license_models": ["SUBSCRIPTION_RECURRING"]
+}
