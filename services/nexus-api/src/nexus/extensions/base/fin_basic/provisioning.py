@@ -51,57 +51,65 @@ class FinCoreProvisioningService:
         tenant_id: uuid.UUID,
         base_currency: str = "USD",
     ) -> tuple[TreasuryAccount, TreasuryAccount]:
-        """
-        Provisions 2 default TreasuryAccount containers:
-        1. Front Desk POS Cash Drawer (linked to Asset 1010)
-        2. Operating Commercial Bank Account (linked to Asset 1020)
-        """
-        drawer_acc = cls._get_or_create_ledger_account(
-            tenant_id,
-            LedgerAccountSpec(
-                "1010", "POS Cash Drawer Control", LedgerAccount.AccountType.ASSET, base_currency
-            ),
-        )
-        bank_acc = cls._get_or_create_ledger_account(
-            tenant_id,
-            LedgerAccountSpec(
-                "1020", "Operating Bank Control", LedgerAccount.AccountType.ASSET, base_currency
-            ),
-        )
-        cls._get_or_create_ledger_account(
-            tenant_id,
-            LedgerAccountSpec(
-                "5080", "Cash Shortage Expense", LedgerAccount.AccountType.EXPENSE, base_currency
-            ),
-        )
-        cls._get_or_create_ledger_account(
-            tenant_id,
-            LedgerAccountSpec(
-                "4080", "Cash Overage Revenue", LedgerAccount.AccountType.REVENUE, base_currency
-            ),
-        )
+        """Provisions 2 default TreasuryAccount containers."""
+        drawer_acc, bank_acc = cls._provision_control_accounts(tenant_id, base_currency)
+        return cls._provision_containers(tenant_id, drawer_acc, bank_acc, base_currency)
 
-        pos_drawer = cls._get_or_create_treasury_container(
+    @classmethod
+    def _provision_control_accounts(
+        cls, tenant_id: uuid.UUID, curr: str
+    ) -> tuple[LedgerAccount, LedgerAccount]:
+        d = cls._get_or_create_ledger_account(
+            tenant_id,
+            LedgerAccountSpec(
+                "1010", "POS Cash Drawer Control", LedgerAccount.AccountType.ASSET, curr
+            ),
+        )
+        b = cls._get_or_create_ledger_account(
+            tenant_id,
+            LedgerAccountSpec(
+                "1020", "Operating Bank Control", LedgerAccount.AccountType.ASSET, curr
+            ),
+        )
+        cls._get_or_create_ledger_account(
+            tenant_id,
+            LedgerAccountSpec(
+                "5080", "Cash Shortage Expense", LedgerAccount.AccountType.EXPENSE, curr
+            ),
+        )
+        cls._get_or_create_ledger_account(
+            tenant_id,
+            LedgerAccountSpec(
+                "4080", "Cash Overage Revenue", LedgerAccount.AccountType.REVENUE, curr
+            ),
+        )
+        return d, b
+
+    @classmethod
+    def _provision_containers(
+        cls, tenant_id: uuid.UUID, drawer: LedgerAccount, bank: LedgerAccount, curr: str
+    ) -> tuple[TreasuryAccount, TreasuryAccount]:
+        pos = cls._get_or_create_treasury_container(
             tenant_id,
             TreasuryContainerSpec(
                 cls.DEFAULT_DRAWER_CODE,
                 "Front Counter POS Cash Drawer",
                 TreasuryAccount.AccountType.CASH_DRAWER,
-                drawer_acc.id,
-                base_currency,
+                drawer.id,
+                curr,
             ),
         )
-        operating_bank = cls._get_or_create_treasury_container(
+        op_bank = cls._get_or_create_treasury_container(
             tenant_id,
             TreasuryContainerSpec(
                 cls.DEFAULT_BANK_CODE,
                 "Primary Operating Bank Account",
                 TreasuryAccount.AccountType.BANK_ACCOUNT,
-                bank_acc.id,
-                base_currency,
+                bank.id,
+                curr,
             ),
         )
-        return pos_drawer, operating_bank
+        return pos, op_bank
 
     @classmethod
     def _get_or_create_ledger_account(
