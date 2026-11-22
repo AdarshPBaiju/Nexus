@@ -18,3 +18,4 @@ export * from './NexusFileInput';
 export * from './NexusSlider';
 export * from './NexusPinInput';
 export * from './NexusLocalizedTextInput';
+export * from './NexusDynamicAutoCodeInput';
